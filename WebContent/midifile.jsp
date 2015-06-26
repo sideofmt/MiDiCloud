@@ -138,8 +138,10 @@
 </div>
 
             <div class="text-left">
-                <h2>MIDIã¿ã¤ãã«</h2>
-
+                <h2>MIDI Music</h2>
+<br>
+<embed src="original.mid" type="application/x-mplayer2" height="40" autostart="true" autoplay="true" loop="false">
+<br><br>
 
 <button type="button" class="btn btn-info  btn-sm">
   <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Favorite <span class="badge">4</span>
@@ -153,20 +155,20 @@
 
 
             <button type="button" class="btn btn-default btn-sm">
- 				 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>ç·¨é
+ 				 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>Edit
 				</button>
 			<button type="button" class="btn btn-default btn-sm btn-warning">
- 				 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>ä¸é©åãªMIDIãå ±å
+ 				 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>report this midi file
 				</button>
 				<button type="button" class="btn btn-default btn-sm">
- 				 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>åé¤
+ 				 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>delete this midi file
 				</button>
 <br><br>
 
 <div class="panel panel-default">
 <div class="panel-body">
 
-                <p>ããã«èª¬æãå¥åãã¦ãã ããããã«èª¬æãå¥åãã¦ãã ããããã«èª¬æãå¥åãã¦ãã ããããã«èª¬æãå¥åãã¦ãã ããããã«èª¬æãå¥åãã¦ãã ããããã«èª¬æãå¥åãã¦ãã ããã</p>
+                <p>explaination</p>
 
 </div>
 </div>
