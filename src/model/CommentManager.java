@@ -1,4 +1,4 @@
-package Comment;
+package model;
 
 import java.util.ArrayList;
 

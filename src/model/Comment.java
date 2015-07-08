@@ -1,4 +1,4 @@
-package Comment;
+package model;
 
 public class Comment {
 	private int commentID;

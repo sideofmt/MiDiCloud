@@ -1,4 +1,4 @@
-package Comment;
+package model;
 
 import java.io.Serializable;
 import java.sql.Connection;
