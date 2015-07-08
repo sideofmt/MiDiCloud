@@ -12,7 +12,8 @@ public class UserDAO {
 
 	public boolean addUser(User user)throws SQLException{
 		Connection connection;
-		String sql = "insert into user values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "insert into userdata values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		PreparedStatement prepStmt;
 
 		try{
 			Class.forName(driverClassName);
@@ -24,14 +25,13 @@ public class UserDAO {
 			pstmt.setString(3, user.getPassword());
 			pstmt.setString(4, user.getMailAddress());
 			pstmt.setString(5, user.getProfile());
-			pstmt.setByte(6, user.getIcon());
-			pstmt.setObject(7, user.getMIDI_IDs());
-			pstmt.setObject(8, user.getCommentIDs());
+			pstmt.setBytes(6, user.getIcon());
+			pstmt.setArray(7, (Array) user.getMIDI_IDs());
+			pstmt.setArray(8, (Array) user.getCommentIDs());
 			pstmt.setBoolean(9, user.isManager());
 
-			ResultSet resultSet = pstmt.executeQuery();
+			pstmt.executeUpdate();
 
-			resultSet.close();
 			connection.close();
 			return true;
 		}catch(Exception e){
@@ -43,7 +43,7 @@ public class UserDAO {
 	public User returnUser(int userID)throws SQLException{
 		Connection connection;
 		User user = new User();
-		String sql = "select * from user where userID=?";
+		String sql = "select * from userdata where userID=?";
 
 		try{
 			Class.forName(driverClassName);
@@ -58,9 +58,9 @@ public class UserDAO {
 			String password = resultSet.getString("password");
 			String mailAddress = resultSet.getString("mailAddress");
 			String profile = resultSet.getString("profile");
-			Byte icon = resultSet.getByte("icon");
-			ArrayList<Integer> MIDI_IDs = (ArrayList<Integer>)resultSet.getObject("MIDI_IDs");
-			ArrayList<Integer> comment_IDs = (ArrayList<Integer>) resultSet.getObject("commentIDs");
+			byte[] icon = resultSet.getBytes("icon");
+			ArrayList<Integer> MIDI_IDs = (ArrayList<Integer>) resultSet.getArray("MIDI_IDs");
+			ArrayList<Integer> comment_IDs = (ArrayList<Integer>) resultSet.getArray("commentIDs");
 			Boolean isManagaer = resultSet.getBoolean("isManager");
 
 			user.setUserID(userID);
@@ -88,7 +88,7 @@ public class UserDAO {
 	public ArrayList<User> returnUser(ArrayList<Integer> userIDs)throws SQLException{
 		Connection connection;
 		User user = new User();
-		String sql = "select * from user where userID=?";
+		String sql = "select * from userdata where userID=?";
 		ArrayList<User> USERs = new ArrayList<User>();
 
 		try{
@@ -105,9 +105,9 @@ public class UserDAO {
 				String password = resultSet.getString("password");
 				String mailAddress = resultSet.getString("mailAddress");
 				String profile = resultSet.getString("profile");
-				Byte icon = resultSet.getByte("icon");
-				ArrayList<Integer> MIDI_IDs = (ArrayList<Integer>)resultSet.getObject("MIDI_IDs");
-				ArrayList<Integer> comment_IDs = (ArrayList<Integer>) resultSet.getObject("commentIDs");
+				byte[] icon = resultSet.getBytes("icon");
+				ArrayList<Integer> MIDI_IDs = (ArrayList<Integer>)resultSet.getArray("MIDI_IDs");
+				ArrayList<Integer> comment_IDs = (ArrayList<Integer>) resultSet.getArray("commentIDs");
 				Boolean isManagaer = resultSet.getBoolean("isManager");
 
 				user.setUserID(userID);
@@ -137,7 +137,7 @@ public class UserDAO {
 
 	public void updateUser(User user)throws SQLException{
 		Connection connection;
-		String sql = "update user set username=?,password=?,mailAddress=?,profile=?,icon=?,MIDI_IDs=?,commentIDs=?,isManagaer=? where userID=?";
+		String sql = "update userdata set username=?,password=?,mailAddress=?,profile=?,icon=?,MIDI_IDs=?,commentIDs=?,isManagaer=? where userID=?";
 
 		try{
 			Class.forName(driverClassName);
@@ -149,15 +149,14 @@ public class UserDAO {
 			pstmt.setString(2, user.getPassword());
 			pstmt.setString(3, user.getMailAddress());
 			pstmt.setString(4, user.getProfile());
-			pstmt.setByte(5, user.getIcon());
-			pstmt.setObject(6, user.getMIDI_IDs());
-			pstmt.setObject(7, user.getCommentIDs());
+			pstmt.setBytes(5, user.getIcon());
+			pstmt.setArray(6, (Array) user.getMIDI_IDs());
+			pstmt.setArray(7, (Array) user.getCommentIDs());
 			pstmt.setBoolean(8, user.isManager());
 			pstmt.setInt(9, user.getUserID());
 
-			ResultSet resultSet = pstmt.executeQuery();
+			pstmt.executeUpdate();
 
-			resultSet.close();
 			connection.close();
 		}catch(Exception e){
 			e.printStackTrace();
@@ -166,7 +165,7 @@ public class UserDAO {
 
 	public void deleteUser(int userID)throws SQLException{
 		Connection connection;
-		String sql = "delete from user where userID=?";
+		String sql = "delete from userdata where userID=?";
 
 		try{
 			Class.forName(driverClassName);
@@ -174,10 +173,8 @@ public class UserDAO {
 			PreparedStatement pstmt = connection.prepareStatement(sql);
 
 			pstmt.setInt(1, userID);
+			pstmt.executeUpdate();
 
-			ResultSet resultSet = pstmt.executeQuery();
-
-			resultSet.close();
 			connection.close();
 		}catch(Exception e){
 			e.printStackTrace();
@@ -187,7 +184,7 @@ public class UserDAO {
 	public User searchUser(String mailAddress)throws SQLException{
 		Connection connection;
 		User user = new User();
-		String sql = "select * from user where mailAddress=?";
+		String sql = "select * from userdata where mailAddress=?";
 
 		try{
 			Class.forName(driverClassName);
@@ -197,14 +194,15 @@ public class UserDAO {
 			pstmt.setString(1, mailAddress);
 
 			ResultSet resultSet = pstmt.executeQuery();
+			resultSet.next();
 
 			int userid = resultSet.getInt("userID");
 			String userName = resultSet.getString("username");
 			String password = resultSet.getString("password");
 			String profile = resultSet.getString("profile");
-			Byte icon = resultSet.getByte("icon");
-			ArrayList<Integer> MIDI_IDs = (ArrayList<Integer>)resultSet.getObject("MIDI_IDs");
-			ArrayList<Integer> comment_IDs = (ArrayList<Integer>) resultSet.getObject("commentIDs");
+			byte[] icon = resultSet.getBytes("icon");
+			ArrayList<Integer> MIDI_IDs = (ArrayList<Integer>)resultSet.getArray("MIDI_IDs");
+			ArrayList<Integer> comment_IDs = (ArrayList<Integer>) resultSet.getArray("commentIDs");
 			Boolean isManagaer = resultSet.getBoolean("isManager");
 
 			user.setUserID(userid);
@@ -231,25 +229,35 @@ public class UserDAO {
 
 	public int searchNoUserID()throws SQLException{
 		Connection connection;
-		String sql = "select * from user where userID=?";
+		String sql = "select * from userdata where userID=?";
 
 		try{
 			Class.forName(driverClassName);
 			connection = DriverManager.getConnection(url, username, password);
 			PreparedStatement pstmt = connection.prepareStatement(sql);
-			ResultSet resultSet;
 
-			int i=1;
+
+			ResultSet resultSet;
+			pstmt.setInt(1,1 );
+			resultSet = pstmt.executeQuery();
+			int i=2;
 			int id;
 
-			while(true){
+			while(resultSet.next()){
+
 				pstmt.setInt(1,i );
 				resultSet = pstmt.executeQuery();
 
-				id = resultSet.getInt("userID");
+
+				id = resultSet.getInt("userid");
 				if(id==0){
 					break;
 				}
+
+//				if(resultSet.wasNull()){
+//					break;
+//				};
+
 				i++;
 			}
 			resultSet.close();

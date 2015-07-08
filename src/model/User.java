@@ -2,23 +2,26 @@ package model;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class User {
+
 	private int userID;
 	private String username;
+	private String password;
+	private String mailAddress;
+	private String profile;
+	private byte[] icon;
+	private ArrayList<Integer> MIDI_IDs;
+	private ArrayList<Integer> commentIDs;
+	private boolean isManager;
+
 	public String getUsername() {
 		return username;
 	}
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	private String password;
-	private String mailAddress;
-	private String profile;
-	private Byte icon;
-	private ArrayList<Integer> MIDI_IDs;
-	private ArrayList<Integer> commentIDs;
-	private boolean isManager;
 	public int getUserID() {
 		return userID;
 	}
@@ -43,10 +46,10 @@ public class User {
 	public void setProfile(String profile) {
 		this.profile = profile;
 	}
-	public Byte getIcon() {
+	public byte[] getIcon() {
 		return icon;
 	}
-	public void setIcon(Byte icon) {
+	public void setIcon(byte[] icon) {
 		this.icon = icon;
 	}
 	public ArrayList<Integer> getMIDI_IDs() {
@@ -68,5 +71,13 @@ public class User {
 		this.isManager = isManager;
 	}
 
+	@Override
+	public String toString() {
+		return "User [userID=" + userID + ", username=" + username
+				+ ", password=" + password + ", mailAddress=" + mailAddress
+				+ ", profile=" + profile + ", icon=" + Arrays.toString(icon)
+				+ ", MIDI_IDs=" + MIDI_IDs + ", commentIDs=" + commentIDs
+				+ ", isManager=" + isManager + "]";
+	}
 
 }
