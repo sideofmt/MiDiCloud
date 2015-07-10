@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 
 public class CommentManager {
-	public void addComment(String comment,int commentID,int userID, int midiID){
+	public void addComment(int commentID,String comment,int userID, int midiID){
 		Comment com = new Comment();
 		CommentDAO comDAO = new CommentDAO();
 
-		com.setComment(comment);
 		com.setCommentID(commentID);
+		com.setComment(comment);
 		com.setUserID(userID);
 		com.setMidiID(midiID);
 
@@ -26,7 +26,6 @@ public class CommentManager {
 		ArrayList<Comment> comList = new ArrayList<Comment>();
 
 		comList = comDAO.returnComment(midiID);
-
 		return comList;
 	}
 }

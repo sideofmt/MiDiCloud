@@ -7,7 +7,7 @@ public class ReportManager {
 		Report report = new Report();
 		ReportDAO repDAO = new ReportDAO();
 
-		report.setReportedmidiID(reportedmidiID);
+		report.setReportID(reportID);
 		report.setUserID(userID);
 		report.setReportedUserID(reportedUserID);
 		report.setReportedmidiID(reportedmidiID);

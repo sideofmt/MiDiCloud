@@ -10,8 +10,9 @@ import java.util.ArrayList;
 
 
 public class CommentDAO extends Object implements Serializable{
-	final private static String dbname = "comment";
-	final private static String user = "wspuser";
+	final private static String dbname = "MiDiCloud";
+	//final private static String user = "wspuser";
+	final private static String user = "dbpuser";
 	final private static String password = "hogehoge";
 	final private static String driverClassName = "org.postgresql.Driver";
 	final private static String url = "jdbc:postgresql://localhost/" + dbname;
@@ -20,18 +21,21 @@ public class CommentDAO extends Object implements Serializable{
 	private ResultSet resultSet;
 
 	public void add(Comment comment){
-		String sql = "insert into comment values (?, ?, ?, ?)";
+		String sql = "insert into comment values(?, ?, ?, ?)";
+		PreparedStatement pstmt;
 
 		try {
 			Class.forName(driverClassName);
 			connection = DriverManager.getConnection(url, user, password);
-			PreparedStatement pstmt = connection.prepareStatement(sql);
+			pstmt = connection.prepareStatement(sql);
 
 			pstmt.setInt(1, comment.getCommentID());
 			pstmt.setString(2, comment.getComment());
 			pstmt.setInt(3, comment.getUserID());
 			pstmt.setInt(4,  comment.getMidiID());
+			pstmt.executeUpdate();
 
+			pstmt.close();
 			connection.close();
 		}catch (Exception e){
 			e.printStackTrace();
@@ -42,18 +46,20 @@ public class CommentDAO extends Object implements Serializable{
 		int commentID;
 		String comment;
 		int userID;
-		Comment com = new Comment();
 		ArrayList<Comment> comList = new ArrayList<Comment>();
-		String sql = "select * from comment";
+		String sql = "select * from comment where midiID = ? order by commentid asc";
+		PreparedStatement pstmt;
 
 		try {
 			Class.forName(driverClassName);
 			connection = DriverManager.getConnection(url, user, password);
 			statement = connection.createStatement();
-
-			resultSet = statement.executeQuery(sql);
+			pstmt = connection.prepareStatement(sql);
+			pstmt.setInt(1, midiID);
+			resultSet = pstmt.executeQuery();
 
 			while(resultSet.next()){
+				Comment com = new Comment();
 				commentID = resultSet.getInt("commentID");
 				comment = resultSet.getString("comment");
 				userID = resultSet.getInt("userID");
@@ -66,15 +72,14 @@ public class CommentDAO extends Object implements Serializable{
 				comList.add(com);
 			}
 
+			pstmt.close();
             resultSet.close();
             statement.close();
             connection.close();
-
-    		return comList;
 		}catch (Exception e){
 			e.printStackTrace();
 		}
-		return null;
+		return comList;
 	}
 
 	public void delete(int midiID){
@@ -86,7 +91,9 @@ public class CommentDAO extends Object implements Serializable{
 			PreparedStatement pstmt = connection.prepareStatement(sql);
 
 			pstmt.setInt(1, midiID);
+			pstmt.executeUpdate();
 
+			pstmt.close();
             connection.close();
 		}catch (Exception e){
 			e.printStackTrace();

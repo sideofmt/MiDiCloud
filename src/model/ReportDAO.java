@@ -9,8 +9,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class ReportDAO extends Object implements Serializable{
-	final private static String dbname = "comment";
-	final private static String user = "wspuser";
+	final private static String dbname = "MiDiCloud";
+//	final private static String user = "wspuser";
+	final private static String user = "dbpuser";
 	final private static String password = "hogehoge";
 	final private static String driverClassName = "org.postgresql.Driver";
 	final private static String url = "jdbc:postgresql://localhost/" + dbname;
@@ -19,7 +20,7 @@ public class ReportDAO extends Object implements Serializable{
 	private ResultSet resultSet;
 
 	public void add(Report report){
-		String sql = "insert into comment values (?, ?, ?, ?)";
+		String sql = "insert into report values (?, ?, ?, ?)";
 
 		try {
 			Class.forName(driverClassName);
@@ -30,7 +31,9 @@ public class ReportDAO extends Object implements Serializable{
 			pstmt.setInt(2, report.getUserID());
 			pstmt.setInt(3, report.getReportedUserID());
 			pstmt.setInt(4, report.getReportedmidiID());
+			pstmt.executeUpdate();
 
+			pstmt.close();
 			connection.close();
 		}catch (Exception e){
 			e.printStackTrace();
@@ -38,7 +41,7 @@ public class ReportDAO extends Object implements Serializable{
 	}
 
 	public void delete(int reportedUserID){
-		String sql = "delete from comment where midiID = ?";
+		String sql = "delete from report where reportID = ?";
 
 		try {
 			Class.forName(driverClassName);
@@ -46,7 +49,9 @@ public class ReportDAO extends Object implements Serializable{
 			PreparedStatement pstmt = connection.prepareStatement(sql);
 
 			pstmt.setInt(1, reportedUserID);
+			pstmt.executeUpdate();
 
+			pstmt.close();
             connection.close();
 		}catch (Exception e){
 			e.printStackTrace();
@@ -59,8 +64,7 @@ public class ReportDAO extends Object implements Serializable{
 		int reportedUserID;
 		int reportedmidiID;
 		ArrayList<Report> repList = new ArrayList<Report>();
-		Report rep = new Report();
-		String sql = "select * from report";
+		String sql = "select * from report order by reportID asc";
 
 		try {
 			Class.forName(driverClassName);
@@ -70,6 +74,7 @@ public class ReportDAO extends Object implements Serializable{
 			resultSet = statement.executeQuery(sql);
 
 			while(resultSet.next()){
+				Report rep = new Report();
 				reportID = resultSet.getInt("reportID");
 				userID = resultSet.getInt("userID");
 				reportedUserID = resultSet.getInt("reportedUserID");
