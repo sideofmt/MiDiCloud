@@ -1,7 +1,7 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.SQLException;
+import java.io.OutputStream;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,20 +10,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
+
+import model.Translate;
 import model.User;
-import model.UserDAO;
 
 /**
- * Servlet implementation class HeaderDisplayPart
+ * Servlet implementation class OutputFile
  */
-@WebServlet("/HeaderDisplayPart")
-public class HeaderDisplayPart extends HttpServlet {
+@WebServlet("/OutputFile")
+public class OutputFile extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public HeaderDisplayPart() {
+    public OutputFile() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,6 +35,18 @@ public class HeaderDisplayPart extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+
+		HttpSession session = request.getSession();
+		Translate translate = new Translate();
+
+		User user = (User)session.getAttribute("user");
+		java.io.ByteArrayOutputStream byteOut = translate.fileOutput(user.getIcon());
+
+		response.setContentType( "image/jpeg" );
+		response.setContentLength( byteOut.size() );
+		OutputStream out = response.getOutputStream();
+		out.write( byteOut.toByteArray() );
+		out.close();
 	}
 
 	/**
@@ -40,34 +54,6 @@ public class HeaderDisplayPart extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-	}
-
-	public void header(HttpServletRequest request, HttpServletResponse response){
-
-		request.setCharacterEncoding("UTF-8");
-
-		User member = new User();
-		UserDAO dao = new UserDAO();
-
-		member.setName(request.getParameter("name"));
-		member.setPass(request.getParameter("pass"));
-
-		boolean result = false;
-		try{
-			result = dao.check(member);
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-
-		HttpSession session = request.getSession();
-		session.setAttribute("member", member);
-		if(result){
-			this.getServletContext().getRequestDispatcher("/member.jsp").forward(request, response);
-		}else{
-			this.getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
-		}
-
-
 	}
 
 }

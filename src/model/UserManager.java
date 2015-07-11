@@ -49,22 +49,26 @@ public class UserManager {
 		System.out.println("ユーザーの情報を更新しました");
 	}
 
-	public void createUserData(User user) throws SQLException{
+	public boolean createUserData(User user) throws SQLException{
 		//新しいユーザーをデータベースに保存する
 		//UserIDはここで割り振る
 		//引数のUserIDは0
 		//エラーが起きたときのsearchNoUserIDは0を返す
 		boolean flag;
 		int id =userDAO.searchNoUserID();
+		user.setUserID(id);
 		if(id>0){
 			flag = userDAO.addUser(user);
 			if(flag){
 				System.out.println("ユーザーをDBに追加しました");
+				return true;
 			}else{
 				System.out.println("ユーザーの追加に失敗しました");
+				return false;
 			}
 		}else{
 			System.out.println("IDを指定できず、ユーザーの追加に失敗しました");
+			return false;
 		}
 	}
 

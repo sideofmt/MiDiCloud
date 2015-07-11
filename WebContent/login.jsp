@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 
@@ -7,7 +7,6 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -68,22 +67,7 @@
         <!-- /.container-fluid -->
     </nav>
 
-<!-- header
-    <header>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <img class="img-responsive" src="img/profile.png" alt="">
-                    <div class="intro-text">
-                        <span class="name">Start Bootstrap</span>
-                        <hr class="star-light">
-                        <span class="skills">Web Developer - Graphic Artist - User Experience Designer</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
--->
+
 
 
 
@@ -125,23 +109,25 @@
 
 
 <%
-if(!session.isNew()){
-	out.println("<div class=\"alert alert-danger\" role=\"alert\"><span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=\"true\"></span><span class=\"sr-only\">Error:</span>メールアドレスまたはパスワードが間違っています</div>");
-}
+	if(request.getAttribute("error") != null){
+%>
+<%= request.getAttribute("error") %>
+<%
+	}
 %>
 
 
 
-                                            <form action="LoginWindow" method="post">
+                                            <form action="Login" method="post">
                             <fieldset>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="E-mail" name="email" type="email" required="required" autofocus="autofocus"/>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="password" name="password" type="password" required="required" />
+                                    <input class="form-control" placeholder="password" name="pass" type="password" required="required" />
                                 </div>
 
-                                <button type="submit" class="btn btn-sm btn-info" name="button" value="login">Sign in</button>
+                                <button type="submit" class="btn btn-sm btn-info" name="login" value="ログイン">Sign in</button>
                             </fieldset>
                         </form>
                     </div>
@@ -211,12 +197,10 @@ if(!session.isNew()){
 
     <!-- Plugin JavaScript -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="js/classie.js"></script>
     <script src="js/cbpAnimatedHeader.js"></script>
 
     <!-- Contact Form JavaScript -->
     <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>

@@ -7,7 +7,6 @@
 <head>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -31,6 +30,12 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <%@ page import="model.User" %>
+
+    <% User user = (User)session.getAttribute("user"); %>
+
+
 
 </head>
 
@@ -57,16 +62,9 @@
                         <a href="#page-top"></a>
                     </li>
                     		    <li>
-<!--
-		<form class="form-inline">
-  <div class="form-group">
-    <label class="sr-only" for="exampleInputPassword3">Search word</label>
-    <input type="password" class="form-control" id="exampleInputPassword3" placeholder="Password">
-  </div>
-  <button type="submit" class="btn btn-default">Search</button>
-</form>
--->
-<form class="form-inline">
+
+
+<form class="form-inline" action="AccountInfoWindow" method="post">
  <div class="input-group">
       <input type="text" class="form-control" placeholder="Search for...">
       <span class="input-group-btn">
@@ -78,8 +76,9 @@
 
 <li role="presentation" class="dropdown">
     <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-     <img alt="icon" src="..."> UserName <span class="caret"></span>
+     <img alt="icon" src="OutputFile" height=10px width=10px> <%= user.getUsername() %> <span class="caret"></span>
     </a>
+    <from action="AccountInfoWindow" method="post">
     <ul class="dropdown-menu">
 	<li>
 		<a href="#">Detail</a>
@@ -90,6 +89,7 @@
 	</li>
 
     </ul>
+    </from>
   </li>
 
 
@@ -125,26 +125,27 @@
 <div class="row">
             <div class="col-lg-12-original">
             <div class="text-left">
-                <img class="img-responsive img-center" src="http://placehold.it/200x200" alt="">
-                <h2>ã¦ã¼ã¶ã¼å
-                    <small>ã¦ã¼ã¶ã¼IDï¼</small>
+
+                <img class="img-responsive img-center" src="OutputFile" alt="" height=200px width=200px>
+                <h2><%= user.getUsername() %>
+                    <small><%= user.getUsername() %></small>
                 </h2>
 
 
 <button type="button" class="btn btn-default btn-sm">
- 				 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>ã¦ã¼ã¶ã¼ã®ç·¨é
+ 				 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>Edit
 				</button>
 			<button type="button" class="btn btn-default btn-sm btn-warning">
- 				 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>ä¸é©åãªã¦ã¼ã¶ã¼ãå ±å
+ 				 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>report
 				</button>
 				<button type="button" class="btn btn-default btn-sm">
- 				 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>ã¦ã¼ã¶ã¼ã®åé¤
+ 				 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>delete
 				</button>
 <br><br>
 
 <div class="panel panel-default">
 <div class="panel-body">
-                <p>ããã«èª¬æãå¥åãã¦ãã ããããã«èª¬æãå¥åãã¦ãã ããããã«èª¬æãå¥åãã¦ãã ããããã«èª¬æãå¥åãã¦ãã ããããã«èª¬æãå¥åãã¦ãã ããããã«èª¬æãå¥åãã¦ãã ããã</p>
+                <p><%= user.getProfile() %></p>
             </div>
 
 </div>
@@ -164,18 +165,20 @@
             <div class="row">
 
 		  <div class="panel panel-default">
-		  <div class="panel-heading"><h2>æç¨¿MIDI</h2></div>
+		  <div class="panel-heading"><h2>User MIDI</h2></div>
 		  <div class="list-group">
+		  <form action="AccountInfoWindow" method="post">
 			  <button type="button" class="list-group-item">1<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 1</a></button>
+			  </span>&nbsp;<a href="#"><%= request.getAttribute("midifile") %></a></button>
 			  <button type="button" class="list-group-item">2<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 2</a></button>
+			  </span>&nbsp;<a href="#"><%= request.getAttribute("midifile") %></a></button>
 			  <button type="button" class="list-group-item">3<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 3</a></button>
+			  </span>&nbsp;<a href="#"><%= request.getAttribute("midifile") %></a></button>
 			  <button type="button" class="list-group-item">4<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file abc</a></button>
+			  </span>&nbsp;<a href="#"><%= request.getAttribute("midifile") %></a></button>
 			  <button type="button" class="list-group-item">5<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file f1</a></button>
+			  </span>&nbsp;<a href="#"><%= request.getAttribute("midifile") %></a></button>
+		</form>
 			</div>
 		  </div>
 
@@ -185,28 +188,36 @@
 
 
 		</div>
+
+		<form action="AccountInformation" method="post">
 		<div class="text-center">
 			<nav>
+			<form action="AccountInfoWindow" method="post">
 			  <ul class="pagination">
 			    <li class="disabled">
-			      <a href="#" aria-label="Previous">
+			      <a href="#" aria-label="Previous" name="previous">
 			        <span aria-hidden="true">&laquo;</span>
 			      </a>
 			    </li>
 			    <li class="active"><a href="#">1</a></li>
-			    <li><a href="#">2</a></li>
-			    <li><a href="#">3</a></li>
-			    <li><a href="#">4</a></li>
-			    <li><a href="#">5</a></li>
+			    <li><a href="#" name="2" onClick="goSubmit(this.form, this)">2</a></li>
+			    <li><a href="#" name="3" onClick="goSubmit(this.form, this)">3</a></li>
+			    <li><a href="#" name="4" onClick="goSubmit(this.form, this)">4</a></li>
+			    <li><a href="#" name="5" onClick="goSubmit(this.form, this)">5</a></li>
 			    <li>
-			      <a href="#" aria-label="Next">
+			      <a href="#" aria-label="Next" name="next">
 			        <span aria-hidden="true">&raquo;</span>
 			      </a>
 			    </li>
 			  </ul>
+			  </form>
 			</nav>
 			</div>
+		</form>
 		 </div>
+
+
+
     </section>
 
 
@@ -249,13 +260,18 @@
     <script src="js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="js/classie.js"></script>
-    <script src="js/cbpAnimatedHeader.js"></script>
+    <script type="text/javascript">
+	<!--
+	function goSubmit(formObj, btnObj) {
+	formObj.action.value=btnObj.name;
+	formObj.submit();
+	}
+	 -->
+	</script>
+
 
     <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
+
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>

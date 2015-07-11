@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
@@ -80,7 +80,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2>Create an acount</h2>
+                    <h2>Create an account</h2>
                     <hr class="star-primary">
                 </div>
             </div>
@@ -96,48 +96,47 @@
 
             <div class="col-lg-12-original">
 
-<div class="alert alert-danger" role="alert">
-  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-  <span class="sr-only">Error:</span>
-  ここにエラーメッセージを表示！
-</div>
-
-
-
-<script type="text/javascript">
-	function express(icon){
-		var img = document.getElementById(imgExpress);
-		img.src = icon;
-		img.onload();
+<%
+	if(request.getAttribute("error") != null){
+%>
+<%= request.getAttribute("error") %>
+<%
 	}
-</script>
+%>
+
 
 
 
             <div class="text-left">
                 <img class="img-responsive img-center" src="http://placehold.it/200x200" alt="" id="imgExpress">
 
-<form action="createAccountWindow" method="post">
+<form action="CreateAccountWindow" method="post">
 
 <p>
 <div class="form-group">
     <label for="exampleInputFile">User Icon</label>
     <input type="file" id="exampleInputFile" name="icon">
-    <input type="submit" class="btn btn-info btn-lg" name="iconExpress" onClick="express(this.form.icon.value)">
   </div>
 </p>
 
 <p>
 <div class="input-group">
 <label for="InputUserName">User Name</label>
-<input type="text" class="form-control" placeholder="ユーザーの名前" aria-describedby="basic-addon1" name="name">
+<input type="text" class="form-control" placeholder="ユーザーの名前" required="required" aria-describedby="basic-addon1" name="name">
 </div>
 </p>
 
 <p>
 <div class="input-group">
 <label for="InputUserName">Mail Address</label>
-<input type="text" class="form-control" placeholder="メールアドレス" aria-describedby="basic-addon1" name="email">
+<input type="text" class="form-control" placeholder="E-mail" required="required" type="email" aria-describedby="basic-addon1" name="email" autofocus="autofocus"/>
+</div>
+</p>
+
+<p>
+<div class="input-group">
+<label for="InputUserName">User Name</label>
+<input type="password" class="form-control" placeholder="password" required="required" type="password" aria-describedby="basic-addon1" name="pass">
 </div>
 </p>
 
@@ -146,14 +145,14 @@
 <p>
 <div class="form-group">
 <label for="InputProfile">User Profile</label>
-<textarea class="form-control" id="UserProfile" name="UserProfile" placeholder="ユーザーの説明" rows="7" name="profile"></textarea>
+<textarea class="form-control" id="UserProfile" placeholder="ユーザーの説明" rows="7" name="profile"></textarea>
 
 </div>
 </p>
 
 <div class="form-group">
 <div class="col-md-12 text-center">
-<button type="submit" class="btn btn-info btn-lg" name="button" value="createAnAccount">アカウントを作成</button>
+<button type="submit" class="btn btn-info btn-lg" name="createAccount" value="アカウントを作成">アカウントを作成</button>
 </div>
 </div>
 </form>
@@ -202,13 +201,12 @@
     <script src="js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="js/classie.js"></script>
-    <script src="js/cbpAnimatedHeader.js"></script>
+
+
 
     <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
+
+
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>

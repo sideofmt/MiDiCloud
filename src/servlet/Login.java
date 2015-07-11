@@ -12,19 +12,18 @@ import javax.servlet.http.HttpSession;
 
 import model.User;
 import model.UserManager;
-import model.Translate;
 
 /**
- * Servlet implementation class CreateAccountWindow
+ * Servlet implementation class Login
  */
-@WebServlet("/CreateAccountWindow")
-public class CreateAccountWindow extends HttpServlet {
+@WebServlet("/Login")
+public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CreateAccountWindow() {
+    public Login() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -43,51 +42,43 @@ public class CreateAccountWindow extends HttpServlet {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
 
+		if(request.getParameter("login")!=null){
+			//ログインボタンを押していれば遷移処理をする。
 
-			System.out.println("アカウント作成ボタンが押されました");
-
-		User user = new User();
+		User user = null;
 		UserManager usermanager = new UserManager();
 
-		int userID = 0;
-		String username = request.getParameter("name");
 		String mailAddress = request.getParameter("email");
 		String password = request.getParameter("pass");
-		String profile =request.getParameter("profile");
+		System.out.println(request.getParameter("login"));
 
-		Translate translate = new Translate();
-
-		byte[] icon = translate.fileLoad(request.getParameter("icon"));
-
-
-
-
-		user.setUserID(userID);
-		user.setUsername(username);
-		user.setMailAddress(mailAddress);
-		user.setPassword(password);
-		user.setProfile(profile);
-		user.setIcon(icon);
-
-		System.out.println(user);
-
-		boolean flag=false;
+		int result = 0;
 
 		try {
-			flag = usermanager.createUserData(user);
+			result = usermanager.login(mailAddress, password);
 		} catch (SQLException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
+		if(result==1 || result==2){
+			try {
+				user = usermanager.getUser(mailAddress);
+			} catch (SQLException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+		}
 
 		HttpSession session = request.getSession();
 		session.setAttribute("user", user);
-
-		if(flag){
-			this.getServletContext().getRequestDispatcher("/completeMakeAccount.jsp").forward(request, response);
+		if(result==1){
+			this.getServletContext().getRequestDispatcher("/memberTop.jsp").forward(request, response);
+		}else if(result==2){
+			this.getServletContext().getRequestDispatcher("/managerTop.jsp").forward(request, response);
 		}else{
-			request.setAttribute("error","<div class=\"alert alert-danger\" role=\"alert\">\n<span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=\"true\"></span>\n<span class=\"sr-only\">Error:</span>\n  ユーザーを追加できませんでした\n</div>");
-			this.getServletContext().getRequestDispatcher("/makeAccount.jsp").forward(request, response);
+			request.setAttribute("error", "<div class=\"alert alert-danger\" role=\"alert\"><span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=\"true\"></span><span class=\"sr-only\">Error:</span>メールアドレスまたはパスワードが間違っています</div>");
+			this.getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
+		}
 		}
 	}
 

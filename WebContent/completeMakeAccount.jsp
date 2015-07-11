@@ -48,7 +48,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#page-top">MidiCloud</a>
+                <a class="navbar-brand" href="./login.jsp">MidiCloud</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -107,11 +107,15 @@
 
 <br><br>
 
+
 <div class="form-group">
 <div class="col-md-12 text-center">
+<a href="./login.jsp">
 <button type="submit" class="btn btn-default btn-lg">ログイン画面へ戻る</button>
+</a>
 </div>
 </div>
+
 
 <br><br>
 
@@ -159,12 +163,10 @@
 
     <!-- Plugin JavaScript -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="js/classie.js"></script>
     <script src="js/cbpAnimatedHeader.js"></script>
 
     <!-- Contact Form JavaScript -->
     <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>
