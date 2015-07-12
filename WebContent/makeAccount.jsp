@@ -137,7 +137,7 @@
 
 <p>
 <div class="input-group">
-<label for="InputUserName">User Name</label>
+<label for="InputUserName">Password</label>
 <input type="password" class="form-control" placeholder="password" required="required" type="password" aria-describedby="basic-addon1" name="pass">
 </div>
 </p>
