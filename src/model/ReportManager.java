@@ -1,23 +1,51 @@
 package model;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ReportManager {
-	public void add(int reportID, int userID, int reportedUserID, int reportedmidiID){
-		Report report = new Report();
+	public boolean add(Report report){
 		ReportDAO repDAO = new ReportDAO();
+		//IDの割り振りをここに記述する
 
-		report.setReportID(reportID);
-		report.setUserID(userID);
-		report.setReportedUserID(reportedUserID);
-		report.setReportedmidiID(reportedmidiID);
+		int id=0;
+		try {
+			id = repDAO.searchNoUserID();
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+		report.setReportID(id);
 
-		repDAO.add(report);
+		if(id>0){
+			boolean flag = repDAO.add(report);
+			if(flag){
+				System.out.println("レポートは追加されました");
+				return true;
+			}else{
+				System.out.println("レポートの追加に失敗しました");
+				return false;
+			}
+		}else{
+			System.out.println("reportIDの設定に失敗しました");
+			return false;
+		}
 	}
 
-	public void remove(int reportedUserID){
+	public boolean remove(int reportedUserID){
 		ReportDAO repDAO = new ReportDAO();
-		repDAO.delete(reportedUserID);
+
+		boolean flag;
+
+		flag = repDAO.delete(reportedUserID);
+		if(flag){
+			System.out.println("レポートは削除されました");
+			return true;
+		}else{
+			System.out.println("レポートの削除に失敗しました");
+			return false;
+		}
+
 	}
 
 	public ArrayList<Report> getReportList(){
@@ -28,4 +56,5 @@ public class ReportManager {
 
 		return repList;
 	}
+
 }

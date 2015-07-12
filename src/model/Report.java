@@ -30,4 +30,10 @@ public class Report {
 	public void setReportedmidiID(int reportedmidiID) {
 		this.reportedmidiID = reportedmidiID;
 	}
+	@Override
+	public String toString() {
+		return "Report [reportID=" + reportID + ", userID=" + userID
+				+ ", reportedUserID=" + reportedUserID + ", reportedmidiID="
+				+ reportedmidiID + "]";
+	}
 }
