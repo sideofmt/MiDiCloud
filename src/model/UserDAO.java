@@ -239,18 +239,17 @@ public class UserDAO {
 			int id=0;
 			ResultSet resultSet;
 			resultSet = pstmt.executeQuery();
-			if(resultSet.wasNull()){
-				resultSet.getInt("max");
+			if(resultSet.wasNull()) {
+				id = 1;
+			} else {
+				resultSet.next();
+				id = resultSet.getInt(1) + 1;
 			}
 
 			resultSet.close();
 			connection.close();
 
-			if(id == 0){
-				return 1;
-			}else{
-				return id+1;
-			}
+			return id;
 
 		}catch(Exception e){
 			e.printStackTrace();
