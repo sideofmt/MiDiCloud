@@ -32,8 +32,15 @@
     <![endif]-->
 
     <%@ page import="model.User" %>
+    <%@ page import="model.Midifile" %>
+    <%@ page import="model.MidifileManager" %>
+    <%@ page import="java.util.*" %>
 
     <% User user = (User)session.getAttribute("user"); %>
+    <% User otherUser = (User)session.getAttribute("otherUser"); %>
+    <% MidifileManager m = new MidifileManager(); %>
+    <% List<Midifile> midifiles = m.searchList(otherUser.getUserID()); %>
+    <% request.setAttribute("otherUser",otherUser); %>
 
 
 
@@ -52,7 +59,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#page-top">MidiCloud</a>
+                <form action="AccountInfoWindow" method="post">
+                <input type="hidden" name="action">
+                <a class="navbar-brand" href="#page-top" onClick="goSubmit(this.form, this)" name="midicloud" value="MidiCloud">MidiCloud</a>
+                </form>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -61,35 +71,38 @@
                     <li class="hidden">
                         <a href="#page-top"></a>
                     </li>
-                    		    <li>
+                    <li>
 
 
 <form class="form-inline" action="AccountInfoWindow" method="post">
  <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search for...">
+      <input type="text" class="form-control" placeholder="Search for..." name="search">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Search</button>
+        <button class="btn btn-default" type="button" onClick="goSubmit(this.form, this)" name="goSearch" value="検索">Search</button>
       </span>
  </div>
 </form>
 </li>
 
 <li role="presentation" class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+
+    <form action="AccountInfoWindow" method="post">
+    <input type="hidden" name="action">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" name="username">
      <img alt="icon" src="OutputFile" height=10px width=10px> <%= user.getUsername() %> <span class="caret"></span>
     </a>
-    <from action="AccountInfoWindow" method="post">
+
     <ul class="dropdown-menu">
 	<li>
-		<a href="#">Detail</a>
+		<a href="" onClick="goSubmit(this.form, this)" name="detail" value="ユーザー詳細">Detail</a>
 	</li>
 	<li role="separator" class="divider"></li>
 	<li>
-		<a href="#">Logout</a>
+		<a href="" onClick="goSubmit(this.form, this)" name="logout" value="ログアウト">Logout</a>
 	</li>
 
     </ul>
-    </from>
+    </form>
   </li>
 
 
@@ -127,25 +140,43 @@
             <div class="text-left">
 
                 <img class="img-responsive img-center" src="OutputFile" alt="" height=200px width=200px>
-                <h2><%= user.getUsername() %>
-                    <small><%= user.getUsername() %></small>
+                <h2><%= otherUser.getUsername() %>
+                    <small><%= otherUser.getUsername() %></small>
                 </h2>
 
 
-<button type="button" class="btn btn-default btn-sm">
- 				 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>Edit
+			<form action="AccountInfoWindow" method="post">
+			<input type="hidden" name="action">
+
+			<% if(otherUser.getUserID() == user.getUserID()){ %>
+				<button type="button" class="btn btn-default btn-sm" onClick="goSubmit(this.form, this)" name="edit" value="ユーザーの編集">
+				 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>Edit
 				</button>
-			<button type="button" class="btn btn-default btn-sm btn-warning">
- 				 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>report
+			<% } %>
+			<% if(otherUser.getUserID() != user.getUserID()){ %>
+				<button type="button" class="btn btn-default btn-sm btn-warning" onClick="goSubmit(this.form, this)" name="report" value="不適切なユーザーを報告">
+				 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>report
 				</button>
-				<button type="button" class="btn btn-default btn-sm">
- 				 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>delete
+			<% } %>
+			<% if(otherUser.getUserID() == user.getUserID() || user.isManager() ) { %>
+				<button type="button" class="btn btn-default btn-sm" onClick="goSubmit(this.form, this)" name="delete" value="ユーザーの削除">
+				 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>delete
 				</button>
+			<% } %>
+			<% if(otherUser.getUserID() == user.getUserID() ) { %>
+				<button type="button" class="btn btn-default btn-sm" onClick="goSubmit(this.form, this)" name="upload" value="Midiのアップロード">
+				 <span class="glyphicon glyphicon-open" aria-hidden="true"></span>Upload Midi
+				</button>
+			<% } %>
+			</form>
+
+
 <br><br>
+
 
 <div class="panel panel-default">
 <div class="panel-body">
-                <p><%= user.getProfile() %></p>
+                <p><%= otherUser.getProfile() %></p>
             </div>
 
 </div>
@@ -168,16 +199,21 @@
 		  <div class="panel-heading"><h2>User MIDI</h2></div>
 		  <div class="list-group">
 		  <form action="AccountInfoWindow" method="post">
-			  <button type="button" class="list-group-item">1<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#"><%= request.getAttribute("midifile") %></a></button>
-			  <button type="button" class="list-group-item">2<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#"><%= request.getAttribute("midifile") %></a></button>
-			  <button type="button" class="list-group-item">3<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#"><%= request.getAttribute("midifile") %></a></button>
-			  <button type="button" class="list-group-item">4<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#"><%= request.getAttribute("midifile") %></a></button>
-			  <button type="button" class="list-group-item">5<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#"><%= request.getAttribute("midifile") %></a></button>
+		  <input type="hidden" name="action">
+
+		<%
+		int n=0;
+		for(Midifile midifile : midifiles){
+		%>
+
+		<button type="button" class="list-group-item"><%= n+1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
+		</span>&nbsp;<a href="" onClick="goSubmit2(this.form, this)" name="midi" value=<%= midifile %> ><%= midifile.getTitle() %></a></button>
+
+		<%
+		n++;
+		}
+		%>
+
 		</form>
 			</div>
 		  </div>
@@ -189,31 +225,7 @@
 
 		</div>
 
-		<form action="AccountInformation" method="post">
-		<div class="text-center">
-			<nav>
-			<form action="AccountInfoWindow" method="post">
-			  <ul class="pagination">
-			    <li class="disabled">
-			      <a href="#" aria-label="Previous" name="previous">
-			        <span aria-hidden="true">&laquo;</span>
-			      </a>
-			    </li>
-			    <li class="active"><a href="#">1</a></li>
-			    <li><a href="#" name="2" onClick="goSubmit(this.form, this)">2</a></li>
-			    <li><a href="#" name="3" onClick="goSubmit(this.form, this)">3</a></li>
-			    <li><a href="#" name="4" onClick="goSubmit(this.form, this)">4</a></li>
-			    <li><a href="#" name="5" onClick="goSubmit(this.form, this)">5</a></li>
-			    <li>
-			      <a href="#" aria-label="Next" name="next">
-			        <span aria-hidden="true">&raquo;</span>
-			      </a>
-			    </li>
-			  </ul>
-			  </form>
-			</nav>
-			</div>
-		</form>
+
 		 </div>
 
 
@@ -264,6 +276,15 @@
 	<!--
 	function goSubmit(formObj, btnObj) {
 	formObj.action.value=btnObj.name;
+	formObj.submit();
+	}
+	 -->
+	</script>
+
+	<script type="text/javascript">
+	<!--
+	function goSubmit2(formObj, btnObj) {
+	formObj.midi.value=btnObj.value;
 	formObj.submit();
 	}
 	 -->

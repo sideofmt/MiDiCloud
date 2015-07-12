@@ -33,7 +33,10 @@ public class CreateAccountWindow extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub]
+
+		this.getServletContext().getRequestDispatcher("/makeAccount.jsp").forward(request, response);
+
 	}
 
 	/**
@@ -43,8 +46,13 @@ public class CreateAccountWindow extends HttpServlet {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
 
+		if ("midicloud".equals(request.getParameter("action"))) {
+			this.getServletContext().getRequestDispatcher("/Login").forward(request, response);
+			}
+		else if(request.getParameter("createAccount") != null){
 
-			System.out.println("アカウント作成ボタンが押されました");
+
+		System.out.println("アカウント作成ボタンが押されました");
 
 		User user = new User();
 		UserManager usermanager = new UserManager();
@@ -88,6 +96,7 @@ public class CreateAccountWindow extends HttpServlet {
 		}else{
 			request.setAttribute("error","<div class=\"alert alert-danger\" role=\"alert\">\n<span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=\"true\"></span>\n<span class=\"sr-only\">Error:</span>\n  ユーザーを追加できませんでした\n</div>");
 			this.getServletContext().getRequestDispatcher("/makeAccount.jsp").forward(request, response);
+		}
 		}
 	}
 

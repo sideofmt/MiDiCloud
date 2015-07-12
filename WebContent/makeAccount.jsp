@@ -47,7 +47,9 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="./login.jsp">MidiCloud</a>
+                <form action="createAccountWindow" method="post">
+                <a class="navbar-brand" href="" onClick="goSubmit(this.form, this)" name="midicloud" value="MidiCloud">MidiCloud</a>
+                </form>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -201,12 +203,20 @@
     <script src="js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
+    <script type="text/javascript">
+	<!--
+	function goSubmit(formObj, btnObj) {
+	formObj.action.value=btnObj.name;
+	formObj.submit();
+	}
+	 -->
+	</script>
 
-
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="js/cbpAnimatedHeader.js"></script>
 
     <!-- Contact Form JavaScript -->
-
-
+    <script src="js/jqBootstrapValidation.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>

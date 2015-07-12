@@ -33,6 +33,9 @@ public class Login extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
+		session.removeAttribute("user");
+		this.getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
 	}
 
 	/**
@@ -42,6 +45,9 @@ public class Login extends HttpServlet {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
 
+		if ("GoMakeAccountPage".equals(request.getParameter("action"))) {
+			this.getServletContext().getRequestDispatcher("/CreateAccountWindow").forward(request, response);
+		}
 		if(request.getParameter("login")!=null){
 			//ログインボタンを押していれば遷移処理をする。
 
@@ -72,9 +78,9 @@ public class Login extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.setAttribute("user", user);
 		if(result==1){
-			this.getServletContext().getRequestDispatcher("/memberTop.jsp").forward(request, response);
+			this.getServletContext().getRequestDispatcher("/MemberTopWindow").forward(request, response);
 		}else if(result==2){
-			this.getServletContext().getRequestDispatcher("/managerTop.jsp").forward(request, response);
+			this.getServletContext().getRequestDispatcher("/ManagerTopWindow").forward(request, response);
 		}else{
 			request.setAttribute("error", "<div class=\"alert alert-danger\" role=\"alert\"><span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=\"true\"></span><span class=\"sr-only\">Error:</span>メールアドレスまたはパスワードが間違っています</div>");
 			this.getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);

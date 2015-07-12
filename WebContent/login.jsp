@@ -55,11 +55,11 @@
                     <li class="hidden">
                         <a href="#page-top"></a>
                     </li>
-                    <li><a href="./makeAccount.jsp">新規登録</a></li>
-
-
-
-
+                    <li>
+                    <form action="Login" method="post">
+                    	<a href="./makeAccount.jsp" onClick="goSubmit(this.form, this)" name="GoMakeAccountPage" value="新規登録">新規登録</a>
+                    </form>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -157,17 +157,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
         <!-- Footer -->
     <footer class="text-center">
               <div class="footer-below">
@@ -196,6 +185,15 @@
     <script src="js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
+    <script type="text/javascript">
+	<!--
+	function goSubmit(formObj, btnObj) {
+	formObj.action.value=btnObj.name;
+	formObj.submit();
+	}
+	 -->
+	</script>
+
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
     <script src="js/cbpAnimatedHeader.js"></script>
 
