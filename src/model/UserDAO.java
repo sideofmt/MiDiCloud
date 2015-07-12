@@ -229,40 +229,28 @@ public class UserDAO {
 
 	public int searchNoUserID()throws SQLException{
 		Connection connection;
-		String sql = "select * from userdata where userID=?";
+		String sql = "select max(userID) from userdata";
 
 		try{
 			Class.forName(driverClassName);
 			connection = DriverManager.getConnection(url, username, password);
 			PreparedStatement pstmt = connection.prepareStatement(sql);
 
-
+			int id=0;
 			ResultSet resultSet;
-			pstmt.setInt(1,1 );
 			resultSet = pstmt.executeQuery();
-			int i=2;
-			int id;
-
-			while(resultSet.next()){
-
-				pstmt.setInt(1,i );
-				resultSet = pstmt.executeQuery();
-
-
-				id = resultSet.getInt("userid");
-				if(id==0){
-					break;
-				}
-
-//				if(resultSet.wasNull()){
-//					break;
-//				};
-
-				i++;
+			if(resultSet.wasNull()){
+				resultSet.getInt("max");
 			}
+
 			resultSet.close();
 			connection.close();
-			return i;
+
+			if(id == 0){
+				return 1;
+			}else{
+				return id+1;
+			}
 
 		}catch(Exception e){
 			e.printStackTrace();
