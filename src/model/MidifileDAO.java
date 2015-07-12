@@ -5,11 +5,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class MidifileDAO {
-	final private static String dbname = "midifile";
+	final private static String dbname = "test";
 	final private static String user = "wspuser";
 	final private static String password = "hogehoge";
 	final private static String driverClassName = "org.postgresql.Driver";
@@ -18,7 +17,7 @@ public class MidifileDAO {
 	public void updateMidifile(Midifile midifile) {
 		Connection connection;
 		String sql = "UPDATE midifile SET title = ?,explanation = ?,favorite = ?,"
-				+ "midifile = ?,userID = ?,commentID = ?,data = ? WHERE midiID = ?";
+				+ "midifile = ?,userID = ?,date = ? WHERE midiID = ?";
 
 		try {
 			Class.forName(driverClassName);
@@ -28,19 +27,18 @@ public class MidifileDAO {
 			pstmt.setString(1, midifile.getTitle());
 			pstmt.setString(2, midifile.getExplanation());
 			pstmt.setInt(3, midifile.getFavorite());
-			pstmt.setString(4, midifile.getMidifile());
+			pstmt.setBytes(4, midifile.getMidifile());
 			pstmt.setInt(5, midifile.getUserID());
-			pstmt.setInt(6, midifile.getCommentID());
-			pstmt.setObject(7, midifile.getDate());
-			pstmt.setInt(8, midifile.getMidiID());
-			pstmt.executeQuery();
+			pstmt.setTimestamp(6, midifile.getDate());
+			pstmt.setInt(7, midifile.getMidiID());
+			pstmt.executeUpdate();
 
 			connection.close();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
-	public void deleteMidifile(Midifile midifile) {
+	public void deleteMidifile(int midiID) {
 		Connection connection;
 		String sql = "DELETE FROM midifile WHERE midiID = ?";
 
@@ -49,8 +47,8 @@ public class MidifileDAO {
 			connection = DriverManager.getConnection(url, user, password);
 			PreparedStatement pstmt = connection.prepareStatement(sql);
 
-			pstmt.setInt(1, midifile.getMidiID());
-			pstmt.executeQuery();
+			pstmt.setInt(1, midiID);
+			pstmt.executeUpdate();
 
 			connection.close();
 		} catch(Exception e) {
@@ -58,23 +56,37 @@ public class MidifileDAO {
 		}
 	}
 	public void addMidifile(Midifile midifile) {
-		Connection connection;
-		String sql = "INSERT INTO midifile VALUES(?,?,?,?,?,?,?,?)";
+		Connection connection,connection2;
+		String sql = "INSERT INTO midifile VALUES(?,?,?,?,?,?,?)";
+		String sql2 = "SELECT MAX(midiID) FROM midifile";
+		int id = 0;
 
 		try {
 			Class.forName(driverClassName);
 			connection = DriverManager.getConnection(url, user, password);
+			connection2 = DriverManager.getConnection(url, user, password);
 			PreparedStatement pstmt = connection.prepareStatement(sql);
+			PreparedStatement pstmt2 = connection2.prepareStatement(sql2);
 
-			pstmt.setInt(1, midifile.getMidiID());
+			pstmt2.executeQuery();
+			ResultSet result = pstmt2.executeQuery();
+			//result.next();
+			if(result.wasNull()) {
+				id = 1;
+			} else {
+				result.next();
+				id = result.getInt(1) + 1;
+			}
+			result.close();
+
+			pstmt.setInt(1, id);
 			pstmt.setString(2, midifile.getTitle());
 			pstmt.setString(3, midifile.getExplanation());
 			pstmt.setInt(4, midifile.getFavorite());
-			pstmt.setString(5, midifile.getMidifile());
+			pstmt.setBytes(5, midifile.getMidifile());
 			pstmt.setInt(6, midifile.getUserID());
-			pstmt.setInt(7, midifile.getCommentID());
-			pstmt.setObject(8, midifile.getDate());
-			pstmt.executeQuery();
+			pstmt.setTimestamp(7, midifile.getDate());
+			pstmt.executeUpdate();
 
 			connection.close();
 		} catch (Exception e) {
@@ -99,10 +111,9 @@ public class MidifileDAO {
 				midifile.setTitle(result.getString(2));
 				midifile.setExplanation(result.getString(3));
 				midifile.setFavorite(result.getInt(4));
-				midifile.setMidifile(result.getString(5));
+				midifile.setMidifile(result.getBytes(5));
 				midifile.setUserID(result.getInt(6));
-				midifile.setCommentID(result.getInt(7));
-				midifile.setDate((Calendar) result.getObject(8));
+				midifile.setDate(result.getTimestamp(7));
 			}
 
 			result.close();
@@ -131,10 +142,9 @@ public class MidifileDAO {
 				midifile.setTitle(result.getString(2));
 				midifile.setExplanation(result.getString(3));
 				midifile.setFavorite(result.getInt(4));
-				midifile.setMidifile(result.getString(5));
+				midifile.setMidifile(result.getBytes(5));
 				midifile.setUserID(result.getInt(6));
-				midifile.setCommentID(result.getInt(7));
-				midifile.setDate((Calendar) result.getObject(8));
+				midifile.setDate(result.getTimestamp(7));
 				midifiles.add(midifile);
 			}
 
@@ -148,14 +158,14 @@ public class MidifileDAO {
 	public List<Midifile> getMidiList(String title) {
 		ArrayList<Midifile> midifiles = new ArrayList<Midifile>();
 		Connection connection;
-		String sql = "SELECT * FROM midifile WHERE title LIKE '%?%'";
+		String sql = "SELECT * FROM midifile WHERE title LIKE ?";
 
 		try {
 			Class.forName(driverClassName);
 			connection = DriverManager.getConnection(url, user, password);
 			PreparedStatement pstmt = connection.prepareStatement(sql);
 
-			pstmt.setString(1, title);
+			pstmt.setString(1, "%" + title + "%");
 			ResultSet result = pstmt.executeQuery();
 
 			while(result.next()) {
@@ -164,10 +174,9 @@ public class MidifileDAO {
 				midifile.setTitle(result.getString(2));
 				midifile.setExplanation(result.getString(3));
 				midifile.setFavorite(result.getInt(4));
-				midifile.setMidifile(result.getString(5));
+				midifile.setMidifile(result.getBytes(5));
 				midifile.setUserID(result.getInt(6));
-				midifile.setCommentID(result.getInt(7));
-				midifile.setDate((Calendar)result.getObject(8));
+				midifile.setDate(result.getTimestamp(7));
 				midifiles.add(midifile);
 			}
 
@@ -181,7 +190,7 @@ public class MidifileDAO {
 	public List<Midifile> getMidiRankingList() {
 		ArrayList<Midifile> midifiles = new ArrayList<Midifile>();
 		Connection connection;
-		String sql = "SELECT * FROM midifile ORDER BY favorite ASC";
+		String sql = "SELECT * FROM midifile ORDER BY favorite DESC";
 
 		try {
 			Class.forName(driverClassName);
@@ -196,10 +205,9 @@ public class MidifileDAO {
 				midifile.setTitle(result.getString(2));
 				midifile.setExplanation(result.getString(3));
 				midifile.setFavorite(result.getInt(4));
-				midifile.setMidifile(result.getString(5));
+				midifile.setMidifile(result.getBytes(5));
 				midifile.setUserID(result.getInt(6));
-				midifile.setCommentID(result.getInt(7));
-				midifile.setDate((Calendar)result.getObject(8));
+				midifile.setDate(result.getTimestamp(7));
 				midifiles.add(midifile);
 			}
 
@@ -213,7 +221,7 @@ public class MidifileDAO {
 	public List<Midifile> getMidiArrivalList() {
 		ArrayList<Midifile> midifiles = new ArrayList<Midifile>();
 		Connection connection;
-		String sql = "SELECT * FROM midifile ORDER BY date ASC";
+		String sql = "SELECT * FROM midifile ORDER BY date DESC";
 
 		try {
 			Class.forName(driverClassName);
@@ -228,10 +236,9 @@ public class MidifileDAO {
 				midifile.setTitle(result.getString(2));
 				midifile.setExplanation(result.getString(3));
 				midifile.setFavorite(result.getInt(4));
-				midifile.setMidifile(result.getString(5));
+				midifile.setMidifile(result.getBytes(5));
 				midifile.setUserID(result.getInt(6));
-				midifile.setCommentID(result.getInt(7));
-				midifile.setDate((Calendar)result.getObject(8));
+				midifile.setDate(result.getTimestamp(7));
 				midifiles.add(midifile);
 			}
 

@@ -1,17 +1,16 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Calendar;
+import java.sql.Timestamp;
 
 public class Midifile implements Serializable{
 	private int midiID;
 	private String title;
 	private String explanation;
 	private int favorite;
-	private String midifile;
+	private byte[] midifile;
 	private int userID;
-	private int commentID;
-	private Calendar date;
+	private Timestamp date;
 
 	public int getMidiID() {
 		return midiID;
@@ -37,10 +36,10 @@ public class Midifile implements Serializable{
 	public void setFavorite(int favorite) {
 		this.favorite = favorite;
 	}
-	public String getMidifile() {
+	public byte[] getMidifile() {
 		return midifile;
 	}
-	public void setMidifile(String midifile) {
+	public void setMidifile(byte[] midifile) {
 		this.midifile = midifile;
 	}
 	public int getUserID() {
@@ -49,16 +48,10 @@ public class Midifile implements Serializable{
 	public void setUserID(int userID) {
 		this.userID = userID;
 	}
-	public int getCommentID() {
-		return commentID;
-	}
-	public void setCommentID(int commentID) {
-		this.commentID = commentID;
-	}
-	public Calendar getDate() {
+	public Timestamp getDate() {
 		return date;
 	}
-	public void setDate(Calendar date) {
+	public void setDate(Timestamp date) {
 		this.date = date;
 	}
 }
