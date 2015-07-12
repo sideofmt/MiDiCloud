@@ -5,6 +5,8 @@
 <html>
 
 <head>
+    <%@ page import="model.*" %>
+    <%@ page import="java.util.*" %>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,10 +33,17 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+ 	<%
+    ArrayList<Midifile> midiNew = (ArrayList<Midifile>)request.getAttribute("midiNew");
+	ArrayList<Midifile> midiRank = (ArrayList<Midifile>)request.getAttribute("midiRank");
+	User user = (User)request.getAttribute("user");
+	%>
 
 </head>
 
 <body id="page-top" class="index">
+<form action="MemberTopWindow" method="post">
+
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -78,11 +87,11 @@
 
 <li role="presentation" class="dropdown">
     <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-     <img alt="icon"> UserName <span class="caret"></span>
+     <img alt="icon"><%= user.getUsername() %><span class="caret"></span>
     </a>
     <ul class="dropdown-menu">
 	<li>
-		<a href="#">Detail</a>
+		<a href="CompCreateAccountWindow">Detail</a>
 	</li>
 	<li role="separator" class="divider"></li>
 	<li>
@@ -148,16 +157,17 @@
 		  <div class="panel panel-default">
 		  <div class="panel-heading"><h2><a href="#">ランキング</a></h2></div>
 		  <div class="list-group">
-			  <button type="button" class="list-group-item">1<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 1</a></button>
-			  <button type="button" class="list-group-item">2<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 2</a></button>
-			  <button type="button" class="list-group-item">3<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 3</a></button>
-			  <button type="button" class="list-group-item">4<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file abc</a></button>
-			  <button type="button" class="list-group-item">5<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file f1</a></button>
+		  	  <%
+		  	  for(int i = 0; i < midiRank.size(); i++) {
+		      %>
+			  <button type="button" class="list-group-item"><%= i + 1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
+			  </span>&nbsp;<a href="#"><%= midiRank.get(i).getTitle() %></a></button>
+			  <% } %>
+		  	  <%
+		  	  for(int i = midiRank.size(); i < 5; i++) {
+		      %>
+		      <p>&nbsp;</p>
+			  <% } %>
 			</div>
 		  </div>
 
@@ -180,18 +190,19 @@
                     <div class="row">
 
 		  <div class="panel panel-default">
-		  <div class="panel-heading"><h2><a href="#">新着</a></h2></div>
+		  <div class="panel-heading"><h2><a href="">新着</a></h2></div>
 		  <div class="list-group">
-			  <button type="button" class="list-group-item">1<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 1</a></button>
-			  <button type="button" class="list-group-item">2<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 2</a></button>
-			  <button type="button" class="list-group-item">3<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 3</a></button>
-			  <button type="button" class="list-group-item">4<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file abc</a></button>
-			  <button type="button" class="list-group-item">5<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file f1</a></button>
+		  	  <%
+		  	  for(int i = 0; i < midiNew.size(); i++) {
+		      %>
+			  <button type="button" class="list-group-item"><%= i + 1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
+			  </span>&nbsp;<a href="#"><%= midiNew.get(i).getTitle() %></a></button>
+			  <% } %>
+		  	  <%
+		  	  for(int i = midiNew.size(); i < 5; i++) {
+		      %>
+		      <p>&nbsp;</p>
+			  <% } %>
 			</div>
 		  </div>
 
@@ -246,16 +257,13 @@
 
     <!-- Plugin JavaScript -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="js/classie.js"></script>
-    <script src="js/cbpAnimatedHeader.js"></script>
 
     <!-- Contact Form JavaScript -->
     <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>
-
+</form>
 </body>
 
 </html>
