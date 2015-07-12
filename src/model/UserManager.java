@@ -74,17 +74,40 @@ public class UserManager {
 
 	public User getUser(String mailAddress) throws SQLException{
 		//メールアドレスからユーザーのデータを取得する
+		//取得に成功した時はtrue
+		//取得に失敗した時はfalse
 		User user;
 		user = userDAO.searchUser(mailAddress);
-		System.out.println("ユーザーのデータを取得しました");
+		if(user != null){
+			System.out.println("メールアドレスからユーザーを取得しました");
+		}else{
+			System.out.println("メールアドレスからユーザーの取得に失敗しました");
+		}
 		return user;
 	}
 
 	public boolean deleteUser(int userID) throws SQLException{
+		//ユーザーIDからユーザーを削除する
+		//成功した時はtrueが返される
+		//失敗した時はfalseが返される
 
 		userDAO.deleteUser(userID);
 		System.out.println("ユーザーを削除しました");
 		return true;
+	}
+
+	public User returnUser(int userID) throws SQLException{
+		//ユーザーIDからユーザーデータを呼び出す
+		//呼び出しに失敗した時はnullを返す
+
+		User user = null;
+		user = userDAO.returnUser(userID);
+		if(user != null){
+			System.out.println("IDからユーザーを呼び出しました");
+		}else{
+			System.out.println("IDからユーザーの呼び出しに失敗しました");
+		}
+		return user;
 	}
 
 }
