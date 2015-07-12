@@ -48,7 +48,7 @@ public class Login extends HttpServlet {
 		if ("GoMakeAccountPage".equals(request.getParameter("action"))) {
 			this.getServletContext().getRequestDispatcher("/CreateAccountWindow").forward(request, response);
 		}
-		if(request.getParameter("login")!=null){
+		else if(request.getParameter("login")!=null){
 			//ログインボタンを押していれば遷移処理をする。
 
 		User user = null;

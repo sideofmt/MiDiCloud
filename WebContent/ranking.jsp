@@ -7,7 +7,6 @@
 <head>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -32,6 +31,17 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <%@ page import="model.User" %>
+    <%@ page import="model.Midifile" %>
+    <%@ page import="model.MidifileManager" %>
+    <%@ page import="java.util.*" %>
+
+    <% MidifileManager mmanager = new MidifileManager(); %>
+    <% List<Midifile> midifiles = mmanager.getRanking(); %>
+    <% User user = (User)session.getAttribute("user"); %>
+
+
+
 </head>
 
 <body id="page-top" class="index">
@@ -47,7 +57,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#page-top">MidiCloud</a>
+                <form action="RankingWindow" method="post">
+                <input type="hidden" name="action">
+                <a class="navbar-brand" href="#page-top" onClick="goSubmit(this.form, this)" name="midicloud" value="MidiCloud">MidiCloud</a>
+                </form>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -57,39 +70,35 @@
                         <a href="#page-top"></a>
                     </li>
                     		    <li>
-<!--
-		<form class="form-inline">
-  <div class="form-group">
-    <label class="sr-only" for="exampleInputPassword3">Search word</label>
-    <input type="password" class="form-control" id="exampleInputPassword3" placeholder="Password">
-  </div>
-  <button type="submit" class="btn btn-default">Search</button>
-</form>
--->
-<form class="form-inline">
+
+<form class="form-inline" action="RankingWindow" method="post">
  <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search for...">
+      <input type="text" class="form-control" placeholder="Search for..." name="search">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Search</button>
+        <button class="btn btn-default" type="button" onClick="goSubmit(this.form, this)" name="goSearch" value="検索">Search</button>
       </span>
  </div>
 </form>
 </li>
 
 <li role="presentation" class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-     <img alt="icon" src="..."> UserName <span class="caret"></span>
+    <form action="RankingWindow" method="post">
+    <input type="hidden" name="action">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" name="username">
+     <img alt="icon" src="OutputFile" height=10px width=10px> <%= user.getUsername() %> <span class="caret"></span>
     </a>
+
     <ul class="dropdown-menu">
 	<li>
-		<a href="#">Detail</a>
+		<a href="" onClick="goSubmit(this.form, this)" name="detail" value="ユーザー詳細">Detail</a>
 	</li>
 	<li role="separator" class="divider"></li>
 	<li>
-		<a href="#">Logout</a>
+		<a href="" onClick="goSubmit(this.form, this)" name="logout" value="ログアウト">Logout</a>
 	</li>
 
     </ul>
+    </form>
   </li>
 
 
@@ -102,22 +111,7 @@
         <!-- /.container-fluid -->
     </nav>
 
-<!-- header
-    <header>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <img class="img-responsive" src="img/profile.png" alt="">
-                    <div class="intro-text">
-                        <span class="name">Start Bootstrap</span>
-                        <hr class="star-light">
-                        <span class="skills">Web Developer - Graphic Artist - User Experience Designer</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
--->
+
 
 <div class="container">
 	<div class="row"><br><br>
@@ -146,48 +140,26 @@
             <div class="row">
 
 		  <div class="panel panel-default">
-		  <div class="panel-heading"><h2>ã©ã³ã­ã³ã°</h2></div>
+		  <div class="panel-heading"><h2>ランキング</h2></div>
 		  <div class="list-group">
-			  <button type="button" class="list-group-item">1<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 1</a></button>
-			  <button type="button" class="list-group-item">2<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 2</a></button>
-			  <button type="button" class="list-group-item">3<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 3</a></button>
-			  <button type="button" class="list-group-item">4<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file abc</a></button>
-			  <button type="button" class="list-group-item">5<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file f1</a></button>
-			  <button type="button" class="list-group-item">1<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 1</a></button>
-			  <button type="button" class="list-group-item">2<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 2</a></button>
-			  <button type="button" class="list-group-item">3<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 3</a></button>
-			  <button type="button" class="list-group-item">4<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file abc</a></button>
-			  <button type="button" class="list-group-item">5<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file f1</a></button>
-			  <button type="button" class="list-group-item">1<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 1</a></button>
-			  <button type="button" class="list-group-item">2<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 2</a></button>
-			  <button type="button" class="list-group-item">3<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 3</a></button>
-			  <button type="button" class="list-group-item">4<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file abc</a></button>
-			  <button type="button" class="list-group-item">5<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file f1</a></button>
-			  <button type="button" class="list-group-item">1<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 1</a></button>
-			  <button type="button" class="list-group-item">2<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 2</a></button>
-			  <button type="button" class="list-group-item">3<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 3</a></button>
-			  <button type="button" class="list-group-item">4<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file abc</a></button>
-			  <button type="button" class="list-group-item">5<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file f1</a></button>
+
+		  <form action="RankingWindow" method="post">
+		  <input type="hidden" name="action">
+
+			<%
+			int n=0;
+			for(Midifile midifile : midifiles){
+			%>
+
+			  <button type="button" class="list-group-item"><%= n+1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
+			  </span>&nbsp;<a href="" onClick="goSubmit2(this.form, this)" name="midi" value=<%= midifile %> ><%= midifile.getTitle() %></a></button>
+
+			<%
+			n++;
+			}
+			%>
+
+			</form>
 
 			</div>
 		  </div>
@@ -198,28 +170,7 @@
 
 
 		</div>
-		<div class="text-center">
-			<nav>
-			  <ul class="pagination">
-			    <li class="disabled">
-			      <a href="#" aria-label="Previous">
-			        <span aria-hidden="true">&laquo;</span>
-			      </a>
-			    </li>
-			    <li class="active"><a href="#">1</a></li>
-			    <li><a href="#">2</a></li>
-			    <li><a href="#">3</a></li>
-			    <li><a href="#">4</a></li>
-			    <li><a href="#">5</a></li>
-			    <li>
-			      <a href="#" aria-label="Next">
-			        <span aria-hidden="true">&raquo;</span>
-			      </a>
-			    </li>
-			  </ul>
-			</nav>
-			</div>
-		 </div>
+	 </div>
     </section>
 
 
@@ -264,13 +215,27 @@
     <script src="js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="js/classie.js"></script>
+    <script type="text/javascript">
+	<!--
+	function goSubmit(formObj, btnObj) {
+	formObj.action.value=btnObj.name;
+	formObj.submit();
+	}
+	 -->
+	</script>
+
+	<script type="text/javascript">
+	<!--
+	function goSubmit2(formObj, btnObj) {
+	formObj.midi.value=btnObj.value;
+	formObj.submit();
+	}
+	 -->
+	</script>
+
     <script src="js/cbpAnimatedHeader.js"></script>
 
     <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>

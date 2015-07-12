@@ -32,6 +32,21 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+
+
+    <%@ page import="model.User" %>
+    <%@ page import="model.Midifile" %>
+    <%@ page import="model.MidifileManager" %>
+    <%@ page import="java.util.*" %>
+
+    <% MidifileManager mmanager = new MidifileManager(); %>
+    <% String search = request.getParameter("search"); %>
+    <% List<Midifile> midifiles = mmanager.searchList(search); %>
+    <% User user = (User)session.getAttribute("user"); %>
+
+
+
+
 </head>
 
 <body id="page-top" class="index">
@@ -47,7 +62,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#page-top">MidiCloud</a>
+                <form action="SearchingResultWindow" method="post">
+                <input type="hidden" name="action">
+                <a class="navbar-brand" href="#page-top" onClick="goSubmit(this.form, this)" name="midicloud" value="MidiCloud">MidiCloud</a>
+                </form>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -56,40 +74,36 @@
                     <li class="hidden">
                         <a href="#page-top"></a>
                     </li>
-                    		    <li>
-<!--
-		<form class="form-inline">
-  <div class="form-group">
-    <label class="sr-only" for="exampleInputPassword3">Search word</label>
-    <input type="password" class="form-control" id="exampleInputPassword3" placeholder="Password">
-  </div>
-  <button type="submit" class="btn btn-default">Search</button>
-</form>
--->
-<form class="form-inline">
+                    <li>
+
+<form class="form-inline" action="SearchingResultWindow" method="post">
  <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search for...">
+      <input type="text" class="form-control" placeholder="Search for..." name="search">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Search</button>
+        <button class="btn btn-default" type="button" onClick="goSubmit(this.form, this)" name="goSearch" value="検索">Search</button>
       </span>
  </div>
 </form>
 </li>
 
 <li role="presentation" class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-     <img alt="icon" src="..."> UserName <span class="caret"></span>
+    <form action="SearchingResultWindow" method="post">
+    <input type="hidden" name="action">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" name="username">
+     <img alt="icon" src="OutputFile" height=10px width=10px> <%= user.getUsername() %> <span class="caret"></span>
     </a>
+
     <ul class="dropdown-menu">
 	<li>
-		<a href="#">Detail</a>
+		<a href="" onClick="goSubmit(this.form, this)" name="detail" value="ユーザー詳細">Detail</a>
 	</li>
 	<li role="separator" class="divider"></li>
 	<li>
-		<a href="#">Logout</a>
+		<a href="" onClick="goSubmit(this.form, this)" name="logout" value="ログアウト">Logout</a>
 	</li>
 
     </ul>
+    </form>
   </li>
 
 
@@ -102,22 +116,7 @@
         <!-- /.container-fluid -->
     </nav>
 
-<!-- header
-    <header>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <img class="img-responsive" src="img/profile.png" alt="">
-                    <div class="intro-text">
-                        <span class="name">Start Bootstrap</span>
-                        <hr class="star-light">
-                        <span class="skills">Web Developer - Graphic Artist - User Experience Designer</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
--->
+
 
 <div class="container">
 	<div class="row"><br><br>
@@ -147,66 +146,46 @@
 
 <div class="panel panel-default">
 <div class="panel-heading">
-"～"の検索結果
+<%= search %>の検索結果
 </div>
 <div class="panel-body">
-                <p>～件</p>
+                <p><%= midifiles.size() %>件</p>
 </div>
 </div>
 
 
+<% if(midifiles.size() == 0){ %>
 
 <div class="alert alert-danger" role="alert">
   <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
   <span class="sr-only">Error:</span>
-  ここにエラーメッセージを表示！
+  検索結果がありません
 </div>
+
+<% } %>
 
 
 
 		  <div class="panel panel-default">
 		  <div class="panel-heading"><h4>検索結果</h4></div>
 		  <div class="list-group">
-			  <button type="button" class="list-group-item">1<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 1</a></button>
-			  <button type="button" class="list-group-item">2<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 2</a></button>
-			  <button type="button" class="list-group-item">3<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 3</a></button>
-			  <button type="button" class="list-group-item">4<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file abc</a></button>
-			  <button type="button" class="list-group-item">5<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file f1</a></button>
-			  <button type="button" class="list-group-item">1<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 1</a></button>
-			  <button type="button" class="list-group-item">2<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 2</a></button>
-			  <button type="button" class="list-group-item">3<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 3</a></button>
-			  <button type="button" class="list-group-item">4<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file abc</a></button>
-			  <button type="button" class="list-group-item">5<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file f1</a></button>
-			  <button type="button" class="list-group-item">1<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 1</a></button>
-			  <button type="button" class="list-group-item">2<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 2</a></button>
-			  <button type="button" class="list-group-item">3<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 3</a></button>
-			  <button type="button" class="list-group-item">4<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file abc</a></button>
-			  <button type="button" class="list-group-item">5<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file f1</a></button>
-			  <button type="button" class="list-group-item">1<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 1</a></button>
-			  <button type="button" class="list-group-item">2<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 2</a></button>
-			  <button type="button" class="list-group-item">3<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 3</a></button>
-			  <button type="button" class="list-group-item">4<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file abc</a></button>
-			  <button type="button" class="list-group-item">5<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file f1</a></button>
+			  <form action="SearchingResultWindow" method="post">
+		  <input type="hidden" name="action">
+
+			<%
+			int n=0;
+			for(Midifile midifile : midifiles){
+			%>
+
+			  <button type="button" class="list-group-item"><%= n+1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
+			  </span>&nbsp;<a href="" onClick="goSubmit2(this.form, this)" name="midi" value=<%= midifile %> ><%= midifile.getTitle() %></a></button>
+
+			<%
+			n++;
+			}
+			%>
+
+			</form>
 
 
 			</div>
@@ -287,14 +266,28 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
-    <!-- Plugin JavaScript -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="js/classie.js"></script>
+	<!-- Plugin JavaScript -->
+    <script type="text/javascript">
+	<!--
+	function goSubmit(formObj, btnObj) {
+	formObj.action.value=btnObj.name;
+	formObj.submit();
+	}
+	 -->
+	</script>
+
+	<script type="text/javascript">
+	<!--
+	function goSubmit2(formObj, btnObj) {
+	formObj.midi.value=btnObj.value;
+	formObj.submit();
+	}
+	 -->
+	</script>
+
     <script src="js/cbpAnimatedHeader.js"></script>
 
     <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>
