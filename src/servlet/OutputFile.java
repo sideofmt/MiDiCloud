@@ -2,8 +2,10 @@ package servlet;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -40,13 +42,16 @@ public class OutputFile extends HttpServlet {
 		Translate translate = new Translate();
 
 		User user = (User)session.getAttribute("user");
-		java.io.ByteArrayOutputStream byteOut = translate.fileOutput(user.getIcon());
+		java.io.ByteArrayOutputStream byteOut;
+		byteOut.write(translate.fileOutput(user.getIcon()));
 
 		response.setContentType( "image/jpeg" );
+
 		response.setContentLength( byteOut.size() );
 		OutputStream out = response.getOutputStream();
 		out.write( byteOut.toByteArray() );
 		out.close();
+		byteOut.close();
 	}
 
 	/**
