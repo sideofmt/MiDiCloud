@@ -32,6 +32,12 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <%@ page import="model.User" %>
+    <%@ page import="model.Midifile" %>
+
+    <% User user = (User)session.getAttribute("user"); %>
+    <% Midifile midifile = (Midifile)session.getAttribute("midifile"); %>
+
 </head>
 
 <body id="page-top" class="index">
@@ -125,27 +131,27 @@
 <div class="row">
 
 
+<% if(request.getAttribute("error") != null) { %>
+<%= request.getAttribute("error") %>
+<% } %>
+<% if(request.getAttribute("error2") != null) { %>
+<%= request.getAttribute("error2") %>
+<% } %>
 
-<div class="alert alert-danger" role="alert">
-  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-  <span class="sr-only">Error:</span>
-  ããã«ã¨ã©ã¼ã¡ãã»ã¼ã¸ãè¡¨ç¤ºï¼
-</div>
 
-
-
+<form action="MidiUploadWindow" method="post">
 
 <p>
 <div class="form-group">
     <label for="exampleInputFile">Upload MIDI File</label>
-    <input type="file" id="exampleInputFile">
+    <input type="file" id="exampleInputFile" name="midifile">
   </div>
 </p>
 
 <p>
 <div class="input-group">
 <label for="InputUserName">Song Title</label>
-<input type="text" class="form-control" placeholder="ããã«æ²åãå¥å" aria-describedby="basic-addon1">
+<input type="text" class="form-control" placeholder="ここに曲名を入力" aria-describedby="basic-addon1" name="title">
 </div>
 </p>
 
@@ -155,10 +161,11 @@
 <p>
 <div class="form-group">
 <label for="InputProfile">Music Description</label>
-<textarea class="form-control" id="UserProfile" name="UserProfile" placeholder="ã¦ã¼ã¶ã¼ã®èª¬æ" rows="7"></textarea>
+<textarea class="form-control" name="exp" placeholder="曲の説明" rows="7"></textarea>
 
 </div>
 </p>
+
 
 
 <div class="panel panel-default">
@@ -167,10 +174,10 @@
 </div>
 <div class="panel-body">
 	<ol>
-	<li>ã¢ããã­ã¼ãããMIDIãã¡ã¤ã«ã¯ä»ã®èä½æ¨©ãå®³ããªããã®ã«ãã¦ãã ããã</li>
-	<li>ã¢ããã­ã¼ãããMIDIãã¡ã¤ã«ã¯å¬éããããã¦ã³ã­ã¼ãã§ããç¶æã«ãªãã¾ãã</li>
-	<li>æ³ã«è§¦ãããããªè¡çºããã£ãå ´åãäºåãªãã«MIDIãã¡ã¤ã«ãåé¤ãããã¨ãããã¾ãã</li>
-	<li>ä»¥ä¸ã«åæã§ããæ¹ã®ã¿ãæç¨¿ãã¿ã³ãæ¼ãã¦ãã ããã</li>
+	<li>アップロードするMIDIファイルは他の著作権を害さないものにして下さい。</li>
+	<li>アップロードしたMIDIファイルは公開され、ダウンロードできる状態になります。</li>
+	<li>方に触れるような行為があった場合、予告なしにMIDIファイルを削除することがあります。</li>
+	<li>以上に同意できる方のみ、投稿ボタンを押して下さい。</li>
 	</ol>
 </div>
 </div>
@@ -181,11 +188,11 @@
 
 <div class="form-group">
 <div class="col-md-12 text-center">
-<button type="submit" class="btn btn-info btn-lg">MIDIãã¡ã¤ã«ã®æç¨¿</button>
+<button type="submit" class="btn btn-info btn-lg" name="upload" value="アップロード">MIDIをアップロードする</button>
 </div>
 </div>
 
-
+</form>
 
 
 </div>
@@ -231,13 +238,8 @@
     <script src="js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="js/classie.js"></script>
-    <script src="js/cbpAnimatedHeader.js"></script>
 
     <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>

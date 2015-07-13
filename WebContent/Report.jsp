@@ -32,6 +32,27 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <%@ page import="model.Report" %>
+    <%@ page import="model.ReportManager" %>
+    <%@ page import="java.util.*" %>
+
+    <% ReportManager manager = new ReportManager();
+       ArrayList<Report> reportList = new ArrayList<Report>();//manager.getReportList();
+
+       Report r = new Report();
+       Report r1 = new Report();
+       Report r2 = new Report();
+       r.setReportID(1);
+       r.setReportedmidiID(1);
+       r1.setReportID(2);
+       r1.setReportedmidiID(2);
+       r2.setReportID(3);
+       r2.setReportedUserID(1);
+       reportList.add(r);
+       reportList.add(r1);
+       reportList.add(r2);
+    %>
+
 </head>
 
 <body id="page-top" class="index">
@@ -47,7 +68,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#page-top">MidiCloud</a>
+                <form action="AccountInfoWindow" method="post">
+                <input type="hidden" name="action">
+                <a class="navbar-brand" href="#page-top" onClick="goSubmit(this.form, this)" name="midicloud" value="MidiCloud">MidiCloud</a>
+                </form>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -146,48 +170,23 @@
             <div class="row">
 
 		  <div class="panel panel-default">
-		  <div class="panel-heading"><h2>å ±åä¸è¦§</h2></div>
+		  <div class="panel-heading"><h2>報告一覧</h2></div>
+
+		  <form action="ReportListDisplayWindow" method="post">
+		  <input type="hidden" name="action">
+
 		  <div class="list-group">
-			  <button type="button" class="list-group-item">1<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 1</a></button>
-			  <button type="button" class="list-group-item">2<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 2</a></button>
-			  <button type="button" class="list-group-item">3<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 3</a></button>
-			  <button type="button" class="list-group-item">4<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file abc</a></button>
-			  <button type="button" class="list-group-item">5<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file f1</a></button>
-			  <button type="button" class="list-group-item">1<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 1</a></button>
-			  <button type="button" class="list-group-item">2<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 2</a></button>
-			  <button type="button" class="list-group-item">3<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 3</a></button>
-			  <button type="button" class="list-group-item">4<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file abc</a></button>
-			  <button type="button" class="list-group-item">5<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file f1</a></button>
-			  <button type="button" class="list-group-item">1<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 1</a></button>
-			  <button type="button" class="list-group-item">2<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 2</a></button>
-			  <button type="button" class="list-group-item">3<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 3</a></button>
-			  <button type="button" class="list-group-item">4<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file abc</a></button>
-			  <button type="button" class="list-group-item">5<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file f1</a></button>
-			  <button type="button" class="list-group-item">1<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 1</a></button>
-			  <button type="button" class="list-group-item">2<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 2</a></button>
-			  <button type="button" class="list-group-item">3<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 3</a></button>
-			  <button type="button" class="list-group-item">4<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file abc</a></button>
-			  <button type="button" class="list-group-item">5<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file f1</a></button>
+		  	<% int n = 1,m = 1,u = 1;
+    		   for(Report report : reportList) { %>
+			  <button type="button" class="list-group-item"><%= n %><span lang="ja">&nbsp;&nbsp;&nbsp;
+			  </span>&nbsp;<a href="#" onClick="goSubmit(this.form, this)" name="report<%= report.getReportID() %>" value="レポート">
+			 						   <% if(report.getReportedmidiID() != 0) { %>midi file <%= m %>
+			  						   <% m++; } else { %>user <%= u %>
+			  						   <% u++; } %></a></button>
+			<% n++; } %>
+			</div>
+
+		  </form>
 
 			</div>
 		  </div>
@@ -264,13 +263,28 @@
     <script src="js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="js/classie.js"></script>
-    <script src="js/cbpAnimatedHeader.js"></script>
+    <script type="text/javascript">
+	<!--
+	function goSubmit(formObj, btnObj) {
+	formObj.action.value=btnObj.name;
+	formObj.submit();
+	}
+	 -->
+	</script>
+
+	<script type="text/javascript">
+	<!--
+	function goSubmit2(formObj, btnObj) {
+	formObj.report.value=btnObj.value;
+	formObj.report=btnObj.name;
+	formObj.submit();
+	}
+	 -->
+	</script>
+
+    <!-- Plugin JavaScript -->
 
     <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>

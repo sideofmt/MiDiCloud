@@ -32,6 +32,21 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+	<%@ page import="model.User" %>
+	<%@ page import="model.Translate" %>
+	<%@ page import="java.lang.*" %>
+
+    <% //User user = (User)session.getAttribute("user");
+    
+    
+       User user = new User();
+       user.setUsername("k-t");
+       user.setProfile("俺の名前はk-t（工藤 ティンイティ）。大学生DTMerだ。"
+				+ "ある日、俺は幼馴染で同級生のm-t（毛利 ティン）と遊園地に、せやかて工藤！！");
+       //Translate t = new Translate();
+       //user.setIcon(t.fileLoad("C:/Users/shigetoshi.n/Desktop/ソフ研/mudai.png"));
+     %>
+
 </head>
 
 <body id="page-top" class="index">
@@ -121,6 +136,8 @@
             </div>
       </section>
 
+<form action="AccountInformationChangeWindow" method="post">
+
 <div class="container">
 <div class="row">
             <div class="col-lg-12-original">
@@ -131,14 +148,15 @@
 <p>
 <div class="form-group">
     <label for="exampleInputFile">User Icon</label>
-    <input type="file" id="exampleInputFile">
+    <input type="file" id="exampleInputFile" name="icon">
   </div>
 </p>
 
 <p>
 <div class="input-group">
 <label for="InputUserName">User Name</label>
-<input type="text" class="form-control" placeholder="ã¦ã¼ã¶ã¼ã®åå" aria-describedby="basic-addon1">
+<%-- <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">--%>
+<input type="text" class="form-control" value="<%= user.getUsername() %>" aria-describedby="basic-addon1" name="name">
 </div>
 </p>
 
@@ -148,18 +166,19 @@
 <p>
 <div class="form-group">
 <label for="InputProfile">User Profile</label>
-<textarea class="form-control" id="UserProfile" name="UserProfile" placeholder="ã¦ã¼ã¶ã¼ã®èª¬æ" rows="7"></textarea>
+<textarea class="form-control" id="UserProfile" name="profile" placeholder="" rows="7">
+<%= user.getProfile() %>
+</textarea>
 
 </div>
 </p>
 
 <div class="form-group">
 <div class="col-md-12 text-center">
-<button type="submit" class="btn btn-info btn-lg">ã¢ã«ã¦ã³ãæå ±ã®å¤æ´</button>
+<button type="submit" class="btn btn-info btn-lg" name="change">プロフィールを変更する</button>
+</form>
 </div>
 </div>
-
-
 
 
 </div>
@@ -205,13 +224,7 @@
     <script src="js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="js/classie.js"></script>
-    <script src="js/cbpAnimatedHeader.js"></script>
 
-    <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>

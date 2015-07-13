@@ -131,17 +131,19 @@
 <br><br>
 
 <div class="text-center">
-<p>MIDIãã¡ã¤ã«ã®ã¢ããã­ã¼ããå®äºãã¾ãã</p>
+<p>MIDIファイルはアップロードされました。</p>
 </div>
 
 <br><br>
 
+<form action="MidiUploadCompleteWindow" method="post">
 <div class="form-group">
 <div class="col-md-12 text-center">
-<button type="submit" class="btn btn-default btn-lg">ã¢ã«ã¦ã³ãç»é¢ã«æ»ã</button>
+<button type="submit" class="btn btn-default btn-lg" name="return-pro">プロフィールに戻る</button>
 </div>
 </div>
 <br><br>
+</form>
 
 
 
@@ -188,13 +190,6 @@
     <script src="js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="js/classie.js"></script>
-    <script src="js/cbpAnimatedHeader.js"></script>
-
-    <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>

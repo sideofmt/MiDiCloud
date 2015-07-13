@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,21 +9,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import model.Translate;
+import model.Midifile;
+import model.MidifileManager;
 import model.User;
-import model.UserManager;
 
 /**
- * Servlet implementation class AccountInformationChangeWindow
+ * Servlet implementation class MidiInformationWindow
  */
-@WebServlet("/AccountInformationChangeWindow")
-public class AccountInformationChangeWindow extends HttpServlet {
+@WebServlet("/MidiInformationWindow")
+public class MidiInformationWindow extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AccountInformationChangeWindow() {
+    public MidiInformationWindow() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,13 +32,7 @@ public class AccountInformationChangeWindow extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		if(session.getAttribute("user")==null){
-			this.getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
-		}
-		else{
-			this.getServletContext().getRequestDispatcher("/changeProfile.jsp").forward(request, response);
-		}
+		this.getServletContext().getRequestDispatcher("/midifile.jsp").forward(request, response);
 	}
 
 	/**
@@ -47,25 +40,21 @@ public class AccountInformationChangeWindow extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-
+		
+		Midifile midifile = new Midifile();
+		MidifileManager manager = new MidifileManager();
 		User user = new User();
-		UserManager manager = new UserManager();
-		Translate translate = new Translate();
 		HttpSession session = request.getSession();
+		midifile = (Midifile)session.getAttribute("midifile");
 		user = (User)session.getAttribute("user");
-
-		user.setUsername(request.getParameter("name"));
-		user.setProfile(request.getParameter("profile"));
-		user.setIcon(translate.fileLoad(request.getParameter("icon")));
-
-		try {
-			manager.updateUser(user);
-		} catch (SQLException e) {
-			e.printStackTrace();
+		
+		if ("midicloud".equals(request.getParameter("action"))) {
+			this.getServletContext().getRequestDispatcher("/Login").forward(request, response);
+		} else if("favo".equals(request.getParameter("action"))) {
+			midifile.setFavorite(midifile.getFavorite() + 1);
+			//manager.update(midifile);
+			this.getServletContext().getRequestDispatcher("/MidiInformationWindow").forward(request, response);
 		}
-
-		this.getServletContext().getRequestDispatcher("/AccountInfoWindow")
-				.forward(request, response);
 	}
 
 }

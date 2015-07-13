@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,21 +9,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import model.Translate;
-import model.User;
-import model.UserManager;
-
 /**
- * Servlet implementation class AccountInformationChangeWindow
+ * Servlet implementation class MidiUploadCompleteWindow
  */
-@WebServlet("/AccountInformationChangeWindow")
-public class AccountInformationChangeWindow extends HttpServlet {
+@WebServlet("/MidiUploadCompleteWindow")
+public class MidiUploadCompleteWindow extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AccountInformationChangeWindow() {
+    public MidiUploadCompleteWindow() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,9 +31,8 @@ public class AccountInformationChangeWindow extends HttpServlet {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("user")==null){
 			this.getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
-		}
-		else{
-			this.getServletContext().getRequestDispatcher("/changeProfile.jsp").forward(request, response);
+		} else {
+			this.getServletContext().getRequestDispatcher("/midiUpload.jsp").forward(request, response);
 		}
 	}
 
@@ -47,25 +41,9 @@ public class AccountInformationChangeWindow extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-
-		User user = new User();
-		UserManager manager = new UserManager();
-		Translate translate = new Translate();
-		HttpSession session = request.getSession();
-		user = (User)session.getAttribute("user");
-
-		user.setUsername(request.getParameter("name"));
-		user.setProfile(request.getParameter("profile"));
-		user.setIcon(translate.fileLoad(request.getParameter("icon")));
-
-		try {
-			manager.updateUser(user);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
+		
 		this.getServletContext().getRequestDispatcher("/AccountInfoWindow")
-				.forward(request, response);
+			.forward(request, response);
 	}
 
 }

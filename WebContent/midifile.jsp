@@ -32,6 +32,47 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <%@ page import="model.Midifile" %>
+    <%@ page import="model.User" %>
+    <%@ page import="model.UserManager" %>
+    <%@ page import="model.Comment" %>
+    <%@ page import="model.CommentManager" %>
+	<%@ page import="model.Translate" %>
+	<%@ page import="java.io.*" %>
+	<%@ page import="javax.sound.midi.*" %>
+	<%@ page import="java.util.*" %>
+
+	<% //Midifile midifile = (Midifile)session.getAttribute("midifile");
+	   //User user = (User)session.getAttribute("user");
+	   Translate t = new Translate();
+	   CommentManager commentManager = new CommentManager();
+	   //ArrayList<Comment> commentList = commentManager.returnComments(midifile.getMidiID());
+	   UserManager userManager = new UserManager();
+	   
+	   
+	   User user = new User();
+	   Midifile midifile = new Midifile();
+	   try {
+			midifile.setMidifile(t.fileLoad("C:/Users/shigetoshi.n/Desktop/ソフ研/曲/e.t.c/Argento/a.mid"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	   midifile.setFavorite(8);
+	   midifile.setUserID(1);
+	   midifile.setExplanation("俺の名前はk-t（工藤 ティンイティ）。大学生DTMerだ。"
+				+ "ある日、俺は同級生で幼馴染のm-t（毛利 ティン）とYAMAHAに遊びに来ていた。"
+				+ "その途中、黒づくめの組織の怪しげな取引現場に遭遇した。"
+				+ "取引現場に夢中になっていた俺は、背後から近付いてくるもう一人の男の気配に気づかず、"
+				+ "目が覚めたら・・・DAWが異常終了してしまっていた！！");
+	   user.setUserID(2);
+	   user.setManager(false);
+	   ArrayList<Comment> commentList = new  ArrayList<Comment>();
+	   Comment c = new Comment();
+	   c.setUserID(3);
+	   c.setComment("黒ずくめの組織のボスはわしじゃよ。");
+	   commentList.add(c);
+		%>
+
 </head>
 
 <body id="page-top" class="index">
@@ -138,13 +179,18 @@
 </div>
 
             <div class="text-left">
-                <h2>MIDI Music</h2>
+                <h2><%= midifile.getTitle() %></h2>
+                
+<form action="MidiInformationWindow" method="post">
+<input type="hidden" name="action">
+
 <br>
 <embed src="original.mid" type="application/x-mplayer2" height="40" autostart="true" autoplay="true" loop="false">
 <br><br>
 
-<button type="button" class="btn btn-info  btn-sm">
-  <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Favorite <span class="badge">4</span>
+<button type="button" class="btn btn-info  btn-sm" onClick="goSubmit(this.form, this)" name="favo">
+  <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Favorite <span class="badge">
+  <%= midifile.getFavorite() %></span>
 </button>
 
 <button type="button" class="btn btn-default btn-sm">
@@ -154,21 +200,30 @@
 
 
 
-            <button type="button" class="btn btn-default btn-sm">
- 				 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>Edit
-				</button>
-			<button type="button" class="btn btn-default btn-sm btn-warning">
- 				 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>report this midi file
+            <% if(midifile.getUserID() == user.getUserID()) { %>
+				<button type="button" class="btn btn-default btn-sm">
+ 				 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>変更する
 				</button>
 				<button type="button" class="btn btn-default btn-sm">
- 				 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>delete this midi file
+ 				 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>削除する
 				</button>
+			<% } else if(user.isManager()) { %>
+				<button type="button" class="btn btn-default btn-sm">
+ 				 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>削除する
+				</button>
+			<% } else {%>
+			<button type="button" class="btn btn-default btn-sm btn-warning">
+ 				 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>報告する
+				</button>
+			<% } %>
 <br><br>
+
+</form>
 
 <div class="panel panel-default">
 <div class="panel-body">
 
-                <p>explaination</p>
+                <p><%= midifile.getExplanation() %></p>
 
 </div>
 </div>
@@ -191,86 +246,42 @@
 
 <div class="well">
 
+<form action="MidiInformationWindow" method="post">
+
 <div class="row">
 <div class="form-group">
 <label for="InputProfile">Comment</label>
-<textarea class="form-control" id="UserProfile" name="UserProfile" placeholder="ã³ã¡ã³ããå¥å" rows="5"></textarea>
+<textarea class="form-control" id="UserProfile" name="UserProfile" placeholder="コメント" rows="5"></textarea>
 </div>
 
 <div class="form-group">
 <div class="col-md-12 text-center">
-<button type="submit" class="btn btn-info btn-sm">ã³ã¡ã³ããæç¨¿</button>
+<button type="submit" class="btn btn-info btn-sm">投稿</button>
 </div>
 </div>
 </div>
 
+</form>
 </div>
-
-
 
 
 <!-- Timeline - START -->
 <div class="container">
     <ul class="timeline">
+    	<% for(Comment comment :commentList) {%>
+    	<% User commentUser = userManager.returnUser(comment.getUserID()); %>
         <li><!---Time Line Element--->
-          <div class="timeline-badge blue"><img alt="icon" src="..."></div>
+          <div class="timeline-badge blue"><img alt="icon" src="<%-- commentUser.getIcon() --%>"></div>
           <div class="timeline-panel">
             <div class="timeline-heading">
-              <h4 class="timeline-title">Username 1</h4>
+              <h4 class="timeline-title"><%--<%= commentUser.getUsername() %>--%></h4>
             </div>
             <div class="timeline-body"><!---Time Line Body&Content--->
-              <p>Time line content is placed here...</p>
+              <p><%= comment.getComment() %></p>
             </div>
           </div>
         </li>
-        <li><!---Time Line Element--->
-          <div class="timeline-badge blue"><img alt="icon" src="..."></div>
-          <div class="timeline-panel">
-            <div class="timeline-heading">
-              <h4 class="timeline-title">Time Line Entry #2</h4>
-            </div>
-            <div class="timeline-body"><!---Time Line Body&Content--->
-              <p>Time line content is placed here...</p>
-              <p>And some more Time line content </p>
-            </div>
-          </div>
-        </li>
-        <li><!---Time Line Element--->
-          <div class="timeline-badge blue"><img alt="icon" src="..."></div>
-          <div class="timeline-panel">
-            <div class="timeline-heading">
-              <h4 class="timeline-title">Time Line Entry #3</h4>
-            </div>
-            <div class="timeline-body"><!---Time Line Body&Content--->
-              <p>Time line content is placed here...</p>
-              <p>This appears to be a neutral time line enty...</p>
-            </div>
-          </div>
-        </li>
-        <li><!---Time Line Element--->
-          <div class="timeline-badge blue"><img alt="icon" src="..."></div>
-          <div class="timeline-panel">
-            <div class="timeline-heading">
-              <h4 class="timeline-title">Time Line Entry #4</h4>
-            </div>
-            <div class="timeline-body"><!---Time Line Body&Content--->
-              <p>Time line content is placed here...</p>
-              <p>And some more Time line content </p>
-            </div>
-          </div>
-        </li>
-
-        <li><!---Time Line Element--->
-          <div class="timeline-badge blue"><img alt="icon" src="..."></div>
-          <div class="timeline-panel">
-            <div class="timeline-heading">
-              <h4 class="timeline-title">Time Line Entry #5</h4>
-            </div>
-            <div class="timeline-body"><!---Time Line Body&Content--->
-              <p>Time line content is placed here...</p>
-            </div>
-          </div>
-        </li>
+        <% } %>
     </ul>
 </div>
 
@@ -340,13 +351,7 @@
     <script src="js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="js/classie.js"></script>
-    <script src="js/cbpAnimatedHeader.js"></script>
-
-    <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
+    
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>
