@@ -2,6 +2,7 @@ package model;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
 	final private static String dbname = "MidiCloud";
@@ -254,6 +255,41 @@ public class UserDAO {
 		}catch(Exception e){
 			e.printStackTrace();
 			return 0;
+		}
+	}
+
+	public List<User> getUserList() {
+		ArrayList<User> users = new ArrayList<User>();
+		Connection connection;
+		String sql = "SELECT * FROM userdata";
+
+		try {
+			Class.forName(driverClassName);
+			connection = DriverManager.getConnection(url, username, password);
+			PreparedStatement pstmt = connection.prepareStatement(sql);
+
+			ResultSet result = pstmt.executeQuery();
+
+			while(result.next()) {
+				User user = new User();
+				user.setUserID(result.getInt(1));
+				user.setUsername(result.getString(2));
+				user.setPassword(result.getString(3));
+				user.setMailAddress(result.getString(4));
+				user.setProfile(result.getString(5));
+				user.setIcon(result.getBytes(6));
+				user.setMIDI_IDs((ArrayList<Integer>)result.getArray(7));
+				user.setCommentIDs((ArrayList<Integer>)result.getArray(8));
+				user.setManager(result.getBoolean(9));
+				users.add(user);
+			}
+			result.close();
+			connection.close();
+			return users;
+
+		} catch(Exception e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 

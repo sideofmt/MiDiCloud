@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserManager {
 
@@ -108,6 +109,19 @@ public class UserManager {
 			System.out.println("IDからユーザーの呼び出しに失敗しました");
 		}
 		return user;
+	}
+
+	public List<User> returnUserList() throws SQLException{
+		//ユーザーデータのリストを呼び出す
+		//呼び出しに失敗した時はnullを返す
+
+		List<User> users = userDAO.getUserList();
+		if(users != null){
+			System.out.println("ユーザーリストを呼び出しました");
+		}else{
+			System.out.println("ユーザーリストの呼び出しに失敗しました");
+		}
+		return users;
 	}
 
 }
