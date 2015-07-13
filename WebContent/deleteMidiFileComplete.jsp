@@ -128,20 +128,25 @@
 
 <br><br>
 
+<form action="deleteMidifileComplete" method="post">
+
 <div class="text-center">
 <p>
-åé¤ãå®äºãã¾ãã
+削除が完了しました
 </p>
 </div>
+
 
 <br><br>
 
 
 <div class="form-group">
 <div class="col-md-12 text-center">
-<button type="submit" class="btn btn-info btn-lg">ã¢ã«ã¦ã³ããããã«æ»ã</button>
+<button type="submit" class="btn btn-info btn-lg" name="complete">完了</button>
 </div>
 </div>
+
+</form>
 
 <br><br>
 
@@ -151,8 +156,7 @@
 
 
 </div>
-</div>
-</div>
+
 
 
 <div class="row">
@@ -188,14 +192,7 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
-    <!-- Plugin JavaScript -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="js/classie.js"></script>
-    <script src="js/cbpAnimatedHeader.js"></script>
 
-    <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>

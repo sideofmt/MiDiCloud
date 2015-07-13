@@ -32,6 +32,9 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <%@ page import = "model.ReportManager"%>
+    <%@ page import = "model.Report" %>
+
 </head>
 
 <body id="page-top" class="index">
@@ -207,29 +210,34 @@
 
 
 
-
+<form action="ManagerTopWindow" method="post">
 
   <section id="Report">
         <div class="container">
                     <div class="row">
+<%
+ Report reportList = (Report)request.getAttribute("レポート一覧");
 
+System.out.println(reportList);
+
+%>
 		  <div class="panel panel-default">
 		  <div class="panel-heading"><h2><a href="#">報告一覧</a></h2></div>
 		  <div class="list-group">
-			  <button type="button" class="list-group-item">1<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 1</a></button>
+			   <button type="button" class="list-group-item">1<span lang="ja">&nbsp;&nbsp;&nbsp;
+			  </span>&nbsp;<a href="#">${reportList[0]}</a></button>		  
 			  <button type="button" class="list-group-item">2<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 2</a></button>
+			  </span>&nbsp;<a href="#">${reportList[1]}</a></button>
 			  <button type="button" class="list-group-item">3<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file 3</a></button>
+			  </span>&nbsp;<a href="#">${reportList[2]}</a></button>
 			  <button type="button" class="list-group-item">4<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file abc</a></button>
-			  <button type="button" class="list-group-item">5<span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#">Midi file f1</a></button>
+			  </span>&nbsp;<a href="#">${reportList[3]}</a></button>
+			  <button type="submit" class="list-group-item"name="add">5<span lang="ja">&nbsp;&nbsp;&nbsp;
+			  </span>&nbsp;<a href="#">100</a></button>
 			</div>
 		  </div>
 
-
+</form>
 
 
 
@@ -273,14 +281,7 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
-    <!-- Plugin JavaScript -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="js/classie.js"></script>
-    <script src="js/cbpAnimatedHeader.js"></script>
-
-    <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
+  
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>
