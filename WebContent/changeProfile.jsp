@@ -43,8 +43,9 @@
        user.setUsername("k-t");
        user.setProfile("俺の名前はk-t（工藤 ティンイティ）。大学生DTMerだ。"
 				+ "ある日、俺は幼馴染で同級生のm-t（毛利 ティン）と遊園地に、せやかて工藤！！");
-       //Translate t = new Translate();
-       //user.setIcon(t.fileLoad("C:/Users/shigetoshi.n/Desktop/ソフ研/mudai.png"));
+       Translate t = new Translate();
+       user.setIcon(t.fileLoad("C:/Users/shigetoshi.n/Desktop/ソフ研/mudai.png"));
+       request.setAttribute("user", user);
      %>
 
 </head>
@@ -142,7 +143,10 @@
 <div class="row">
             <div class="col-lg-12-original">
             <div class="text-left">
-                <img class="img-responsive img-center" src="http://placehold.it/200x200" alt="">
+            	<%-- http://placehold.it/200x200 --%>
+            	<form action="OutputImg" method="get">
+                <img class="img-responsive img-center" src="OutputImg" alt="">
+                </form>
 
 
 <p>

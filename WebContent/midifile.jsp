@@ -41,6 +41,7 @@
 	<%@ page import="java.io.*" %>
 	<%@ page import="javax.sound.midi.*" %>
 	<%@ page import="java.util.*" %>
+	<%@ page import="model.MidifileManager" %>
 
 	<% //Midifile midifile = (Midifile)session.getAttribute("midifile");
 	   //User user = (User)session.getAttribute("user");
@@ -51,26 +52,32 @@
 	   
 	   
 	   User user = new User();
-	   Midifile midifile = new Midifile();
+	   /*Midifile midifile = new Midifile();
 	   try {
 			midifile.setMidifile(t.fileLoad("C:/Users/shigetoshi.n/Desktop/ソフ研/曲/e.t.c/Argento/a.mid"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	   midifile.setFavorite(8);
+	   midifile.setTitle("midiファイルだお♪");
 	   midifile.setUserID(1);
 	   midifile.setExplanation("俺の名前はk-t（工藤 ティンイティ）。大学生DTMerだ。"
 				+ "ある日、俺は同級生で幼馴染のm-t（毛利 ティン）とYAMAHAに遊びに来ていた。"
 				+ "その途中、黒づくめの組織の怪しげな取引現場に遭遇した。"
 				+ "取引現場に夢中になっていた俺は、背後から近付いてくるもう一人の男の気配に気づかず、"
 				+ "目が覚めたら・・・DAWが異常終了してしまっていた！！");
+	   */
 	   user.setUserID(2);
+	   MidifileManager ma = new MidifileManager();
+	   Midifile midifile = ma.search(1);
+	   request.setAttribute("midifile", midifile);
 	   user.setManager(false);
 	   ArrayList<Comment> commentList = new  ArrayList<Comment>();
 	   Comment c = new Comment();
 	   c.setUserID(3);
 	   c.setComment("黒ずくめの組織のボスはわしじゃよ。");
 	   commentList.add(c);
+	   
 		%>
 
 </head>
@@ -181,12 +188,20 @@
             <div class="text-left">
                 <h2><%= midifile.getTitle() %></h2>
                 
-<form action="MidiInformationWindow" method="post">
-<input type="hidden" name="action">
+
 
 <br>
-<embed src="original.mid" type="application/x-mplayer2" height="40" autostart="true" autoplay="true" loop="false">
+<%
+	
+%>
+<form action="OutputFile" method="get">
+<embed src="OutputFile" type="application/x-mplayer2" height="40" autostart="true" autoplay="true" loop="false">
+</embed>
+</form>
 <br><br>
+
+<form action="MidiInformationWindow" method="post">
+<input type="hidden" name="action">
 
 <button type="button" class="btn btn-info  btn-sm" onClick="goSubmit(this.form, this)" name="favo">
   <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Favorite <span class="badge">
