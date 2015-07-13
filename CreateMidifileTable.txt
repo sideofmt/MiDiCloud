@@ -1,0 +1,10 @@
+create table midifile
+(
+midiid integer primary key,
+title varchar(20) not null,
+explanation varchar(400) not null,
+favorite integer not null,
+midifile bytea not null,
+userid integer not null,
+data timestamp without time zone not null
+);
