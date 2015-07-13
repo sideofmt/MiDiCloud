@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import model.Midifile;
 import model.MidifileManager;
@@ -36,29 +37,36 @@ public class MemberTopWindow extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		ArrayList<Midifile> midi = new ArrayList<Midifile>();
-	   	List<Midifile> midiRank = new ArrayList<Midifile>();
-		List<Midifile> midiNew = new ArrayList<Midifile>();
-		MidifileManager manager = new MidifileManager();
-
-		midiRank = manager.getRanking();
-		midiNew = manager.getArrival();
-
-//		User user =  (User)request.getAttribute("user");
-		UserManager man = new UserManager();
-		User user = null;
-		try {
-			user = man.getUser("ket@gmail.com");
-		} catch (SQLException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
+		System.out.println("MemberTopWindowのdoGetが呼ばれたゾ");
+		HttpSession session = request.getSession();
+		if(session.getAttribute("user")==null){
+			this.getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
 		}
+		else{
+			ArrayList<Midifile> midi = new ArrayList<Midifile>();
+		   	List<Midifile> midiRank = new ArrayList<Midifile>();
+			List<Midifile> midiNew = new ArrayList<Midifile>();
+			MidifileManager manager = new MidifileManager();
 
-		request.setAttribute("midiRank",midiRank);
-		request.setAttribute("midiNew",midiNew);
-		request.setAttribute("user", user);
+			midiRank = manager.getRanking();
+			midiNew = manager.getArrival();
 
-		this.getServletContext().getRequestDispatcher("/memberTop.jsp").forward(request, response);
+	//		User user =  (User)request.getAttribute("user");
+			UserManager man = new UserManager();
+			User user = null;
+			try {
+				user = man.getUser("ket@gmail.com");
+			} catch (SQLException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+
+			request.setAttribute("midiRank",midiRank);
+			request.setAttribute("midiNew",midiNew);
+			request.setAttribute("user", user);
+
+			this.getServletContext().getRequestDispatcher("/memberTop.jsp").forward(request, response);
+			}
 		}
 
 	/**
@@ -66,7 +74,7 @@ public class MemberTopWindow extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("Hi");
+		System.out.println("MemberTopWindowのdoPostが呼ばれたゾ");
 		request.setCharacterEncoding("UTF-8");
 		User user = (User)request.getAttribute("user");
 

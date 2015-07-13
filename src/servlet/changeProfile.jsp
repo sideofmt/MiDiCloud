@@ -5,8 +5,6 @@
 <html>
 
 <head>
-    <%@ page import="model.*" %>
-    <%@ page import="java.util.*" %>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,7 +12,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>MiDi Cloud Top</title>
+    <title>Edit User</title>
 
     <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -33,17 +31,26 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
- 	<%
-    ArrayList<Midifile> midiNew = (ArrayList<Midifile>)request.getAttribute("midiNew");
-	ArrayList<Midifile> midiRank = (ArrayList<Midifile>)request.getAttribute("midiRank");
-	User user = (User)request.getAttribute("user");
-	%>
+
+	<%@ page import="model.User" %>
+	<%@ page import="model.Translate" %>
+	<%@ page import="java.lang.*" %>
+
+    <% //User user = (User)session.getAttribute("user");
+    
+    
+       User user = new User();
+       user.setUsername("k-t");
+       user.setProfile("俺の名前はk-t（工藤 ティンイティ）。大学生DTMerだ。"
+				+ "ある日、俺は幼馴染で同級生のm-t（毛利 ティン）と遊園地に、せやかて工藤！！");
+       Translate t = new Translate();
+       user.setIcon(t.fileLoad("C:/Users/shigetoshi.n/Desktop/ソフ研/mudai.png"));
+       request.setAttribute("user", user);
+     %>
 
 </head>
 
 <body id="page-top" class="index">
-<form action="MemberTopWindow" method="post">
-
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -87,11 +94,11 @@
 
 <li role="presentation" class="dropdown">
     <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-     <img alt="icon"><%= user.getUsername() %><span class="caret"></span>
+     <img alt="icon" src="..."> UserName <span class="caret"></span>
     </a>
     <ul class="dropdown-menu">
 	<li>
-		<a href="CompCreateAccountWindow">Detail</a>
+		<a href="#">Detail</a>
 	</li>
 	<li role="separator" class="divider"></li>
 	<li>
@@ -111,23 +118,6 @@
         <!-- /.container-fluid -->
     </nav>
 
-<!-- header
-    <header>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <img class="img-responsive" src="img/profile.png" alt="">
-                    <div class="intro-text">
-                        <span class="name">Start Bootstrap</span>
-                        <hr class="star-light">
-                        <span class="skills">Web Developer - Graphic Artist - User Experience Designer</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
--->
-
 <div class="container">
 	<div class="row"><br><br>
 	</div>
@@ -140,90 +130,72 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2>User Top</h2>
+                    <h2>Edit User Profile</h2>
                     <hr class="star-primary">
                 </div>
             </div>
             </div>
       </section>
 
+<form action="AccountInformationChangeWindow" method="post">
 
-      <section id="Ranking">
-        <div class="container">
-
-
-            <div class="row">
-
-		  <div class="panel panel-default">
-		  <div class="panel-heading"><h2><a href="ranking.jsp">ランキング</a></h2></div>
-		  <div class="list-group">
-		  	  <%
-		  	  for(int i = 0; i < midiRank.size(); i++) {
-		      %>
-			  <button type="button" class="list-group-item"><%= i + 1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#"><%= midiRank.get(i).getTitle() %></a></button>
-			  <% } %>
-		  	  <%
-		  	  for(int i = midiRank.size(); i < 5; i++) {
-		      %>
-		      <p>&nbsp;</p>
-			  <% } %>
-			</div>
-		  </div>
+<div class="container">
+<div class="row">
+            <div class="col-lg-12-original">
+            <div class="text-left">
+            	<%-- http://placehold.it/200x200 --%>
+            	<form action="OutputImg" method="get">
+                <img class="img-responsive img-center" src="OutputImg" alt="">
+                </form>
 
 
+<p>
+<div class="form-group">
+    <label for="exampleInputFile">User Icon</label>
+    <input type="file" id="exampleInputFile" name="icon">
+  </div>
+</p>
 
-
-
-
-		</div>
-
-		 </div>
-    </section>
+<p>
+<div class="input-group">
+<label for="InputUserName">User Name</label>
+<%-- <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">--%>
+<input type="text" class="form-control" value="<%= user.getUsername() %>" aria-describedby="basic-addon1" name="name">
+</div>
+</p>
 
 
 
 
+<p>
+<div class="form-group">
+<label for="InputProfile">User Profile</label>
+<textarea class="form-control" id="UserProfile" name="profile" placeholder="" rows="7">
+<%= user.getProfile() %>
+</textarea>
 
-  <section id="New">
-        <div class="container">
-                    <div class="row">
+</div>
+</p>
 
-		  <div class="panel panel-default">
-		  <div class="panel-heading"><h2><a href="new.jsp">新着</a></h2></div>
-		  <div class="list-group">
-		  	  <%
-		  	  for(int i = 0; i < midiNew.size(); i++) {
-		      %>
-			  <button type="button" class="list-group-item"><%= i + 1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#"><%= midiNew.get(i).getTitle() %></a></button>
-			  <% } %>
-		  	  <%
-		  	  for(int i = midiNew.size(); i < 5; i++) {
-		      %>
-		      <p>&nbsp;</p>
-			  <% } %>
-			</div>
-		  </div>
+<div class="form-group">
+<div class="col-md-12 text-center">
+<button type="submit" class="btn btn-info btn-lg" name="change">プロフィールを変更する</button>
+</form>
+</div>
+</div>
+
+
+</div>
 
 
 
+</div>
+</div>
+</div>
 
 
-
-		</div>
-
-		 </div>
-    </section>
-
-
-
-
-
-
-
-
-
+<div class="row">
+</div>
 
 
 
@@ -256,14 +228,11 @@
     <script src="js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 
-    <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>
-</form>
+
 </body>
 
 </html>
