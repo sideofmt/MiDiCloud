@@ -1,11 +1,17 @@
 package model;
 
-import java.sql.*;
+import java.sql.Array;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class UserDAO {
-	final private static String dbname = "MidiCloud";
+	final private static String dbname = "MiDiCloud";
 	final private static String username = "dbpuser";
 	final private static String password = "hogehoge";
 	final private static String driverClassName = "org.postgresql.Driver";
@@ -202,7 +208,9 @@ public class UserDAO {
 			String password = resultSet.getString("password");
 			String profile = resultSet.getString("profile");
 			byte[] icon = resultSet.getBytes("icon");
-			ArrayList<Integer> MIDI_IDs = (ArrayList<Integer>)resultSet.getArray("MIDI_IDs");
+			ArrayList<Integer> MIDI_IDs;
+			int[] objst = (int[]) resultSet.getArray("MIDI_IDs").getArray();
+			MIDI_IDs = new ArrayList<Integer>(Arrays.asList(objst));
 			ArrayList<Integer> comment_IDs = (ArrayList<Integer>) resultSet.getArray("commentIDs");
 			Boolean isManagaer = resultSet.getBoolean("isManager");
 
@@ -225,6 +233,9 @@ public class UserDAO {
 
 			return null;
 		}
+	}
+	public static List<String> convert(String[] array){
+		return new ArrayList<String>(Arrays.asList(array));
 	}
 
 
