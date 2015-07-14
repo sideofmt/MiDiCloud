@@ -209,9 +209,11 @@ public class UserDAO {
 			String profile = resultSet.getString("profile");
 			byte[] icon = resultSet.getBytes("icon");
 			ArrayList<Integer> MIDI_IDs;
-			int[] objst = (int[]) resultSet.getArray("MIDI_IDs").getArray();
-			MIDI_IDs = new ArrayList<Integer>(Arrays.asList(objst));
-			ArrayList<Integer> comment_IDs = (ArrayList<Integer>) resultSet.getArray("commentIDs");
+			Integer[] midiids = (Integer[]) resultSet.getArray("MIDI_IDs").getArray();
+			MIDI_IDs = new ArrayList<Integer>(Arrays.asList(midiids));
+			ArrayList<Integer> comment_IDs ;
+			Integer[] commentids = (Integer[]) resultSet.getArray("commentIDs").getArray();
+			comment_IDs = new ArrayList<Integer> (Arrays.asList(commentids));
 			Boolean isManagaer = resultSet.getBoolean("isManager");
 
 			user.setUserID(userid);
