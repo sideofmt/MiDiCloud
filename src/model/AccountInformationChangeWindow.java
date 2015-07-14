@@ -67,8 +67,9 @@ public class AccountInformationChangeWindow extends HttpServlet {
 
 			user.setUsername(request.getParameter("name"));
 			user.setProfile(request.getParameter("profile"));
-			user.setIcon(translate.fileLoad(request.getParameter("icon")));
-
+//			System.out.println("unko:"+request.getParameter("icon"));
+//			System.out.println(((String)(request.getParameter("icon"))).length());
+			if(((String)(request.getParameter("icon"))).length() != 0)user.setIcon(translate.fileLoad(request.getParameter("icon")));
 			try {
 				manager.updateUser(user);
 			} catch (SQLException e) {
