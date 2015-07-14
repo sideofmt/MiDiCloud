@@ -30,4 +30,9 @@ public class Comment {
 	public void setMidiID(int midiID) {
 		this.midiID = midiID;
 	}
+	@Override
+	public String toString() {
+		return "Comment [commentID=" + commentID + ", comment=" + comment
+				+ ", userID=" + userID + ", midiID=" + midiID + "]";
+	}
 }

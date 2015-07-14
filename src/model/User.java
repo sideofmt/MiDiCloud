@@ -75,7 +75,7 @@ public class User {
 	public String toString() {
 		return "User [userID=" + userID + ", username=" + username
 				+ ", password=" + password + ", mailAddress=" + mailAddress
-				+ ", profile=" + profile + ", icon=" + Arrays.toString(icon)
+				+ ", profile=" + profile + ","
 				+ ", MIDI_IDs=" + MIDI_IDs + ", commentIDs=" + commentIDs
 				+ ", isManager=" + isManager + "]";
 	}

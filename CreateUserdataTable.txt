@@ -2,7 +2,7 @@ create table userdata
 (
 userID integer primary key,
 username varchar(30) not null,
-password varchar(16) unique not null,
+password varchar(16) not null,
 mailAddress varchar(255) unique not null,
 profile varchar(150),
 icon bytea, MIDI_IDs integer[],

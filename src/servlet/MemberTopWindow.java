@@ -77,7 +77,7 @@ public class MemberTopWindow extends HttpServlet {
 		System.out.println("MemberTopWindowのdoPostが呼ばれました");
 		HttpSession session = request.getSession();
 		request.setCharacterEncoding("UTF-8");
-		User user = (User)request.getAttribute("user");
+		User user = (User)session.getAttribute("user");
 		session.setAttribute("user",user);
 		System.out.println(request.getParameter("midiID"));
 
@@ -90,10 +90,12 @@ public class MemberTopWindow extends HttpServlet {
 			//MIDI詳細表示画面へ遷移
 			//Midifileオブジェクトを次画面へ送信
 			System.out.println("midi詳細画面へ遷移します");
+			session.setAttribute("user",user);
 
 			MidifileManager manager = new MidifileManager();
 			Midifile midifile = manager.search(Integer.parseInt(request.getParameter("midiID")));
-			request.setAttribute("midifile",midifile);
+			System.out.println(midifile.toString());
+			session.setAttribute("midifile",midifile);
 			this.getServletContext().getRequestDispatcher("/midifile.jsp").forward(request, response);
 		}
 

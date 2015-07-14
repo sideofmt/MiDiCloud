@@ -60,6 +60,7 @@ public class UserDAO {
 			pstmt.setInt(1, userID);
 
 			ResultSet resultSet = pstmt.executeQuery();
+			resultSet.next();
 
 			String userName = resultSet.getString("username");
 			String password = resultSet.getString("password");
@@ -113,8 +114,14 @@ public class UserDAO {
 				String mailAddress = resultSet.getString("mailAddress");
 				String profile = resultSet.getString("profile");
 				byte[] icon = resultSet.getBytes("icon");
-				ArrayList<Integer> MIDI_IDs = (ArrayList<Integer>)resultSet.getArray("MIDI_IDs");
-				ArrayList<Integer> comment_IDs = (ArrayList<Integer>) resultSet.getArray("commentIDs");
+				ArrayList<Integer> MIDI_IDs = null;
+				ArrayList<Integer> comment_IDs = null;
+				try{
+					MIDI_IDs = (ArrayList<Integer>) resultSet.getArray("MIDI_IDs");
+					comment_IDs = (ArrayList<Integer>) resultSet.getArray("commentIDs");
+				}catch(NullPointerException e){
+
+				}
 				Boolean isManagaer = resultSet.getBoolean("isManager");
 
 				user.setUserID(userID);

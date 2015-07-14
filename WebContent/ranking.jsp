@@ -57,10 +57,8 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <form action="RankingWindow" method="post">
                 <input type="hidden" name="action">
-                <a class="navbar-brand" href="#page-top" onClick="goSubmit(this.form, this)" name="midicloud" value="MidiCloud">MidiCloud</a>
-                </form>
+                <a class="navbar-brand" href="MemberTopWindow" name="midicloud" value="MidiCloud">MidiCloud</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -69,38 +67,38 @@
                     <li class="hidden">
                         <a href="#page-top"></a>
                     </li>
-                    		    <li>
+                    <li>
+
 
 <form class="form-inline" action="RankingWindow" method="post">
  <div class="input-group">
       <input type="text" class="form-control" placeholder="Search for..." name="search">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button" onClick="goSubmit(this.form, this)" name="goSearch" value="検索">Search</button>
+        <button class="btn btn-default" type="submit" name="goSearch" value="検索">Search</button>
       </span>
  </div>
 </form>
 </li>
 
 <li role="presentation" class="dropdown">
-    <form action="RankingWindow" method="post">
+
     <input type="hidden" name="action">
     <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" name="username">
-     <img alt="icon" src="OutputFile" height=10px width=10px> <%= user.getUsername() %> <span class="caret"></span>
+     <img alt="icon" src="OutputImg" height=40px width=40px> <%= user.getUsername() %> <span class="caret"></span>
     </a>
 
     <ul class="dropdown-menu">
 	<li>
-		<a href="" onClick="goSubmit(this.form, this)" name="detail" value="ユーザー詳細">Detail</a>
+		<input type="hidden" name="otherUser">
+		<a href="Profile?UserID=<%= user.getUserID() %>~" name="detail" value="ユーザー詳細">Detail</a>
 	</li>
 	<li role="separator" class="divider"></li>
 	<li>
-		<a href="" onClick="goSubmit(this.form, this)" name="logout" value="ログアウト">Logout</a>
+		<a href="Login" name="logout" value="ログアウト">Logout</a>
 	</li>
 
     </ul>
-    </form>
   </li>
-
 
 
 

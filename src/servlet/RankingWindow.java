@@ -59,12 +59,17 @@ public class RankingWindow extends HttpServlet {
 			request.setAttribute("search",request.getAttribute("search"));
 			this.getServletContext().getRequestDispatcher("/SearchingResultWindow").forward(request, response);
 		}
-		else if(request.getParameter("midifile") != null){
-			//MIDIファイルの詳細画面へ遷移
+		else if(request.getParameter("midiID")!=null){
+			//MIDI詳細表示画面へ遷移
+			//Midifileオブジェクトを次画面へ送信
+			System.out.println("midi詳細画面へ遷移します");
+			session.setAttribute("user",user);
+
 			MidifileManager manager = new MidifileManager();
-			Midifile midifile = manager.search(Integer.parseInt(request.getParameter("midifile")));
-			request.setAttribute("midiID", midifile);
-			this.getServletContext().getRequestDispatcher("/MidiDetailWindow").forward(request, response);
+			Midifile midifile = manager.search(Integer.parseInt(request.getParameter("midiID")));
+			System.out.println(midifile.toString());
+			session.setAttribute("midifile",midifile);
+			this.getServletContext().getRequestDispatcher("/midifile.jsp").forward(request, response);
 		}
 
 	}

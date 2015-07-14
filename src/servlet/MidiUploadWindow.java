@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +15,7 @@ import model.Midifile;
 import model.MidifileManager;
 import model.Translate;
 import model.User;
+import model.UserManager;
 
 /**
  * Servlet implementation class MidiUploadWindow
@@ -47,6 +49,9 @@ public class MidiUploadWindow extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession();
+
+		User user = (User)session.getAttribute("user");
 
 		Midifile midi = new Midifile();
 		MidifileManager manager = new MidifileManager();
@@ -70,12 +75,25 @@ public class MidiUploadWindow extends HttpServlet {
 			midi.setExplanation(request.getParameter("exp"));
 			midi.setFavorite(0);
 			midi.setMidifile(translate.fileLoad(request.getParameter("midifile")));
-			HttpSession session = request.getSession();
-			User user = (User)session.getAttribute("user");
+
 			midi.setUserID(user.getUserID());
 			midi.setDate(new Timestamp(System.currentTimeMillis()));
 
-			manager.add(midi);
+			int id = manager.add(midi);
+			UserManager um = new UserManager();
+
+			ArrayList<Integer> midiIDs;
+			try{
+				midiIDs = user.getMIDI_IDs();
+				midiIDs.add(id);
+				user.setMIDI_IDs(midiIDs);
+				um.updateUser(user);
+
+			}catch(Exception e){
+				System.out.println("midifileをユーザーに関連付けられませんでした");
+			}
+			session.setAttribute("user",user);
+
 
 			this.getServletContext().getRequestDispatcher("/midiUploadComplete.jsp")
 				.forward(request, response);

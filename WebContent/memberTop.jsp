@@ -146,13 +146,9 @@
 		  	  for(int i = 0; i < midiRank.size(); i++) {
 		      %>
 			  <button type="submit" class="list-group-item" name="midiID" value="<%= midiRank.get(i).getMidiID() %>"><%= i + 1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#"><%= midiRank.get(i).getTitle() %></a></button>
+			  </span>&nbsp;<%= midiRank.get(i).getTitle() %></button>
 			  <% } %>
-		  	  <%
-		  	  for(int i = midiRank.size(); i < 5; i++) {
-		      %>
-		      <p>&nbsp;</p>
-			  <% } %>
+
 			  </form>
 			</div>
 		  </div>
@@ -183,13 +179,9 @@
 		  	  for(int i = 0; i < midiNew.size(); i++) {
 		      %>
 			  <button type="submit" class="list-group-item" name="midiID" value="<%= midiNew.get(i).getMidiID() %>" ><%= i + 1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#"><%= midiNew.get(i).getTitle() %></a></button>
+			  </span>&nbsp;<%= midiNew.get(i).getTitle() %></button>
 			  <% } %>
-		  	  <%
-		  	  for(int i = midiNew.size(); i < 5; i++) {
-		      %>
-		      <p>&nbsp;</p>
-			  <% } %>
+
 			  </form>
 			</div>
 		  </div>

@@ -60,8 +60,7 @@
                 </button>
                 <form action="NewMidiWindow" method="post">
                 <input type="hidden" name="action">
-                <a class="navbar-brand" href="memberTop.jsp" name="midicloud" value="MidiCloud">MidiCloud</a>
-                </form>
+                <a class="navbar-brand" href="MemberTopWindow" name="midicloud" value="MidiCloud">MidiCloud</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -71,6 +70,7 @@
                         <a href="#page-top"></a>
                     </li>
                     <li>
+
 
 <form class="form-inline" action="NewMidiWindow" method="post">
  <div class="input-group">
@@ -83,18 +83,20 @@
 </li>
 
 <li role="presentation" class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-     <img alt="icon" src="OutputImg" height=40px width=40px> <%= user.getUsername() %> <span class="caret"></span>
 
+    <input type="hidden" name="action">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" name="username">
+     <img alt="icon" src="OutputImg" height=40px width=40px> <%= user.getUsername() %> <span class="caret"></span>
     </a>
+
     <ul class="dropdown-menu">
 	<li>
-		<input type="hidden" name="showuser">
-		<a href="AcountInfoWindow?showuser=<%= user.getUserID() %>~">Detail</a>
+		<input type="hidden" name="otherUser">
+		<a href="Profile?UserID=<%= user.getUserID() %>~" name="detail" value="ユーザー詳細">Detail</a>
 	</li>
 	<li role="separator" class="divider"></li>
 	<li>
-		<a href="Login">Logout</a>
+		<a href="Login" name="logout" value="ログアウト">Logout</a>
 	</li>
 
     </ul>
@@ -140,7 +142,7 @@
 		  <div class="panel panel-default">
 		  <div class="panel-heading"><h2>新着MIDI</h2></div>
 		  <div class="list-group">
-		  <form action="RankingWindow" method="post">
+		  <form action="NewMidiWindow" method="post">
 		  <input type="hidden" name="action">
 
 			<%
@@ -149,7 +151,7 @@
 			%>
 
 			  <button type="submit" class="list-group-item" name="midiID" value="<%= midifile.getMidiID() %>"><%= n+1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#"><%= midifile.getTitle() %></a></button>
+			  </span>&nbsp;<%= midifile.getTitle() %></button>
 
 			<%
 			n++;

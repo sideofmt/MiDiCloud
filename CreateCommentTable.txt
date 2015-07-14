@@ -1,0 +1,7 @@
+create table comment
+(
+commentID integer primary key,
+comment text not null,
+userID integer not null,
+midiID integer not null
+);

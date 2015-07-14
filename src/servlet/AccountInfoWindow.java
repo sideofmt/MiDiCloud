@@ -100,7 +100,7 @@ public class AccountInfoWindow extends HttpServlet {
 		}
 		else if(request.getParameter("edit") != null){
 			//ユーザーの編集へ遷移
-			this.getServletContext().getRequestDispatcher("/AccountInformationChangeWindow").forward(request, response);
+			this.getServletContext().getRequestDispatcher("/changeProfile.jsp").forward(request, response);
 		}
 		else if(request.getParameter("report") != null){
 			//不適切なユーザーを報告（書き途中）
@@ -132,11 +132,17 @@ public class AccountInfoWindow extends HttpServlet {
 //			this.getServletContext().getRequestDispatcher("/MidiUploadWindow").forward(request, response);
 			this.getServletContext().getRequestDispatcher("/midiUpload.jsp").forward(request, response);
 		}
-		else if(request.getAttribute("midi") != null){
-			//MIDIファイルの詳細画面へ遷移
-			Midifile midifile = (Midifile)request.getAttribute("midi");
-			request.setAttribute("midifile", midifile);
-			this.getServletContext().getRequestDispatcher("/MidiDetailWindow").forward(request, response);
+		else if(request.getParameter("midiID")!=null){
+			//MIDI詳細表示画面へ遷移
+			//Midifileオブジェクトを次画面へ送信
+			System.out.println("midi詳細画面へ遷移します");
+			session.setAttribute("user",user);
+
+			MidifileManager manager = new MidifileManager();
+			Midifile midifile = manager.search(Integer.parseInt(request.getParameter("midiID")));
+			System.out.println(midifile.toString());
+			session.setAttribute("midifile",midifile);
+			this.getServletContext().getRequestDispatcher("/midifile.jsp").forward(request, response);
 		}
 
 	}

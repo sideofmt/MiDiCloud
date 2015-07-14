@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,8 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.Comment;
+import model.CommentManager;
 import model.Midifile;
 import model.MidifileManager;
+import model.Report;
+import model.ReportManager;
 import model.User;
 
 /**
@@ -51,13 +56,55 @@ public class MidiInformationWindow extends HttpServlet {
 		midifile = (Midifile)session.getAttribute("midifile");
 		user = (User)session.getAttribute("user");
 
-		if ("midicloud".equals(request.getParameter("action"))) {
-			this.getServletContext().getRequestDispatcher("/Login").forward(request, response);
-		} else if("favo".equals(request.getParameter("action"))) {
-			midifile.setFavorite(midifile.getFavorite() + 1);
-			//manager.update(midifile);
-			this.getServletContext().getRequestDispatcher("/MidiInformationWindow").forward(request, response);
+		if(request.getParameter("goSearch")!=null){
+			request.setAttribute("search",request.getAttribute("search"));
+			this.getServletContext().getRequestDispatcher("/SearchingResultWindow").forward(request, response);
+		} else if(request.getParameter("favo") != null) {
+			midifile.setFavorite(Integer.valueOf(request.getParameter("value")));
+			manager.update(midifile);
+			request.removeAttribute("favo");
+			//this.getServletContext().getRequestDispatcher("/MidiInformationWindow").forward(request, response);
+		} else if(request.getParameter("download") != null) {
+			request.setAttribute("midifile",request.getAttribute("midifile"));
+			OutputDownload out = new OutputDownload();
+			out.doGet(request, response);
+			this.getServletContext().getRequestDispatcher("/OutputDownload").forward(request, response);
 		}
+		 else if(request.getParameter("commentUpload") != null) {
+			 Comment comment = new Comment();
+			 CommentManager cmanager = new CommentManager();
+			comment.setComment(request.getParameter("userComment"));
+			comment.setUserID(user.getUserID());
+			comment.setMidiID(midifile.getMidiID());
+			boolean flag = false;;
+			try {
+				flag = cmanager.addComment(comment);
+			} catch (SQLException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+			if(flag){
+				System.out.println("コメントの追加に成功しました");
+			}else{
+				System.out.println("コメントの追加に失敗しました");
+			}
+			this.getServletContext().getRequestDispatcher("/midifile.jsp").forward(request, response);
+		}
+		else if(request.getParameter("edit")!=null){
+			this.getServletContext().getRequestDispatcher("/midiChange.jsp").forward(request, response);
+		}
+		else if(request.getParameter("delete")!=null){
+			manager.delete(midifile.getMidiID());
+			this.getServletContext().getRequestDispatcher("/memberTop.jsp").forward(request, response);
+		}
+		else if(request.getParameter("report")!=null){
+			Report report = new Report();
+			ReportManager rmanager = new ReportManager();
+
+
+			this.getServletContext().getRequestDispatcher("/midifile.jsp").forward(request, response);
+		}
+
 	}
 
 }

@@ -4,10 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MidifileManager {
-	public void add(Midifile midifile){
+	public int add(Midifile midifile){
 		MidifileDAO midifileDAO = new MidifileDAO();
+		int id = midifileDAO.addMidifile(midifile);
+		if(id==0){
+			System.out.println("midifileの追加に失敗しました");
+		}else{
+			System.out.println("midifileの追加に成功しました");
+		}
 
-		midifileDAO.addMidifile(midifile);
+		return id;
 	}
 
 	public List<Midifile> searchList(String title) {

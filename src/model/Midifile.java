@@ -4,6 +4,12 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 public class Midifile implements Serializable{
+	@Override
+	public String toString() {
+		return "Midifile [midiID=" + midiID + ", title=" + title
+				+ ", explanation=" + explanation + ", favorite=" + favorite
+				+ ", userID=" + userID + ", date=" + date + "]";
+	}
 	private int midiID;
 	private String title;
 	private String explanation;

@@ -13,6 +13,7 @@ public class UserManager {
 		//対応している時1を返す
 		//対応している上に管理者である場合は2を返す
 		User user = userDAO.searchUser(mailAddress);
+		System.out.println(user);
 		if(user==null){
 			System.out.println("ログインに失敗しました userがnull");
 			return 0;

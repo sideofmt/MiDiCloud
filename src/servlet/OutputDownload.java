@@ -10,19 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import model.User;
+import model.Midifile;
 
 /**
- * Servlet implementation class OutputImg
+ * Servlet implementation class OutputDownload
  */
-@WebServlet("/OutputUserImg")
-public class OutputUserImg extends HttpServlet {
+@WebServlet("/OutputDownload")
+public class OutputDownload extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public OutputUserImg() {
+    public OutputDownload() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,16 +32,20 @@ public class OutputUserImg extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		//Translate t = new Translate();
 
-		User user = (User)request.getAttribute("otherUser");
-		//User user = new User();
-		//user.setIcon(t.fileLoad("C:/Users/shigetoshi.n/Desktop/ソフ研/mudai.png"));
+		Midifile midi = (Midifile)session.getAttribute("midifile");
+		/*Translate translate = new Translate();
+		midi.setTitle("test");
+		midi.setMidifile(translate.fileLoad("C:/Users/shigetoshi.n/Desktop/ソフ研/曲/e.t.c/Argento/a.mid"));
+		*/
 		java.io.ByteArrayOutputStream byteOut = new java.io.ByteArrayOutputStream();
-		byteOut.write(user.getIcon());
-		//byteOut.write(midi.getMidifile(),0,translate.size(midi.getMidifile()));
+		byteOut.write(midi.getMidifile());
 
-		response.setContentType( "image/jpeg" );
+		response.setContentType( "application/x-mplayer2" );
+		//response.setContentType( "audio/x-mid" );
+
+		String filename = midi.getTitle()+".mid";
+		response.setHeader("Content-Disposition","attachment;filename=\""+filename+"\"");
 
 		response.setContentLength( byteOut.size() );
 		OutputStream out = response.getOutputStream();

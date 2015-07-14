@@ -36,16 +36,9 @@
 	<%@ page import="model.Translate" %>
 	<%@ page import="java.lang.*" %>
 
-    <% //User user = (User)session.getAttribute("user");
-    
-    
-       User user = new User();
-       user.setUsername("k-t");
-       user.setProfile("俺の名前はk-t（工藤 ティンイティ）。大学生DTMerだ。"
-				+ "ある日、俺は幼馴染で同級生のm-t（毛利 ティン）と遊園地に、せやかて工藤！！");
-       Translate t = new Translate();
-       user.setIcon(t.fileLoad("C:/Users/shigetoshi.n/Desktop/ソフ研/mudai.png"));
+    <% User user = (User)session.getAttribute("user");
        request.setAttribute("user", user);
+       System.out.println(user);
      %>
 
 </head>
@@ -63,7 +56,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#page-top">MidiCloud</a>
+                <a class="navbar-brand" href="MemberTopWindow" name="midicloud" value="MidiCloud">MidiCloud</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -72,37 +65,34 @@
                     <li class="hidden">
                         <a href="#page-top"></a>
                     </li>
-                    		    <li>
-<!--
-		<form class="form-inline">
-  <div class="form-group">
-    <label class="sr-only" for="exampleInputPassword3">Search word</label>
-    <input type="password" class="form-control" id="exampleInputPassword3" placeholder="Password">
-  </div>
-  <button type="submit" class="btn btn-default">Search</button>
-</form>
--->
-<form class="form-inline">
+                    <li>
+
+
+<form class="form-inline" action="AccountInformationChangeWindow" method="post">
  <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search for...">
+      <input type="text" class="form-control" placeholder="Search for..." name="search">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Search</button>
+        <button class="btn btn-default" type="submit" name="goSearch" value="検索">Search</button>
       </span>
  </div>
 </form>
 </li>
 
 <li role="presentation" class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-     <img alt="icon" src="..."> UserName <span class="caret"></span>
+
+    <input type="hidden" name="action">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" name="username">
+     <img alt="icon" src="OutputImg" height=40px width=40px> <%= user.getUsername() %> <span class="caret"></span>
     </a>
+
     <ul class="dropdown-menu">
 	<li>
-		<a href="#">Detail</a>
+		<input type="hidden" name="otherUser">
+		<a href="Profile?UserID=<%= user.getUserID() %>~" name="detail" value="ユーザー詳細">Detail</a>
 	</li>
 	<li role="separator" class="divider"></li>
 	<li>
-		<a href="#">Logout</a>
+		<a href="Login" name="logout" value="ログアウト">Logout</a>
 	</li>
 
     </ul>
@@ -145,7 +135,7 @@
             <div class="text-left">
             	<%-- http://placehold.it/200x200 --%>
             	<form action="OutputImg" method="get">
-                <img class="img-responsive img-center" src="OutputImg" alt="">
+                <img class="img-responsive img-center" src="OutputImg" alt="" height=200px width=200px>
                 </form>
 
 
@@ -179,7 +169,7 @@
 
 <div class="form-group">
 <div class="col-md-12 text-center">
-<button type="submit" class="btn btn-info btn-lg" name="change">プロフィールを変更する</button>
+<button type="submit" class="btn btn-info btn-lg" name="change" value="変更">プロフィールを変更する</button>
 </form>
 </div>
 </div>

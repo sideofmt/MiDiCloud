@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  * Start Bootstrap - Freelancer Bootstrap Theme (http://startbootstrap.com)
  * Code licensed under the Apache License v2.0.
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
@@ -103,7 +103,7 @@
   position: absolute;
   top: 16px;
   left: 13px;
-  
+
   background-color: #666666;
   z-index: 100;
   border-top-right-radius: 50%;
@@ -288,7 +288,7 @@ header .intro-text .skills {
 header {
     text-align: center;
     background-attachment: scroll;
-    background-image: url('img/header-bg.jpg');
+    background-image: url('img/3.jpg');
     background-position: center center;
     background-repeat: none;
     -webkit-background-size: cover;

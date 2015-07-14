@@ -1,19 +1,18 @@
 package model;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 
 public class CommentManager {
-	public void addComment(int commentID,String comment,int userID, int midiID){
-		Comment com = new Comment();
+
+	public boolean addComment(Comment com) throws SQLException{
 		CommentDAO comDAO = new CommentDAO();
 
-		com.setCommentID(commentID);
-		com.setComment(comment);
-		com.setUserID(userID);
-		com.setMidiID(midiID);
+		com.setCommentID(comDAO.searchNoID());
+		boolean flag = comDAO.add(com);
+		return flag;
 
-		comDAO.add(com);
 	}
 
 	public void delComment(int midiID){
@@ -26,6 +25,10 @@ public class CommentManager {
 		ArrayList<Comment> comList = new ArrayList<Comment>();
 
 		comList = comDAO.returnComment(midiID);
+
+
+
+
 		return comList;
 	}
 }

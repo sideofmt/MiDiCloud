@@ -32,6 +32,17 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <%@ page import="model.Midifile" %>
+    <%@ page import="model.MidifileManager" %>
+    <%@ page import="model.User" %>
+
+    <%  Midifile midifile = (Midifile)session.getAttribute("midifile");
+    User user = (User)session.getAttribute("user");
+
+    	//request.setAttribute("midifile", midifile);
+    	//session.setAttribute("midifile", midifile);
+    %>
+
 </head>
 
 <body id="page-top" class="index">
@@ -47,7 +58,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#page-top">MidiCloud</a>
+                <a class="navbar-brand" href="MemberTopWindow" name="midicloud" value="MidiCloud">MidiCloud</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -56,37 +67,34 @@
                     <li class="hidden">
                         <a href="#page-top"></a>
                     </li>
-                    		    <li>
-<!--
-		<form class="form-inline">
-  <div class="form-group">
-    <label class="sr-only" for="exampleInputPassword3">Search word</label>
-    <input type="password" class="form-control" id="exampleInputPassword3" placeholder="Password">
-  </div>
-  <button type="submit" class="btn btn-default">Search</button>
-</form>
--->
-<form class="form-inline">
+                    <li>
+
+
+<form class="form-inline" action="AccountInfoWindow" method="post">
  <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search for...">
+      <input type="text" class="form-control" placeholder="Search for..." name="search">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Search</button>
+        <button class="btn btn-default" type="submit" name="goSearch" value="検索">Search</button>
       </span>
  </div>
 </form>
 </li>
 
 <li role="presentation" class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-     <img alt="icon" src="..."> UserName <span class="caret"></span>
+
+    <input type="hidden" name="action">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" name="username">
+     <img alt="icon" src="OutputImg" height=40px width=40px> <%= user.getUsername() %> <span class="caret"></span>
     </a>
+
     <ul class="dropdown-menu">
 	<li>
-		<a href="#">Detail</a>
+		<input type="hidden" name="otherUser">
+		<a href="Profile?UserID=<%= user.getUserID() %>~" name="detail" value="ユーザー詳細">Detail</a>
 	</li>
 	<li role="separator" class="divider"></li>
 	<li>
-		<a href="#">Logout</a>
+		<a href="Login" name="logout" value="ログアウト">Logout</a>
 	</li>
 
     </ul>
@@ -126,19 +134,17 @@
 
 
 
-<div class="alert alert-danger" role="alert">
-  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-  <span class="sr-only">Error:</span>
-  ここにエラーメッセージを表示！
-</div>
+<% if(request.getAttribute("error") != null) { %>
+<%= request.getAttribute("error") %>
+<% } %>
 
 
 
-
+<form action="MidiChangeWindow" method="post">
 <p>
 <div class="form-group">
     <label for="exampleInputFile">MIDI File</label>
-    <input type="file" id="exampleInputFile">
+    <input type="file" id="exampleInputFile" name="path">
   </div>
 </p>
 
@@ -147,8 +153,8 @@
 
 <p>
 <div class="input-group">
-<label for="InputUserName">Song Title</label>
-<input type="text" class="form-control" placeholder="ここに曲名を入力" aria-describedby="basic-addon1">
+<label for="InputUserName">曲名</label>
+<input type="text" name="title"  class="form-control" value="<%= midifile.getTitle() %>" aria-describedby="basic-addon1">
 </div>
 </p>
 
@@ -157,8 +163,8 @@
 
 <p>
 <div class="form-group">
-<label for="InputProfile">Music Description</label>
-<textarea class="form-control" id="UserProfile" name="UserProfile" placeholder="ユーザーの説明" rows="7"></textarea>
+<label for="InputProfile">説明</label>
+<textarea class="form-control" id="UserProfile" name="exp" value="<%= midifile.getExplanation() %>" placeholder="<%= midifile.getExplanation() %>" rows="7"></textarea>
 
 </div>
 </p>
@@ -169,9 +175,11 @@
 
 <div class="form-group">
 <div class="col-md-12 text-center">
-<button type="submit" class="btn btn-info btn-lg">変更を保存</button>
+<button type="submit" name="change" class="btn btn-info btn-lg">変更を保存</button>
 </div>
 </div>
+
+</form>
 
 
 
@@ -219,13 +227,6 @@
     <script src="js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="js/classie.js"></script>
-    <script src="js/cbpAnimatedHeader.js"></script>
-
-    <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>

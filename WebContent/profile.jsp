@@ -38,10 +38,18 @@
 
     <%
     User user = (User)session.getAttribute("user");
-    List<Midifile> midifiles = null;
-    if(request.getAttribute("midifiles") != null){
-    	midifiles = (List<Midifile>)request.getAttribute("midifiles");
-    }
+
+    MidifileManager m = new MidifileManager();
+	List<Midifile> midifiles = null;
+
+	try{
+	midifiles = m.searchList(user.getUserID());
+	request.setAttribute("midifiles",midifiles);
+	}catch(NullPointerException e){
+		System.out.println(e);
+	}
+
+
     %>
 
 
@@ -199,20 +207,19 @@
 		  <input type="hidden" name="action">
 
 		<%
-		if(midifiles != null){
-
+		//if(midifiles != null){
 		int n=0;
 		for(Midifile midifile : midifiles){
 		%>
 
-		<button type="button" class="list-group-item"><%= n+1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
-		</span>&nbsp;<a href="" onClick="goSubmit2(this.form, this)" name="midi" value=<%= midifile %> ><%= midifile.getTitle() %></a></button>
+		<button type="submit" class="list-group-item" name="midiID" value="<%= midifile.getMidiID() %>"><%= n+1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
+		</span>&nbsp;<a href="#"><%= midifile.getTitle() %></a></button>
 
 		<%
 		n++;
 		}
 
-		}
+
 		%>
 
 		</form>

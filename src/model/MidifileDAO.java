@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MidifileDAO {
-	final private static String dbname = "test";
-	final private static String user = "wspuser";
+	final private static String dbname = "MidiCloud";
+	final private static String user = "dbpuser";
 	final private static String password = "hogehoge";
 	final private static String driverClassName = "org.postgresql.Driver";
 	final private static String url = "jdbc:postgresql://localhost/" + dbname;
@@ -55,7 +55,7 @@ public class MidifileDAO {
 			e.printStackTrace();
 		}
 	}
-	public void addMidifile(Midifile midifile) {
+	public int addMidifile(Midifile midifile) {
 		Connection connection,connection2;
 		String sql = "INSERT INTO midifile VALUES(?,?,?,?,?,?,?)";
 		String sql2 = "SELECT MAX(midiID) FROM midifile";
@@ -89,8 +89,11 @@ public class MidifileDAO {
 			pstmt.executeUpdate();
 
 			connection.close();
+
+			return id;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return 0;
 		}
 	}
 	public Midifile getMidifile(int midiID) {
@@ -118,10 +121,12 @@ public class MidifileDAO {
 
 			result.close();
 			connection.close();
+			return midifile;
 		} catch(Exception e) {
 			e.printStackTrace();
+			return null;
 		}
-		return midifile;
+
 	}
 	public List<Midifile> getMidiList(int userID) {
 		ArrayList<Midifile> midifiles = new ArrayList<Midifile>();
@@ -150,10 +155,13 @@ public class MidifileDAO {
 
 			result.close();
 			connection.close();
+
+			return midifiles;
 		} catch(Exception e) {
 			e.printStackTrace();
+			return null;
 		}
-		return midifiles;
+
 	}
 	public List<Midifile> getMidiList(String title) {
 		ArrayList<Midifile> midifiles = new ArrayList<Midifile>();
@@ -182,10 +190,11 @@ public class MidifileDAO {
 
 			result.close();
 			connection.close();
+			return midifiles;
 		} catch(Exception e) {
 			e.printStackTrace();
+			return null;
 		}
-		return midifiles;
 	}
 	public List<Midifile> getMidiRankingList() {
 		ArrayList<Midifile> midifiles = new ArrayList<Midifile>();
@@ -227,8 +236,10 @@ public class MidifileDAO {
 			Class.forName(driverClassName);
 			connection = DriverManager.getConnection(url, user, password);
 			PreparedStatement pstmt = connection.prepareStatement(sql);
+			ResultSet result = null;
 
-			ResultSet result = pstmt.executeQuery();
+			try{
+			result = pstmt.executeQuery();
 
 			while(result.next()) {
 				Midifile midifile = new Midifile();
@@ -240,6 +251,11 @@ public class MidifileDAO {
 				midifile.setUserID(result.getInt(6));
 				midifile.setDate(result.getTimestamp(7));
 				midifiles.add(midifile);
+			}
+
+			}catch(NullPointerException e){
+				System.out.println("NullPointerExceptionが投げられました");
+				e.printStackTrace();
 			}
 
 			result.close();

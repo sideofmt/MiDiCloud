@@ -43,42 +43,34 @@
 	<%@ page import="java.util.*" %>
 	<%@ page import="model.MidifileManager" %>
 
-	<% //Midifile midifile = (Midifile)session.getAttribute("midifile");
-	   //User user = (User)session.getAttribute("user");
-	   Translate t = new Translate();
-	   CommentManager commentManager = new CommentManager();
-	   //ArrayList<Comment> commentList = commentManager.returnComments(midifile.getMidiID());
-	   UserManager userManager = new UserManager();
+	<%
+	User user = (User)session.getAttribute("user");
+	Midifile midifile = (Midifile)session.getAttribute("midifile");
+
+	Translate t = new Translate();
+	CommentManager commentManager = new CommentManager();
+	UserManager userManager = new UserManager();
+	MidifileManager m = new MidifileManager();
+
+	ArrayList<Comment> commentList;
+	try{
+		commentList=commentManager.returnComments(midifile.getMidiID());
+	}catch(NullPointerException e){
+		commentList = new ArrayList<Comment>();
+	}
 
 
-	   User user = new User();
-	   /*Midifile midifile = new Midifile();
-	   try {
-			midifile.setMidifile(t.fileLoad("C:/Users/shigetoshi.n/Desktop/ソフ研/曲/e.t.c/Argento/a.mid"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	   midifile.setFavorite(8);
-	   midifile.setTitle("midiファイルだお♪");
-	   midifile.setUserID(1);
-	   midifile.setExplanation("俺の名前はk-t（工藤 ティンイティ）。大学生DTMerだ。"
-				+ "ある日、俺は同級生で幼馴染のm-t（毛利 ティン）とYAMAHAに遊びに来ていた。"
-				+ "その途中、黒づくめの組織の怪しげな取引現場に遭遇した。"
-				+ "取引現場に夢中になっていた俺は、背後から近付いてくるもう一人の男の気配に気づかず、"
-				+ "目が覚めたら・・・DAWが異常終了してしまっていた！！");
-	   */
-	   user.setUserID(2);
-	   MidifileManager ma = new MidifileManager();
-	   Midifile midifile = ma.search(1);
-	   request.setAttribute("midifile", midifile);
-	   user.setManager(false);
-	   ArrayList<Comment> commentList = new  ArrayList<Comment>();
-	   Comment c = new Comment();
-	   c.setUserID(3);
-	   c.setComment("黒ずくめの組織のボスはわしじゃよ。");
-	   commentList.add(c);
+	List<Midifile> midifiles;
 
-		%>
+	try{
+	midifiles = m.searchList(user.getUserID());
+	request.setAttribute("midifiles",midifiles);
+	}catch(NullPointerException e){
+		System.out.println(e);
+	}
+
+
+	%>
 
 </head>
 
@@ -95,7 +87,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#page-top">MidiCloud</a>
+                <a class="navbar-brand" href="memberTop.jsp">MidiCloud</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -106,32 +98,33 @@
                     </li>
                     		    <li>
 
-<form class="form-inline">
+<form class="form-inline" action="MidiInformationWindow" method="post">
  <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search for...">
+      <input type="text" class="form-control" placeholder="Search for..." name="search">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Search</button>
+        <button class="btn btn-default" type="submit" name="goSearch" value="検索">Search</button>
       </span>
  </div>
 </form>
 </li>
 
 <li role="presentation" class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-     <img alt="icon" src="..."> UserName <span class="caret"></span>
-    </a>
+
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" name="username">
+     <img alt="icon" src="OutputImg" height=40px width=40px> <%= user.getUsername() %> <span class="caret"></span>
+	</a>
+
     <ul class="dropdown-menu">
 	<li>
-		<a href="#">Detail</a>
+		<a href="Profile?UserID=<%= user.getUserID() %>~" name="detail" value="ユーザー詳細">Detail</a>
 	</li>
 	<li role="separator" class="divider"></li>
 	<li>
-		<a href="#">Logout</a>
+		<a href="Login" name="logout" value="ログアウト">Logout</a>
 	</li>
 
     </ul>
   </li>
-
 
 
 
@@ -173,8 +166,7 @@
             <div class="col-lg-12-original">
 
 <div class="text-right">
-<img alt="icon" src="..."> UserName
-
+<img alt="icon" src="OutputMidiImg" width=60px height=60px>  <%= userManager.returnUser( midifile.getUserID() ).getUsername() %>
 </div>
 
             <div class="text-left">
@@ -183,24 +175,18 @@
 
 
 <br>
-<%
 
-%>
-<form action="OutputFile" method="get">
-<embed src="OutputFile" type="application/x-mplayer2" height="40" autostart="true" autoplay="true" loop="false">
-</embed>
-</form>
 <br><br>
 
 <form action="MidiInformationWindow" method="post">
 <input type="hidden" name="action">
 
-<button type="button" class="btn btn-info  btn-sm" onClick="goSubmit(this.form, this)" name="favo">
+<button type="submit" class="btn btn-info  btn-sm" name="favo" value="<%= midifile.getFavorite() +1 %>">
   <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Favorite <span class="badge">
   <%= midifile.getFavorite() %></span>
 </button>
 
-<button type="button" class="btn btn-default btn-sm">
+<button type="submit" class="btn btn-default btn-sm" name="download" value="DL">
   <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download
 </button>
 
@@ -208,19 +194,18 @@
 
 
             <% if(midifile.getUserID() == user.getUserID()) { %>
-				<button type="button" class="btn btn-default btn-sm">
- 				 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>変更する
+				<button type="submit" class="btn btn-default btn-sm" name="edit" value="編集">
+ 				 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
 				</button>
-				<button type="button" class="btn btn-default btn-sm">
- 				 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>削除する
+			<% } %>
+            <%
+            if(user.isManager() || user.getUserID() == midifile.getUserID()) { %>
+				<button type="submit" class="btn btn-default btn-sm" name="delete" value="削除">
+ 				 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
 				</button>
-			<% } else if(user.isManager()) { %>
-				<button type="button" class="btn btn-default btn-sm">
- 				 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>削除する
-				</button>
-			<% } else {%>
-			<button type="button" class="btn btn-default btn-sm btn-warning">
- 				 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>報告する
+			<% } else { %>
+			<button type="submit" class="btn btn-default btn-sm btn-warning" name="report" value="報告">
+ 				 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Report
 				</button>
 			<% } %>
 <br><br>
@@ -258,12 +243,12 @@
 <div class="row">
 <div class="form-group">
 <label for="InputProfile">Comment</label>
-<textarea class="form-control" id="UserProfile" name="UserProfile" placeholder="コメント" rows="5"></textarea>
+<textarea class="form-control" id="UserProfile" name="userComment" placeholder="コメント" rows="5"></textarea>
 </div>
 
 <div class="form-group">
 <div class="col-md-12 text-center">
-<button type="submit" class="btn btn-info btn-sm">投稿</button>
+<button type="submit" class="btn btn-info btn-sm" name="commentUpload">投稿</button>
 </div>
 </div>
 </div>
@@ -275,13 +260,12 @@
 <!-- Timeline - START -->
 <div class="container">
     <ul class="timeline">
-    	<% for(Comment comment :commentList) {%>
-    	<% User commentUser = userManager.returnUser(comment.getUserID()); %>
+    	<% for(Comment comment : commentList){ %>
         <li><!---Time Line Element--->
-          <div class="timeline-badge blue"><img alt="icon" src="<%-- commentUser.getIcon() --%>"></div>
+          <div class="timeline-badge blue"></div>
           <div class="timeline-panel">
             <div class="timeline-heading">
-              <h4 class="timeline-title"><%--<%= commentUser.getUsername() %>--%></h4>
+              <h4 class="timeline-title"> <%= userManager.returnUser(comment.getUserID()).getUsername() %> </h4>
             </div>
             <div class="timeline-body"><!---Time Line Body&Content--->
               <p><%= comment.getComment() %></p>
@@ -294,27 +278,6 @@
 
 
 
-<div class="text-center">
-			<nav>
-			  <ul class="pagination">
-			    <li class="disabled">
-			      <a href="#" aria-label="Previous">
-			        <span aria-hidden="true">&laquo;</span>
-			      </a>
-			    </li>
-			    <li class="active"><a href="#">1</a></li>
-			    <li><a href="#">2</a></li>
-			    <li><a href="#">3</a></li>
-			    <li><a href="#">4</a></li>
-			    <li><a href="#">5</a></li>
-			    <li>
-			      <a href="#" aria-label="Next">
-			        <span aria-hidden="true">&raquo;</span>
-			      </a>
-			    </li>
-			  </ul>
-			</nav>
-			</div>
 
 
 
