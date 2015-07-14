@@ -1,0 +1,7 @@
+create table reportt
+(
+reportID integer primary key,
+userID integer not null,
+reportedUserID integer not null,
+reportedmidiID integer not null
+);
