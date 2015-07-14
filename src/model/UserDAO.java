@@ -67,8 +67,14 @@ public class UserDAO {
 			String mailAddress = resultSet.getString("mailAddress");
 			String profile = resultSet.getString("profile");
 			byte[] icon = resultSet.getBytes("icon");
-			ArrayList<Integer> MIDI_IDs = (ArrayList<Integer>) resultSet.getArray("MIDI_IDs");
-			ArrayList<Integer> comment_IDs = (ArrayList<Integer>) resultSet.getArray("commentIDs");
+			ArrayList<Integer> MIDI_IDs = null;
+			ArrayList<Integer> comment_IDs = null;
+			try{
+				MIDI_IDs = (ArrayList<Integer>) resultSet.getArray("MIDI_IDs");
+				comment_IDs = (ArrayList<Integer>) resultSet.getArray("commentIDs");
+			}catch(NullPointerException e){
+
+			}
 			Boolean isManagaer = resultSet.getBoolean("isManager");
 
 			user.setUserID(userID);
@@ -151,7 +157,7 @@ public class UserDAO {
 
 	public void updateUser(User user)throws SQLException{
 		Connection connection;
-		String sql = "update userdata set username=?,password=?,mailAddress=?,profile=?,icon=?,MIDI_IDs=?,commentIDs=?,isManagaer=? where userID=?";
+		String sql = "update userdata set username=?,password=?,mailAddress=?,profile=?,icon=?,MIDI_IDs=?,commentIDs=?,isManager=? where userID=?";
 
 		try{
 			Class.forName(driverClassName);
@@ -299,8 +305,14 @@ public class UserDAO {
 				user.setMailAddress(result.getString(4));
 				user.setProfile(result.getString(5));
 				user.setIcon(result.getBytes(6));
-				user.setMIDI_IDs((ArrayList<Integer>)result.getArray(7));
-				user.setCommentIDs((ArrayList<Integer>)result.getArray(8));
+				ArrayList<Integer> MIDI_IDs = null;
+				ArrayList<Integer> comment_IDs = null;
+				try{
+					MIDI_IDs = (ArrayList<Integer>) result.getArray("MIDI_IDs");
+					comment_IDs = (ArrayList<Integer>) result.getArray("commentIDs");
+				}catch(NullPointerException e){
+
+				}
 				user.setManager(result.getBoolean(9));
 				users.add(user);
 			}
