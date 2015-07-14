@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.Midifile;
+import model.MidifileManager;
 import model.User;
 
 /**
@@ -51,29 +52,16 @@ public class SearchingResultWindow extends HttpServlet {
 		HttpSession session = request.getSession();
 		User user = (User)session.getAttribute("user");
 
-		if("midicloud".equals(request.getParameter("action"))){
-			//ユーザートップ画面へ遷移
-			this.getServletContext().getRequestDispatcher("/MemberTopWindow").forward(request, response);
-		}
-		else if("goSearch".equals(request.getParameter("action"))){
+		if(request.getParameter("goSearch") != null){
 			//検索結果画面へ遷移
 			request.setAttribute("search",request.getAttribute("search"));
 			this.getServletContext().getRequestDispatcher("/SearchingResultWindow").forward(request, response);
 		}
-		else if("detail".equals(request.getParameter("action"))){
-			//アカウント表示画面へ遷移
-			request.setAttribute("otherUser", user);
-			this.getServletContext().getRequestDispatcher("/AccountInfoWindow").forward(request, response);
-		}
-		else if("logout".equals(request.getParameter("action"))){
-			//ユーザーデータを破棄してログアウト
-			session.removeAttribute("user");
-			this.getServletContext().getRequestDispatcher("/Login").forward(request, response);
-		}
-		else if(request.getAttribute("midi") != null){
+		else if(request.getParameter("midifile") != null){
 			//MIDIファイルの詳細画面へ遷移
-			Midifile midifile = (Midifile)request.getAttribute("midi");
-			request.setAttribute("midifile", midifile);
+			MidifileManager manager = new MidifileManager();
+			Midifile midifile = manager.search(Integer.parseInt(request.getParameter("midifile")));
+			request.setAttribute("midiID", midifile);
 			this.getServletContext().getRequestDispatcher("/MidiDetailWindow").forward(request, response);
 		}
 	}

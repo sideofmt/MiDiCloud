@@ -35,6 +35,8 @@ public class CreateAccountWindow extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub]
 
+		System.out.println("CreateAccountWindowのdoGetが呼び出されました");
+
 		this.getServletContext().getRequestDispatcher("/makeAccount.jsp").forward(request, response);
 
 	}
@@ -45,10 +47,13 @@ public class CreateAccountWindow extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
+		System.out.println("CreateAccountWindowのdoPostが呼び出されました");
+
 
 		if ("midicloud".equals(request.getParameter("action"))) {
+			System.out.println("MidiCloudが押されました");
 			this.getServletContext().getRequestDispatcher("/Login").forward(request, response);
-			}
+		}
 		else if(request.getParameter("createAccount") != null){
 
 

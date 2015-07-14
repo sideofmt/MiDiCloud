@@ -2,6 +2,8 @@ package servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,18 +18,19 @@ import model.ReportManager;
 import model.Translate;
 import model.User;
 import model.UserManager;
+import model.MidifileManager;
 
 /**
  * Servlet implementation class AcountInfromationChangeWindow
  */
-@WebServlet("/AcountInfromationChangeWindow")
-public class AcountInfoWindow extends HttpServlet {
+@WebServlet("/AccountInfoWindow")
+public class AccountInfoWindow extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AcountInfoWindow() {
+    public AccountInfoWindow() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,6 +40,7 @@ public class AcountInfoWindow extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		System.out.println("AccountInfoWindowのdoGetが呼ばれました");
 
 		HttpSession session = request.getSession();
 
@@ -48,6 +52,33 @@ public class AcountInfoWindow extends HttpServlet {
 			this.getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
 		}
 		else{
+
+			MidifileManager m = new MidifileManager();
+			UserManager manager = new UserManager();
+			User showuser = null;
+			try {
+				showuser = manager.returnUser(Integer.parseInt(request.getParameter("midiID")));
+			} catch (NumberFormatException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			} catch(NullPointerException e){
+				User user = (User)session.getAttribute("user");
+				showuser = user;
+			}
+
+			List<Midifile> midifiles;
+
+			try{
+			midifiles = m.searchList(showuser.getUserID());
+			request.setAttribute("midifiles",midifiles);
+			}catch(NullPointerException e){
+				System.out.println(e);
+			}
+
+			request.setAttribute("showuser", showuser);
 			this.getServletContext().getRequestDispatcher("/profile.jsp").forward(request, response);
 		}
 	}
@@ -57,34 +88,21 @@ public class AcountInfoWindow extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		System.out.println("AccountInfoWindowのdoPostが呼ばれました");
 
 		HttpSession session = request.getSession();
 		User user = (User)session.getAttribute("user");
 
-		if("midicloud".equals(request.getParameter("action"))){
-			//ユーザートップ画面へ遷移
-			this.getServletContext().getRequestDispatcher("/MemberTopWindow").forward(request, response);
-		}
-		else if("goSearch".equals(request.getParameter("action"))){
+		if(request.getParameter("goSearch")!=null){
 			//検索結果画面へ遷移
 			request.setAttribute("search",request.getAttribute("search"));
 			this.getServletContext().getRequestDispatcher("/SearchingResultWindow").forward(request, response);
 		}
-		else if("detail".equals(request.getParameter("action"))){
-			//同じ画面に遷移
-			request.setAttribute("otherUser", user);
-			this.getServletContext().getRequestDispatcher("/AccountInfoWindow").forward(request, response);
-		}
-		else if("logout".equals(request.getParameter("action"))){
-			//ユーザーデータを破棄してログアウト
-			session.removeAttribute("user");
-			this.getServletContext().getRequestDispatcher("/Login").forward(request, response);
-		}
-		else if("edit".equals(request.getParameter("action"))){
+		else if(request.getParameter("edit") != null){
 			//ユーザーの編集へ遷移
 			this.getServletContext().getRequestDispatcher("/AccountInformationChangeWindow").forward(request, response);
 		}
-		else if("report".equals(request.getParameter("action"))){
+		else if(request.getParameter("report") != null){
 			//不適切なユーザーを報告（書き途中）
 			Report report = new Report();
 			ReportManager rmanager = new ReportManager();
@@ -96,7 +114,7 @@ public class AcountInfoWindow extends HttpServlet {
 			request.setAttribute("message","ユーザーを報告しました");
 			this.getServletContext().getRequestDispatcher("/AccountInfoWindow").forward(request, response);
 		}
-		else if("delete".equals(request.getParameter("action"))){
+		else if(request.getParameter("delete") != null){
 			//ユーザーを削除
 			session.removeAttribute("user");
 			request.setAttribute("message", "アカウントを削除しました");
@@ -108,9 +126,11 @@ public class AcountInfoWindow extends HttpServlet {
 				this.getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
 			}
 		}
-		else if("upload".equals(request.getParameter("action"))){
+		else if(request.getParameter("upload") != null){
 			//MIDIファイルのアップロード画面へ遷移
-			this.getServletContext().getRequestDispatcher("/MidiUploadWindow").forward(request, response);
+			System.out.println("midiUpload画面へ遷移します");
+//			this.getServletContext().getRequestDispatcher("/MidiUploadWindow").forward(request, response);
+			this.getServletContext().getRequestDispatcher("/midiUpload.jsp").forward(request, response);
 		}
 		else if(request.getAttribute("midi") != null){
 			//MIDIファイルの詳細画面へ遷移

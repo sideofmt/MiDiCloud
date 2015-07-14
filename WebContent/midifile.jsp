@@ -49,8 +49,8 @@
 	   CommentManager commentManager = new CommentManager();
 	   //ArrayList<Comment> commentList = commentManager.returnComments(midifile.getMidiID());
 	   UserManager userManager = new UserManager();
-	   
-	   
+
+
 	   User user = new User();
 	   /*Midifile midifile = new Midifile();
 	   try {
@@ -77,7 +77,7 @@
 	   c.setUserID(3);
 	   c.setComment("黒ずくめの組織のボスはわしじゃよ。");
 	   commentList.add(c);
-	   
+
 		%>
 
 </head>
@@ -105,15 +105,7 @@
                         <a href="#page-top"></a>
                     </li>
                     		    <li>
-<!--
-		<form class="form-inline">
-  <div class="form-group">
-    <label class="sr-only" for="exampleInputPassword3">Search word</label>
-    <input type="password" class="form-control" id="exampleInputPassword3" placeholder="Password">
-  </div>
-  <button type="submit" class="btn btn-default">Search</button>
-</form>
--->
+
 <form class="form-inline">
  <div class="input-group">
       <input type="text" class="form-control" placeholder="Search for...">
@@ -187,12 +179,12 @@
 
             <div class="text-left">
                 <h2><%= midifile.getTitle() %></h2>
-                
+
 
 
 <br>
 <%
-	
+
 %>
 <form action="OutputFile" method="get">
 <embed src="OutputFile" type="application/x-mplayer2" height="40" autostart="true" autoplay="true" loop="false">
@@ -366,7 +358,7 @@
     <script src="js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    
+
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>

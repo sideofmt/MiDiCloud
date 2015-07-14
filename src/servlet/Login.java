@@ -35,6 +35,11 @@ public class Login extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		session.removeAttribute("user");
+		System.out.println("LoginのdoGetが呼ばれました");
+
+		if ("GoMakeAccountPage".equals(request.getParameter("action"))) {
+			this.getServletContext().getRequestDispatcher("/CreateAccountWindow").forward(request, response);
+		}
 		this.getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
 	}
 
@@ -43,12 +48,10 @@ public class Login extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		System.out.println("LoginのdoPostが呼ばれました");
 		request.setCharacterEncoding("UTF-8");
 
-		if ("GoMakeAccountPage".equals(request.getParameter("action"))) {
-			this.getServletContext().getRequestDispatcher("/CreateAccountWindow").forward(request, response);
-		}
-		else if(request.getParameter("login")!=null){
+		if(request.getParameter("login")!=null){
 			//ログインボタンを押していれば遷移処理をする。
 
 		User user = null;
@@ -56,7 +59,7 @@ public class Login extends HttpServlet {
 
 		String mailAddress = request.getParameter("email");
 		String password = request.getParameter("pass");
-		System.out.println(request.getParameter("login"));
+		System.out.println(request.getParameter("login")+"["+mailAddress+", "+password+"]");
 
 		int result = 0;
 
@@ -78,7 +81,7 @@ public class Login extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.setAttribute("user", user);
 		if(result==1){
-			this.getServletContext().getRequestDispatcher("/MemberTopWindow").forward(request, response);
+			this.getServletContext().getRequestDispatcher("/memberTop.jsp").forward(request, response);
 		}else if(result==2){
 			this.getServletContext().getRequestDispatcher("/ManagerTopWindow").forward(request, response);
 		}else{

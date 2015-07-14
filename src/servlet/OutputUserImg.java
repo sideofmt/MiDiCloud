@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.io.OutputStream;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,16 +13,16 @@ import javax.servlet.http.HttpSession;
 import model.User;
 
 /**
- * Servlet implementation class MidiUploadCompleteWindow
+ * Servlet implementation class OutputImg
  */
-@WebServlet("/MidiUploadCompleteWindow")
-public class MidiUploadCompleteWindow extends HttpServlet {
+@WebServlet("/OutputUserImg")
+public class OutputUserImg extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MidiUploadCompleteWindow() {
+    public OutputUserImg() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,25 +32,29 @@ public class MidiUploadCompleteWindow extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		System.out.println("MidiUploadCompleteWindowのdoGetが呼ばれました");
-		if(session.getAttribute("user")==null){
-			this.getServletContext().getRequestDispatcher("/Login").forward(request, response);
-		} else {
-			this.getServletContext().getRequestDispatcher("/midiUploadComplete.jsp").forward(request, response);
-		}
+		//Translate t = new Translate();
+
+		User user = (User)request.getAttribute("otherUser");
+		//User user = new User();
+		//user.setIcon(t.fileLoad("C:/Users/shigetoshi.n/Desktop/ソフ研/mudai.png"));
+		java.io.ByteArrayOutputStream byteOut = new java.io.ByteArrayOutputStream();
+		byteOut.write(user.getIcon());
+		//byteOut.write(midi.getMidifile(),0,translate.size(midi.getMidifile()));
+
+		response.setContentType( "image/jpeg" );
+
+		response.setContentLength( byteOut.size() );
+		OutputStream out = response.getOutputStream();
+		out.write( byteOut.toByteArray() );
+		out.close();
+		byteOut.close();
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
-		System.out.println("MidiUploadCompleteWindowのdoPostが呼ばれました");
-
-		HttpSession session = request.getSession();
-
-		session.setAttribute("user",(User)session.getAttribute("user"));
-		this.getServletContext().getRequestDispatcher("/profile.jsp").forward(request, response);
+		// TODO Auto-generated method stub
 	}
 
 }

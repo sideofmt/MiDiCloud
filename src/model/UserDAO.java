@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class UserDAO {
-	final private static String dbname = "MiDiCloud";
+	final private static String dbname = "MidiCloud";
 	final private static String username = "dbpuser";
 	final private static String password = "hogehoge";
 	final private static String driverClassName = "org.postgresql.Driver";
@@ -208,14 +208,15 @@ public class UserDAO {
 			String password = resultSet.getString("password");
 			String profile = resultSet.getString("profile");
 			byte[] icon = resultSet.getBytes("icon");
-			ArrayList<Integer> MIDI_IDs;
-			Integer[] midiids = (Integer[]) resultSet.getArray("MIDI_IDs").getArray();
-			MIDI_IDs = new ArrayList<Integer>(Arrays.asList(midiids));
-			ArrayList<Integer> comment_IDs ;
-			Integer[] commentids = (Integer[]) resultSet.getArray("commentIDs").getArray();
-			comment_IDs = new ArrayList<Integer> (Arrays.asList(commentids));
-			Boolean isManagaer = resultSet.getBoolean("isManager");
+			ArrayList<Integer> MIDI_IDs = null;
+			ArrayList<Integer> comment_IDs = null;
+			try{
+				MIDI_IDs = (ArrayList<Integer>) resultSet.getArray("MIDI_IDs");
+				comment_IDs = (ArrayList<Integer>) resultSet.getArray("commentIDs");
+			}catch(NullPointerException e){
 
+			}
+			Boolean isManagaer = resultSet.getBoolean("isManager");
 			user.setUserID(userid);
 			user.setUsername(userName);
 			user.setPassword(password);

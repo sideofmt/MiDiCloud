@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Ranking</title>
+    <title>User Name</title>
 
     <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -36,9 +36,15 @@
     <%@ page import="model.MidifileManager" %>
     <%@ page import="java.util.*" %>
 
-    <% MidifileManager mmanager = new MidifileManager(); %>
-    <% List<Midifile> midifiles = mmanager.getRanking(); %>
-    <% User user = (User)session.getAttribute("user"); %>
+    <%
+    User user = (User)session.getAttribute("user");
+    User otherUser = (User)request.getAttribute("showuser");
+    List<Midifile> midifiles = null;
+    if(request.getAttribute("midifiles") != null){
+    	midifiles = (List<Midifile>)request.getAttribute("midifiles");
+    }
+    request.setAttribute("showUser",otherUser);
+    %>
 
 
 
@@ -57,10 +63,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <form action="RankingWindow" method="post">
-                <input type="hidden" name="action">
-                <a class="navbar-brand" href="#page-top" onClick="goSubmit(this.form, this)" name="midicloud" value="MidiCloud">MidiCloud</a>
-                </form>
+                <a class="navbar-brand" href="MemberTopWindow" name="midicloud" value="MidiCloud">MidiCloud</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -69,20 +72,21 @@
                     <li class="hidden">
                         <a href="#page-top"></a>
                     </li>
-                    		    <li>
+                    <li>
 
-<form class="form-inline" action="RankingWindow" method="post">
+
+<form class="form-inline" action="AccountInfoWindow" method="post">
  <div class="input-group">
       <input type="text" class="form-control" placeholder="Search for..." name="search">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button" onClick="goSubmit(this.form, this)" name="goSearch" value="検索">Search</button>
+        <button class="btn btn-default" type="submit" name="goSearch" value="検索">Search</button>
       </span>
  </div>
 </form>
 </li>
 
 <li role="presentation" class="dropdown">
-    <form action="RankingWindow" method="post">
+
     <input type="hidden" name="action">
     <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" name="username">
      <img alt="icon" src="OutputFile" height=10px width=10px> <%= user.getUsername() %> <span class="caret"></span>
@@ -90,15 +94,15 @@
 
     <ul class="dropdown-menu">
 	<li>
-		<a href="" onClick="goSubmit(this.form, this)" name="detail" value="ユーザー詳細">Detail</a>
+		<input type="hidden" name="otherUser">
+		<a href="Profile?UserID=<%= user.getUserID() %>~" name="detail" value="ユーザー詳細">Detail</a>
 	</li>
 	<li role="separator" class="divider"></li>
 	<li>
-		<a href="" onClick="goSubmit(this.form, this)" name="logout" value="ログアウト">Logout</a>
+		<a href="" name="logout" value="ログアウト">Logout</a>
 	</li>
 
     </ul>
-    </form>
   </li>
 
 
@@ -110,8 +114,6 @@
         </div>
         <!-- /.container-fluid -->
     </nav>
-
-
 
 <div class="container">
 	<div class="row"><br><br>
@@ -125,42 +127,98 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2>Ranking</h2>
+                    <h2>User Profile</h2>
                     <hr class="star-primary">
                 </div>
             </div>
             </div>
       </section>
 
+<div class="container">
+<div class="row">
+            <div class="col-lg-12-original">
+            <div class="text-left">
 
-      <section id="Ranking">
+                <img class="img-responsive img-center" src="OutputUserImg" alt="" height=200px width=200px>
+                <h2><%= otherUser.getUsername() %>
+                    <small><%= otherUser.getUsername() %></small>
+                </h2>
+
+
+			<form action="AccountInfoWindow" method="post">
+			<input type="hidden" name="action">
+
+			<% if(otherUser.getUserID() == user.getUserID()){ %>
+				<button type="button" class="btn btn-default btn-sm" onClick="goSubmit(this.form, this)" name="edit" value="ユーザーの編集">
+				 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>Edit
+				</button>
+			<% } %>
+			<% if(otherUser.getUserID() != user.getUserID()){ %>
+				<button type="button" class="btn btn-default btn-sm btn-warning" onClick="goSubmit(this.form, this)" name="report" value="不適切なユーザーを報告">
+				 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>report
+				</button>
+			<% } %>
+			<% if(otherUser.getUserID() == user.getUserID() || user.isManager() ) { %>
+				<button type="button" class="btn btn-default btn-sm" onClick="goSubmit(this.form, this)" name="delete" value="ユーザーの削除">
+				 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>delete
+				</button>
+			<% } %>
+			<% if(otherUser.getUserID() == user.getUserID() ) { %>
+				<button type="button" class="btn btn-default btn-sm" onClick="goSubmit(this.form, this)" name="upload" value="Midiのアップロード">
+				 <span class="glyphicon glyphicon-open" aria-hidden="true"></span>Upload Midi
+				</button>
+			<% } %>
+			</form>
+
+
+<br><br>
+
+
+<div class="panel panel-default">
+<div class="panel-body">
+                <p><%= otherUser.getProfile() %></p>
+            </div>
+
+</div>
+</div>
+
+
+
+</div>
+</div>
+</div>
+
+
+      <section id="UserMidi">
         <div class="container">
 
 
             <div class="row">
 
 		  <div class="panel panel-default">
-		  <div class="panel-heading"><h2>ランキング</h2></div>
+		  <div class="panel-heading"><h2>User MIDI</h2></div>
 		  <div class="list-group">
-
-		  <form action="RankingWindow" method="post">
+		  <form action="AccountInfoWindow" method="post">
 		  <input type="hidden" name="action">
 
-			<%
-			int n=0;
-			for(Midifile midifile : midifiles){
-			%>
+		<%
+		if(midifiles != null){
 
-			  <button type="submit" class="list-group-item" name="midiID" value="<%= midifile.getMidiID() %>"><%= n+1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#"><%= midifile.getTitle() %></a></button>
+		int n=0;
+		for(Midifile midifile : midifiles){
+		%>
 
-			<%
-			n++;
-			}
-			%>
+		<button type="button" class="list-group-item"><%= n+1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
+		</span>&nbsp;<a href="" onClick="goSubmit2(this.form, this)" name="midi" value=<%= midifile %> ><%= midifile.getTitle() %></a></button>
 
-			</form>
+		<%
+		n++;
+		}
 
+		}
+		%>
+
+		</form>
 			</div>
 		  </div>
 
@@ -170,10 +228,13 @@
 
 
 		</div>
-	 </div>
+
+
+		 </div>
+
+
+
     </section>
-
-
 
 
 
@@ -233,9 +294,9 @@
 	 -->
 	</script>
 
-    <script src="js/cbpAnimatedHeader.js"></script>
 
     <!-- Contact Form JavaScript -->
+
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>

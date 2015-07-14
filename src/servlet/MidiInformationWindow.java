@@ -19,7 +19,7 @@ import model.User;
 @WebServlet("/MidiInformationWindow")
 public class MidiInformationWindow extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -32,6 +32,8 @@ public class MidiInformationWindow extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("MidiInformationWindowのdoGetが呼ばれました");
+
 		this.getServletContext().getRequestDispatcher("/midifile.jsp").forward(request, response);
 	}
 
@@ -39,15 +41,16 @@ public class MidiInformationWindow extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("MidiInformationWindowのdoPostが呼ばれました");
 		request.setCharacterEncoding("UTF-8");
-		
+
 		Midifile midifile = new Midifile();
 		MidifileManager manager = new MidifileManager();
 		User user = new User();
 		HttpSession session = request.getSession();
 		midifile = (Midifile)session.getAttribute("midifile");
 		user = (User)session.getAttribute("user");
-		
+
 		if ("midicloud".equals(request.getParameter("action"))) {
 			this.getServletContext().getRequestDispatcher("/Login").forward(request, response);
 		} else if("favo".equals(request.getParameter("action"))) {

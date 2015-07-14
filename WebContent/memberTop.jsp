@@ -33,16 +33,21 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
  	<%
-    ArrayList<Midifile> midiNew = (ArrayList<Midifile>)request.getAttribute("midiNew");
-	ArrayList<Midifile> midiRank = (ArrayList<Midifile>)request.getAttribute("midiRank");
-	User user = (User)request.getAttribute("user");
+	User user = (User)session.getAttribute("user");
+
+	MidifileManager manager = new MidifileManager();
+
+	ArrayList<Midifile> midi = new ArrayList<Midifile>();
+   	List<Midifile> midiRank = manager.getRanking();
+	List<Midifile> midiNew = manager.getArrival();
 	%>
 
 </head>
 
 <body id="page-top" class="index">
-<form action="MemberTopWindow" method="post">
+
 
 
     <!-- Navigation -->
@@ -66,20 +71,12 @@
                         <a href="#page-top"></a>
                     </li>
                     		    <li>
-<!--
-		<form class="form-inline">
-  <div class="form-group">
-    <label class="sr-only" for="exampleInputPassword3">Search word</label>
-    <input type="password" class="form-control" id="exampleInputPassword3" placeholder="Password">
-  </div>
-  <button type="submit" class="btn btn-default">Search</button>
-</form>
--->
-<form class="form-inline">
+
+<form class="form-inline" action="MemberTopWindow" method="post">
  <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search for...">
+      <input type="text" class="form-control" placeholder="Search for..." name="search">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Search</button>
+        <button class="btn btn-default" type="submit" name="goSearch" value="検索">Search</button>
       </span>
  </div>
 </form>
@@ -87,15 +84,17 @@
 
 <li role="presentation" class="dropdown">
     <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-     <img alt="icon"><%= user.getUsername() %><span class="caret"></span>
+     <img alt="icon" src="OutputImg" height=40px width=40px> <%= user.getUsername() %> <span class="caret"></span>
+
     </a>
     <ul class="dropdown-menu">
 	<li>
-		<a href="CompCreateAccountWindow">Detail</a>
+		<input type="hidden" name="showuser">
+		<a href="AccountInfoWindow?showuser=<%= user.getUserID() %>~">Detail</a>
 	</li>
 	<li role="separator" class="divider"></li>
 	<li>
-		<a href="#">Logout</a>
+		<a href="Login">Logout</a>
 	</li>
 
     </ul>
@@ -111,22 +110,7 @@
         <!-- /.container-fluid -->
     </nav>
 
-<!-- header
-    <header>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <img class="img-responsive" src="img/profile.png" alt="">
-                    <div class="intro-text">
-                        <span class="name">Start Bootstrap</span>
-                        <hr class="star-light">
-                        <span class="skills">Web Developer - Graphic Artist - User Experience Designer</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
--->
+
 
 <div class="container">
 	<div class="row"><br><br>
@@ -155,12 +139,13 @@
             <div class="row">
 
 		  <div class="panel panel-default">
-		  <div class="panel-heading"><h2><a href="ranking.jsp">ランキング</a></h2></div>
+		  <div class="panel-heading"><h2><a href="RankingWindow">ランキング</a></h2></div>
 		  <div class="list-group">
+		  <form action="MemberTopWindow" method="post">
 		  	  <%
 		  	  for(int i = 0; i < midiRank.size(); i++) {
 		      %>
-			  <button type="button" class="list-group-item"><%= i + 1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
+			  <button type="submit" class="list-group-item" name="midiID" value="<%= midiRank.get(i).getMidiID() %>"><%= i + 1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
 			  </span>&nbsp;<a href="#"><%= midiRank.get(i).getTitle() %></a></button>
 			  <% } %>
 		  	  <%
@@ -168,6 +153,7 @@
 		      %>
 		      <p>&nbsp;</p>
 			  <% } %>
+			  </form>
 			</div>
 		  </div>
 
@@ -190,12 +176,13 @@
                     <div class="row">
 
 		  <div class="panel panel-default">
-		  <div class="panel-heading"><h2><a href="new.jsp">新着</a></h2></div>
+		  <div class="panel-heading"><h2><a href="NewMidiWindow">新着</a></h2></div>
 		  <div class="list-group">
+		  <form action="MemberTopWindow" method="post">
 		  	  <%
 		  	  for(int i = 0; i < midiNew.size(); i++) {
 		      %>
-			  <button type="button" class="list-group-item"><%= i + 1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
+			  <button type="submit" class="list-group-item" name="midiID" value="<%= midiNew.get(i).getMidiID() %>" ><%= i + 1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
 			  </span>&nbsp;<a href="#"><%= midiNew.get(i).getTitle() %></a></button>
 			  <% } %>
 		  	  <%
@@ -203,6 +190,7 @@
 		      %>
 		      <p>&nbsp;</p>
 			  <% } %>
+			  </form>
 			</div>
 		  </div>
 
@@ -263,7 +251,7 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>
-</form>
+
 </body>
 
 </html>

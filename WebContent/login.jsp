@@ -7,6 +7,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -31,6 +32,17 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <script type="text/javascript">
+	<!--
+	function goSubmit(formObj, btnObj) {
+	formObj.action.value=btnObj.name;
+	formObj.submit();
+	}
+	 -->
+	</script>
+
+
+
 </head>
 
 <body id="page-top" class="index">
@@ -53,12 +65,13 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="hidden">
-                        <a href="#page-top"></a>
+                        <a href=""></a>
                     </li>
                     <li>
-                    <form action="Login" method="post">
-                    	<a href="./makeAccount.jsp" onClick="goSubmit(this.form, this)" name="GoMakeAccountPage" value="新規登録">新規登録</a>
-                    </form>
+
+                    <!-- href="遷移先?hiddenのname=送信したい値&hiddenのname2=送信したい値2~"  -->
+                    	<a href="CreateAccountWindow" name="GoMakeAccountPage" value="新規登録">新規登録</a>
+                    	<input type="hidden" name="action">
                     </li>
                 </ul>
             </div>
@@ -185,14 +198,7 @@
     <script src="js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    <script type="text/javascript">
-	<!--
-	function goSubmit(formObj, btnObj) {
-	formObj.action.value=btnObj.name;
-	formObj.submit();
-	}
-	 -->
-	</script>
+
 
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
     <script src="js/cbpAnimatedHeader.js"></script>

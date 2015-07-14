@@ -47,9 +47,8 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <form action="createAccountWindow" method="post">
-                <a class="navbar-brand" href="" onClick="goSubmit(this.form, this)" name="midicloud" value="MidiCloud">MidiCloud</a>
-                </form>
+                <a class="navbar-brand" href="Login" name="midicloud" value="MidiCloud">MidiCloud</a>
+
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -205,7 +204,7 @@
     <!-- Plugin JavaScript -->
     <script type="text/javascript">
 	<!--
-	function goSubmit(formObj, btnObj) {
+	function goSubmitSend(formObj, btnObj) {
 	formObj.action.value=btnObj.name;
 	formObj.submit();
 	}

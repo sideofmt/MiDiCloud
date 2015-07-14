@@ -60,7 +60,7 @@
                 </button>
                 <form action="NewMidiWindow" method="post">
                 <input type="hidden" name="action">
-                <a class="navbar-brand" href="#page-top" onClick="goSubmit(this.form, this)" name="midicloud" value="MidiCloud">MidiCloud</a>
+                <a class="navbar-brand" href="memberTop.jsp" name="midicloud" value="MidiCloud">MidiCloud</a>
                 </form>
             </div>
 
@@ -76,30 +76,28 @@
  <div class="input-group">
       <input type="text" class="form-control" placeholder="Search for..." name="search">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button" onClick="goSubmit(this.form, this)" name="goSearch" value="検索">Search</button>
+        <button class="btn btn-default" type="submit" name="goSearch" value="検索">Search</button>
       </span>
  </div>
 </form>
 </li>
 
 <li role="presentation" class="dropdown">
-    <form action="NewMidiWindow" method="post">
-    <input type="hidden" name="action">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" name="username">
-     <img alt="icon" src="OutputFile" height=10px width=10px> <%= user.getUsername() %> <span class="caret"></span>
-    </a>
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+     <img alt="icon" src="OutputImg" height=40px width=40px> <%= user.getUsername() %> <span class="caret"></span>
 
+    </a>
     <ul class="dropdown-menu">
 	<li>
-		<a href="" onClick="goSubmit(this.form, this)" name="detail" value="ユーザー詳細">Detail</a>
+		<input type="hidden" name="showuser">
+		<a href="AcountInfoWindow?showuser=<%= user.getUserID() %>~">Detail</a>
 	</li>
 	<li role="separator" class="divider"></li>
 	<li>
-		<a href="" onClick="goSubmit(this.form, this)" name="logout" value="ログアウト">Logout</a>
+		<a href="Login">Logout</a>
 	</li>
 
     </ul>
-    </form>
   </li>
 
 
@@ -140,7 +138,7 @@
             <div class="row">
 
 		  <div class="panel panel-default">
-		  <div class="panel-heading"><h2>æ°ç</h2></div>
+		  <div class="panel-heading"><h2>新着MIDI</h2></div>
 		  <div class="list-group">
 		  <form action="RankingWindow" method="post">
 		  <input type="hidden" name="action">
@@ -150,8 +148,8 @@
 			for(Midifile midifile : midifiles){
 			%>
 
-			  <button type="button" class="list-group-item"><%= n+1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="" onClick="goSubmit2(this.form, this)" name="midi" value=<%= midifile %> ><%= midifile.getTitle() %></a></button>
+			  <button type="submit" class="list-group-item" name="midiID" value="<%= midifile.getMidiID() %>"><%= n+1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
+			  </span>&nbsp;<a href="#"><%= midifile.getTitle() %></a></button>
 
 			<%
 			n++;
@@ -168,27 +166,7 @@
 
 
 		</div>
-		<div class="text-center">
-			<nav>
-			  <ul class="pagination">
-			    <li class="disabled">
-			      <a href="#" aria-label="Previous">
-			        <span aria-hidden="true">&laquo;</span>
-			      </a>
-			    </li>
-			    <li class="active"><a href="#">1</a></li>
-			    <li><a href="#">2</a></li>
-			    <li><a href="#">3</a></li>
-			    <li><a href="#">4</a></li>
-			    <li><a href="#">5</a></li>
-			    <li>
-			      <a href="#" aria-label="Next">
-			        <span aria-hidden="true">&raquo;</span>
-			      </a>
-			    </li>
-			  </ul>
-			</nav>
-			</div>
+
 		 </div>
     </section>
 

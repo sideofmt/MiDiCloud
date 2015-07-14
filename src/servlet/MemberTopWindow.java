@@ -37,7 +37,7 @@ public class MemberTopWindow extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("MemberTopWindowのdoGetが呼ばれたゾ");
+		System.out.println("MemberTopWindowのdoGetが呼ばれました");
 		HttpSession session = request.getSession();
 		if(session.getAttribute("user")==null){
 			this.getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
@@ -55,7 +55,7 @@ public class MemberTopWindow extends HttpServlet {
 			UserManager man = new UserManager();
 			User user = null;
 			try {
-				user = man.getUser("keita@gmail.com");
+				user = man.getUser("ket@gmail.com");
 			} catch (SQLException e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
@@ -74,27 +74,27 @@ public class MemberTopWindow extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("MemberTopWindowのdoPostが呼ばれたゾ");
+		System.out.println("MemberTopWindowのdoPostが呼ばれました");
 		HttpSession session = request.getSession();
-		if(session.getAttribute("user")==null){
-			this.getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
+		request.setCharacterEncoding("UTF-8");
+		User user = (User)request.getAttribute("user");
+		session.setAttribute("user",user);
+		System.out.println(request.getParameter("midiID"));
+
+		if(request.getParameter("goSearch")!=null){
+			//検索結果画面へ遷移
+//			request.setAttribute("search",request.getAttribute("search"));
+			this.getServletContext().getRequestDispatcher("/SearchingResultWindow").forward(request, response);
 		}
-		else{
-			ArrayList<Midifile> midi = new ArrayList<Midifile>();
-		   	List<Midifile> midiRank = new ArrayList<Midifile>();
-			List<Midifile> midiNew = new ArrayList<Midifile>();
+		else if(request.getParameter("midiID")!=null){
+			//MIDI詳細表示画面へ遷移
+			//Midifileオブジェクトを次画面へ送信
+			System.out.println("midi詳細画面へ遷移します");
+
 			MidifileManager manager = new MidifileManager();
-
-			midiRank = manager.getRanking();
-			midiNew = manager.getArrival();
-
-			User user =  (User)session.getAttribute("user");
-
-			request.setAttribute("midiRank",midiRank);
-			request.setAttribute("midiNew",midiNew);
-			request.setAttribute("user", user);
-
-			this.getServletContext().getRequestDispatcher("/memberTop.jsp").forward(request, response);
+			Midifile midifile = manager.search(Integer.parseInt(request.getParameter("midiID")));
+			request.setAttribute("midifile",midifile);
+			this.getServletContext().getRequestDispatcher("/midifile.jsp").forward(request, response);
 		}
 
 	}
