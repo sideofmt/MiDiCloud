@@ -41,7 +41,6 @@ public class AccountInfoWindow extends HttpServlet {
 		System.out.println("AccountInfoWindowのdoGetが呼ばれました");
 
 		HttpSession session = request.getSession();
-		System.out.println("UNKODA:" + session.getAttribute("user"));
 
 		if(request.getAttribute("message") != null){
 			request.setAttribute("message",request.getAttribute("message"));
@@ -55,21 +54,17 @@ public class AccountInfoWindow extends HttpServlet {
 			UserManager manager = new UserManager();
 			User showuser = null;
 			try {
-				System.out.println("midiID:"+request.getParameter("midiID"));
-				showuser = manager.returnUser(Integer.parseInt(request.getParameter("midiID")));
+				showuser = manager.returnUser(((User)(session.getAttribute("user"))).getUserID());
 			} catch (NumberFormatException e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
-				System.out.println("ダメみたいですね…");
 			} catch (SQLException e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
 			} catch(NullPointerException e){
-				System.out.println("呼びました？？？？");
 				User user = (User)session.getAttribute("user");
 				showuser = user;
 			}
-			System.out.println("user:"+showuser);
 
 			List<Midifile> midifiles = null;
 
@@ -139,12 +134,14 @@ public class AccountInfoWindow extends HttpServlet {
 //			this.getServletContext().getRequestDispatcher("/MidiUploadWindow").forward(request, response);
 			this.getServletContext().getRequestDispatcher("/midiUpload.jsp").forward(request, response);
 		}
-		else if(request.getAttribute("midi") != null){
+		else if(request.getParameter("midiID") != null){
 			//MIDIファイルの詳細画面へ遷移
-			Midifile midifile = (Midifile)request.getAttribute("midi");
+			MidifileManager manager = new MidifileManager();
+			Midifile midifile = manager.search(Integer.parseInt(request.getParameter("midiID")));
 			request.setAttribute("midifile", midifile);
-			this.getServletContext().getRequestDispatcher("/MidiDetailWindow").forward(request, response);
+			this.getServletContext().getRequestDispatcher("/midifile.jsp").forward(request, response);
 		}else{
+			request.setAttribute("user", user);
 			this.getServletContext().getRequestDispatcher("/profile.jsp").forward(request, response);
 		}
 

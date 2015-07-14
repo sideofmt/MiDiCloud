@@ -51,7 +51,6 @@ public class AccountInformationChangeWindow extends HttpServlet {
 
 		User user = (User)session.getAttribute("user");
 		session.setAttribute("user",user);
-		System.out.println(user);
 		if(request.getParameter("change") == null){
 			if(session.getAttribute("user")==null){
 				this.getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
@@ -75,7 +74,8 @@ public class AccountInformationChangeWindow extends HttpServlet {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-//			request.setAttribute("user", user);
+
+			request.setAttribute("user", user);
 			this.getServletContext().getRequestDispatcher("/AccountInfoWindow")
 					.forward(request, response);
 		}
