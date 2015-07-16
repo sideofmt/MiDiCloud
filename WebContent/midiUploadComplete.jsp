@@ -141,7 +141,7 @@
 <form action="MidiUploadCompleteWindow" method="post">
 <div class="form-group">
 <div class="col-md-12 text-center">
-<button type="submit" class="btn btn-default btn-lg" name="return-pro">プロフィールに戻る</button>
+<button type="submit" class="btn btn-default btn-lg" name="return-pro">メンバートップに戻る</button>
 </div>
 </div>
 <br><br>

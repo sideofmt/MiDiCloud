@@ -85,7 +85,7 @@
                     <li>
 
 
-<form class="form-inline" action="SeachingResultWindow" method="post">
+<form class="form-inline" action="SearchingResultWindow" method="post">
  <div class="input-group">
       <input type="text" class="form-control" placeholder="Search for..." name="search">
       <span class="input-group-btn">
@@ -149,7 +149,7 @@
             <div class="col-lg-12-original">
             <div class="text-left">
 
-                <img class="img-responsive img-center" src="OutputImg" alt="" height=200px width=200px>
+                <img class="img-responsive img-center" src="OutputImg2" alt="" height=200px width=200px>
                 <h2><%= showuser.getUsername() %>
                     <small><%= showuser.getUsername() %></small>
                 </h2>

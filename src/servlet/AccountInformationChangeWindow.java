@@ -121,7 +121,7 @@ public class AccountInformationChangeWindow extends HttpServlet {
 			}
 
 			session.setAttribute("user", user);
-			this.getServletContext().getRequestDispatcher("/profile.jsp").forward(request, response);
+			this.getServletContext().getRequestDispatcher("/memberTop.jsp").forward(request, response);
 		//}
 	}
 }
