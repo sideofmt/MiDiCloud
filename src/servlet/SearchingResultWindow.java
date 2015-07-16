@@ -55,7 +55,7 @@ public class SearchingResultWindow extends HttpServlet {
 		if(request.getParameter("goSearch") != null){
 			//検索結果画面へ遷移
 			request.setAttribute("search",request.getAttribute("search"));
-			this.getServletContext().getRequestDispatcher("/SearchingResultWindow").forward(request, response);
+			this.getServletContext().getRequestDispatcher("/searchResult.jsp").forward(request, response);
 		}
 		else if(request.getParameter("midiID")!=null){
 			//MIDI詳細表示画面へ遷移

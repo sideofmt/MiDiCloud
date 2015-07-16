@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MidifileDAO {
-	final private static String dbname = "MidiCloud";
+	final private static String dbname = "midicloud";
 	final private static String user = "dbpuser";
 	final private static String password = "hogehoge";
 	final private static String driverClassName = "org.postgresql.Driver";
@@ -48,6 +48,23 @@ public class MidifileDAO {
 			PreparedStatement pstmt = connection.prepareStatement(sql);
 
 			pstmt.setInt(1, midiID);
+			pstmt.executeUpdate();
+
+			connection.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public void deleteMidifileU(int userID) {
+		Connection connection;
+		String sql = "DELETE FROM midifile WHERE userID = ?";
+
+		try {
+			Class.forName(driverClassName);
+			connection = DriverManager.getConnection(url, user, password);
+			PreparedStatement pstmt = connection.prepareStatement(sql);
+
+			pstmt.setInt(1, userID);
 			pstmt.executeUpdate();
 
 			connection.close();

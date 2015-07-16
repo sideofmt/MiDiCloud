@@ -57,7 +57,7 @@ public class AccountInfoWindow extends HttpServlet {
 			UserManager manager = new UserManager();
 			User showuser = null;
 			try {
-				showuser = manager.returnUser(Integer.parseInt(request.getParameter("midiID")));
+				showuser = manager.returnUser(Integer.parseInt(request.getParameter("userID")));
 			} catch (NumberFormatException e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
@@ -78,7 +78,9 @@ public class AccountInfoWindow extends HttpServlet {
 				System.out.println(e);
 			}
 
-			request.setAttribute("showuser", showuser);
+			//request.setAttribute("showuser", showuser);
+
+
 			this.getServletContext().getRequestDispatcher("/profile.jsp").forward(request, response);
 		}
 	}
@@ -92,6 +94,7 @@ public class AccountInfoWindow extends HttpServlet {
 
 		HttpSession session = request.getSession();
 		User user = (User)session.getAttribute("user");
+		UserManager u = new UserManager();
 
 		if(request.getParameter("goSearch")!=null){
 			//検索結果画面へ遷移
@@ -106,16 +109,31 @@ public class AccountInfoWindow extends HttpServlet {
 			//不適切なユーザーを報告（書き途中）
 			Report report = new Report();
 			ReportManager rmanager = new ReportManager();
-			User otherUser = (User)request.getAttribute("otherUser");
+			User otherUser = (User)request.getAttribute("showuser");
 
 			report.setReportedUserID(otherUser.getUserID());
 			report.setUserID(user.getUserID());
+			try{
 			rmanager.add(report);
+			}catch(Exception e){
+				System.out.println(e);
+			}
 			request.setAttribute("message","ユーザーを報告しました");
+			request.setAttribute("userID",otherUser.getUserID());
 			this.getServletContext().getRequestDispatcher("/AccountInfoWindow").forward(request, response);
 		}
 		else if(request.getParameter("delete") != null){
 			//ユーザーを削除
+
+			try {
+				u.deleteUser(user.getUserID());
+				System.out.println("ユーザーの削除に成功しました");
+			} catch (SQLException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+				System.out.println("ユーザーの削除に失敗しました");
+			}
+
 			session.removeAttribute("user");
 			request.setAttribute("message", "アカウントを削除しました");
 			if(user.isManager()){

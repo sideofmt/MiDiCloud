@@ -55,8 +55,17 @@ public class MidifileManager {
 	}
 	public void delete(int midiID) {
 		MidifileDAO midifileDAO = new MidifileDAO();
+		CommentManager comment = new CommentManager();
 
 		midifileDAO.deleteMidifile(midiID);
+		comment.delComment(midiID);
+	}
+	public void deleteU(int userID) {
+		MidifileDAO midifileDAO = new MidifileDAO();
+		CommentManager comment = new CommentManager();
+
+		midifileDAO.deleteMidifileU(userID);
+		comment.delCommentU(userID);
 	}
 	public Midifile search(int midiID) {
 		Midifile midifile = new Midifile();

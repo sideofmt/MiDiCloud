@@ -92,7 +92,8 @@ public class UserManager {
 		//ユーザーIDからユーザーを削除する
 		//成功した時はtrueが返される
 		//失敗した時はfalseが返される
-
+		MidifileManager manager = new MidifileManager();
+		manager.deleteU(userID);
 		userDAO.deleteUser(userID);
 		System.out.println("ユーザーを削除しました");
 		return true;

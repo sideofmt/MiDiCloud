@@ -6,5 +6,5 @@ explanation varchar(400),
 favorite integer not null,
 midifile bytea not null,
 userid integer not null,
-data timestamp without time zone not null
+date timestamp without time zone not null
 );

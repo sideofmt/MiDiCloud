@@ -58,9 +58,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <form action="NewMidiWindow" method="post">
-                <input type="hidden" name="action">
-                <a class="navbar-brand" href="MemberTopWindow" name="midicloud" value="MidiCloud">MidiCloud</a>
+                <a class="navbar-brand" href="memberTop.jsp" name="midicloud" value="MidiCloud">MidiCloud</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -72,7 +70,7 @@
                     <li>
 
 
-<form class="form-inline" action="NewMidiWindow" method="post">
+<form class="form-inline" action="SearchingResultWindow" method="post">
  <div class="input-group">
       <input type="text" class="form-control" placeholder="Search for..." name="search">
       <span class="input-group-btn">
@@ -92,7 +90,7 @@
     <ul class="dropdown-menu">
 	<li>
 		<input type="hidden" name="otherUser">
-		<a href="Profile?UserID=<%= user.getUserID() %>~" name="detail" value="ユーザー詳細">Detail</a>
+		<a href="AccountInfoWindow?userID=<%= user.getUserID() %>" name="detail" value="ユーザー詳細">Detail</a>
 	</li>
 	<li role="separator" class="divider"></li>
 	<li>

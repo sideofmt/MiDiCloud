@@ -1,17 +1,16 @@
 package model;
 
-import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.ArrayList;
 
 
 public class CommentDAO extends Object{
-	final private static String dbname = "MidiCloud";
+	final private static String dbname = "midicloud";
 	final private static String user = "dbpuser";
 	final private static String password = "hogehoge";
 	final private static String driverClassName = "org.postgresql.Driver";
@@ -46,14 +45,17 @@ public class CommentDAO extends Object{
 		int commentID;
 		String comment;
 		int userID;
-		String sql = "select * from comment";
+		String sql = "select * from comment where midiID = ?";
 
 		try {
 			Class.forName(driverClassName);
 			connection = DriverManager.getConnection(url, user, password);
-			statement = connection.createStatement();
+//			statement = connection.createStatement();
+			PreparedStatement pstmt = connection.prepareStatement(sql);
 
-			resultSet = statement.executeQuery(sql);
+			pstmt.setInt(1, midiID);
+
+			resultSet = pstmt.executeQuery();
 			ArrayList<Comment> comList = new ArrayList<Comment>();
 
 			while(resultSet.next()){
@@ -71,7 +73,7 @@ public class CommentDAO extends Object{
 			}
 
             resultSet.close();
-            statement.close();
+//            statement.close();
             connection.close();
 
     		return comList;
@@ -90,6 +92,40 @@ public class CommentDAO extends Object{
 			PreparedStatement pstmt = connection.prepareStatement(sql);
 
 			pstmt.setInt(1, midiID);
+
+			pstmt.executeUpdate();
+            connection.close();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+
+	public void deleteByID(int commentID){
+		String sql = "delete from comment where commentID = ?";
+
+		try {
+			Class.forName(driverClassName);
+			connection = DriverManager.getConnection(url, user, password);
+			PreparedStatement pstmt = connection.prepareStatement(sql);
+
+			pstmt.setInt(1, commentID);
+
+			pstmt.executeUpdate();
+            connection.close();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+
+	public void deleteU(int userID){
+		String sql = "delete from comment where userID = ?";
+
+		try {
+			Class.forName(driverClassName);
+			connection = DriverManager.getConnection(url, user, password);
+			PreparedStatement pstmt = connection.prepareStatement(sql);
+
+			pstmt.setInt(1, userID);
 
 			pstmt.executeUpdate();
             connection.close();

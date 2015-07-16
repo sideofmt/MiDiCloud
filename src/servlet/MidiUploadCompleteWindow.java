@@ -48,8 +48,10 @@ public class MidiUploadCompleteWindow extends HttpServlet {
 
 		HttpSession session = request.getSession();
 
+		User user = (User)session.getAttribute("user");
 		session.setAttribute("user",(User)session.getAttribute("user"));
-		this.getServletContext().getRequestDispatcher("/profile.jsp").forward(request, response);
+		request.setAttribute("userID",user.getUserID());
+		this.getServletContext().getRequestDispatcher("/memberTop.jsp" ).forward(request, response);
 	}
 
 }

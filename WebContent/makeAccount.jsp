@@ -111,33 +111,35 @@
             <div class="text-left">
                 <img class="img-responsive img-center" src="http://placehold.it/200x200" alt="" id="imgExpress">
 
-<form action="CreateAccountWindow" method="post">
+<form action="CreateAccountWindow" method="post" enctype="multipart/form-data">
 
 <p>
 <div class="form-group">
     <label for="exampleInputFile">User Icon</label>
-    <input type="file" id="exampleInputFile" name="icon">
+    <input type="file" id="exampleInputFile" name="icon" accept="image/jpeg" >
   </div>
 </p>
+
+
 
 <p>
 <div class="input-group">
 <label for="InputUserName">User Name</label>
-<input type="text" class="form-control" placeholder="ユーザーの名前" required="required" aria-describedby="basic-addon1" name="name">
+<input type="text" class="form-control" placeholder="ユーザーの名前" required="required" aria-describedby="basic-addon1" name="name" maxlength="30">
 </div>
 </p>
 
 <p>
 <div class="input-group">
 <label for="InputUserName">Mail Address</label>
-<input type="text" class="form-control" placeholder="E-mail" required="required" type="email" aria-describedby="basic-addon1" name="email" autofocus="autofocus"/>
+<input type="text" class="form-control" placeholder="E-mail" required="required" type="email" aria-describedby="basic-addon1" name="email" autofocus="autofocus" maxlength="255"/>
 </div>
 </p>
 
 <p>
 <div class="input-group">
 <label for="InputUserName">Password</label>
-<input type="password" class="form-control" placeholder="password" required="required" type="password" aria-describedby="basic-addon1" name="pass">
+<input type="password" class="form-control" placeholder="password" required="required" type="password" aria-describedby="basic-addon1" name="pass" maxlength="16">
 </div>
 </p>
 
@@ -146,16 +148,18 @@
 <p>
 <div class="form-group">
 <label for="InputProfile">User Profile</label>
-<textarea class="form-control" id="UserProfile" placeholder="ユーザーの説明" rows="7" name="profile"></textarea>
+<textarea class="form-control" id="UserProfile" placeholder="ユーザーの説明" rows="7" name="profile" maxlength="150"></textarea>
 
 </div>
 </p>
 
 <div class="form-group">
 <div class="col-md-12 text-center">
-<button type="submit" class="btn btn-info btn-lg" name="createAccount" value="アカウントを作成">アカウントを作成</button>
+<button type="submit" class="btn btn-info btn-lg" name="createAccount" value="アカウントを作成" >アカウントを作成</button>
 </div>
 </div>
+
+
 </form>
 
 

@@ -53,7 +53,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#page-top">MidiCloud</a>
+                <a class="navbar-brand" href="memberTop.jsp">MidiCloud</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -64,7 +64,7 @@
                     </li>
                     		    <li>
 
-<<form class="form-inline" action="MidiUploadWindow" method="post">
+<<form class="form-inline" action="SearchingResultWindow" method="post">
  <div class="input-group">
       <input type="text" class="form-control" placeholder="Search for..." name="search">
       <span class="input-group-btn">
@@ -84,7 +84,7 @@
     <ul class="dropdown-menu">
 	<li>
 		<input type="hidden" name="otherUser">
-		<a href="Profile?UserID=<%= user.getUserID() %>~" name="detail" value="ユーザー詳細">Detail</a>
+		<a href="AccountInfoWindow?userID=<%= user.getUserID() %>" name="detail" value="ユーザー詳細">Detail</a>
 	</li>
 	<li role="separator" class="divider"></li>
 	<li>
@@ -135,19 +135,19 @@
 <% } %>
 
 
-<form action="MidiUploadWindow" method="post">
+<form action="MidiUploadWindow" method="post" enctype="multipart/form-data">
 
 <p>
 <div class="form-group">
     <label for="exampleInputFile">Upload MIDI File</label>
-    <input type="file" id="exampleInputFile" name="midifile">
+    <input type="file" id="exampleInputFile" name="midifile"  accept="audio/midi" required="required">
   </div>
 </p>
 
 <p>
 <div class="input-group">
 <label for="InputUserName">Song Title</label>
-<input type="text" class="form-control" placeholder="ここに曲名を入力" aria-describedby="basic-addon1" name="title">
+<input type="text" class="form-control" placeholder="ここに曲名を入力" aria-describedby="basic-addon1" name="title" required="required" maxlength="20">
 </div>
 </p>
 
@@ -157,7 +157,7 @@
 <p>
 <div class="form-group">
 <label for="InputProfile">Music Description</label>
-<textarea class="form-control" name="exp" placeholder="曲の説明" rows="7"></textarea>
+<textarea class="form-control" name="exp" placeholder="曲の説明" rows="7" maxlength="400"></textarea>
 
 </div>
 </p>

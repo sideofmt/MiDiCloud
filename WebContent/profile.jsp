@@ -31,19 +31,23 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <%@ page import="model.User" %>
+    <%@ page import="model.*" %>
     <%@ page import="model.Midifile" %>
     <%@ page import="model.MidifileManager" %>
     <%@ page import="java.util.*" %>
 
     <%
+    UserManager u = new UserManager();
+
     User user = (User)session.getAttribute("user");
+    User showuser = u.returnUser(Integer.parseInt(request.getParameter("userID")));
+    request.setAttribute("showuser",showuser);
 
     MidifileManager m = new MidifileManager();
 	List<Midifile> midifiles = null;
 
 	try{
-	midifiles = m.searchList(user.getUserID());
+	midifiles = m.searchList(showuser.getUserID());
 	request.setAttribute("midifiles",midifiles);
 	}catch(NullPointerException e){
 		System.out.println(e);
@@ -69,7 +73,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="MemberTopWindow" name="midicloud" value="MidiCloud">MidiCloud</a>
+                <a class="navbar-brand" href="memberTop.jsp" name="midicloud" value="MidiCloud">MidiCloud</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -81,7 +85,7 @@
                     <li>
 
 
-<form class="form-inline" action="AccountInfoWindow" method="post">
+<form class="form-inline" action="SeachingResultWindow" method="post">
  <div class="input-group">
       <input type="text" class="form-control" placeholder="Search for..." name="search">
       <span class="input-group-btn">
@@ -101,7 +105,7 @@
     <ul class="dropdown-menu">
 	<li>
 		<input type="hidden" name="otherUser">
-		<a href="Profile?UserID=<%= user.getUserID() %>~" name="detail" value="ユーザー詳細">Detail</a>
+		<a href="AccountInfoWindow?userID=<%= user.getUserID() %>" name="detail" value="ユーザー詳細">Detail</a>
 	</li>
 	<li role="separator" class="divider"></li>
 	<li>
@@ -146,33 +150,68 @@
             <div class="text-left">
 
                 <img class="img-responsive img-center" src="OutputImg" alt="" height=200px width=200px>
-                <h2><%= user.getUsername() %>
-                    <small><%= user.getUsername() %></small>
+                <h2><%= showuser.getUsername() %>
+                    <small><%= showuser.getUsername() %></small>
                 </h2>
 
 
 			<form action="AccountInfoWindow" method="post">
 
-			<% if(user.getUserID() == user.getUserID()){ %>
+			<% if(showuser.getUserID() == user.getUserID()){ %>
 				<button type="submit" class="btn btn-default btn-sm" name="edit" value="ユーザーの編集">
 				 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>Edit
 				</button>
 			<% } %>
-			<% if(user.getUserID() != user.getUserID()){ %>
-				<button type="submit" class="btn btn-default btn-sm btn-warning" name="report" value="不適切なユーザーを報告">
-				 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>report
-				</button>
-			<% } %>
-			<% if(user.getUserID() == user.getUserID() || user.isManager() ) { %>
-				<button type="submit" class="btn btn-default btn-sm" name="delete" value="ユーザーの削除">
+			<% if(showuser.getUserID() == user.getUserID() || user.isManager() ) { %>
+				<button type="button" class="btn btn-default btn-sm" name="deletebutton" value="ユーザーの削除" data-toggle="modal" data-target="#myModal">
 				 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>delete
 				</button>
 			<% } %>
-			<% if(user.getUserID() == user.getUserID() ) { %>
+			<% if(showuser.getUserID() == user.getUserID() ) { %>
 				<button type="submit" class="btn btn-default btn-sm" name="upload" value="Midiのアップロード">
 				 <span class="glyphicon glyphicon-open" aria-hidden="true"></span>Upload Midi
 				</button>
 			<% } %>
+
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> アカウント削除確認</h4>
+      </div>
+      <div class="modal-body">
+      <div class="text-center">
+        本当にアカウントを削除してもよろしいですか？
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-danger" name="delete" value="削除">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 			</form>
 
 
@@ -181,7 +220,7 @@
 
 <div class="panel panel-default">
 <div class="panel-body">
-                <p><%= user.getProfile() %></p>
+                <p><%= showuser.getProfile() %></p>
             </div>
 
 </div>

@@ -56,7 +56,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="MemberTopWindow" name="midicloud" value="MidiCloud">MidiCloud</a>
+                <a class="navbar-brand" href="memberTop.jsp">MidiCloud</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -68,7 +68,7 @@
                     <li>
 
 
-<form class="form-inline" action="AccountInformationChangeWindow" method="post">
+<form class="form-inline" action="SearchingResultWindow" method="post">
  <div class="input-group">
       <input type="text" class="form-control" placeholder="Search for..." name="search">
       <span class="input-group-btn">
@@ -88,7 +88,7 @@
     <ul class="dropdown-menu">
 	<li>
 		<input type="hidden" name="otherUser">
-		<a href="Profile?UserID=<%= user.getUserID() %>~" name="detail" value="ユーザー詳細">Detail</a>
+		<a href="AccountInfoWindow?userID=<%= user.getUserID() %>" name="detail" value="ユーザー詳細">Detail</a>
 	</li>
 	<li role="separator" class="divider"></li>
 	<li>
@@ -127,7 +127,7 @@
             </div>
       </section>
 
-<form action="AccountInformationChangeWindow" method="post">
+<form action="AccountInformationChangeWindow" method="post"  enctype="multipart/form-data">
 
 <div class="container">
 <div class="row">
@@ -142,7 +142,7 @@
 <p>
 <div class="form-group">
     <label for="exampleInputFile">User Icon</label>
-    <input type="file" id="exampleInputFile" name="icon">
+    <input type="file" id="exampleInputFile" name="icon" accept="image/jpeg" />
   </div>
 </p>
 
@@ -150,7 +150,7 @@
 <div class="input-group">
 <label for="InputUserName">User Name</label>
 <%-- <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">--%>
-<input type="text" class="form-control" value="<%= user.getUsername() %>" aria-describedby="basic-addon1" name="name">
+<input type="text" class="form-control" value="<%= user.getUsername() %>" aria-describedby="basic-addon1" name="name" required="required" maxlength="30">
 </div>
 </p>
 
@@ -160,7 +160,7 @@
 <p>
 <div class="form-group">
 <label for="InputProfile">User Profile</label>
-<textarea class="form-control" id="UserProfile" name="profile" placeholder="" rows="7">
+<textarea class="form-control" id="UserProfile" name="profile" placeholder="" rows="7" maxlength="150">
 <%= user.getProfile() %>
 </textarea>
 

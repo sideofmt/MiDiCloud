@@ -68,8 +68,7 @@ public class MidiChangeWindow extends HttpServlet {
 				System.out.println(request.getParameter("title"));
 				midifile.setTitle(request.getParameter("title"));
 				midifile.setExplanation(request.getParameter("exp"));
-				if(!request.getParameter("path").isEmpty()) midifile.setMidifile(translate.fileLoad(request.getParameter("path")));
-				midifile.setDate(new Timestamp(System.currentTimeMillis()));
+//				midifile.setDate(new Timestamp(System.currentTimeMillis()));
 
 				manager.update(midifile);
 

@@ -59,11 +59,17 @@ public class MidiInformationWindow extends HttpServlet {
 		if(request.getParameter("goSearch")!=null){
 			request.setAttribute("search",request.getAttribute("search"));
 			this.getServletContext().getRequestDispatcher("/SearchingResultWindow").forward(request, response);
+
 		} else if(request.getParameter("favo") != null) {
-			midifile.setFavorite(Integer.valueOf(request.getParameter("value")));
+			if(Integer.valueOf(request.getParameter("favo")) == null){
+				midifile.setFavorite(1);
+			}else{
+				midifile.setFavorite( (Integer.valueOf(request.getParameter("favo"))+1));
+			}
+			System.out.println("favorite="+midifile.getFavorite());
 			manager.update(midifile);
-			request.removeAttribute("favo");
-			//this.getServletContext().getRequestDispatcher("/MidiInformationWindow").forward(request, response);
+			this.getServletContext().getRequestDispatcher("/midifile.jsp").forward(request, response);
+
 		} else if(request.getParameter("download") != null) {
 			request.setAttribute("midifile",request.getAttribute("midifile"));
 			OutputDownload out = new OutputDownload();
@@ -94,13 +100,33 @@ public class MidiInformationWindow extends HttpServlet {
 			this.getServletContext().getRequestDispatcher("/midiChange.jsp").forward(request, response);
 		}
 		else if(request.getParameter("delete")!=null){
-			manager.delete(midifile.getMidiID());
+			//midiファイルの削除
+			session.removeAttribute("midifile");
+			try{
+				manager.delete(midifile.getMidiID());
+				System.out.println("midiファイルの削除に成功しました");
+			}catch(Exception e){
+				e.printStackTrace();
+				System.out.println("midiファイルの削除に失敗しました");
+			}
 			this.getServletContext().getRequestDispatcher("/memberTop.jsp").forward(request, response);
 		}
 		else if(request.getParameter("report")!=null){
 			Report report = new Report();
 			ReportManager rmanager = new ReportManager();
 
+
+			this.getServletContext().getRequestDispatcher("/midifile.jsp").forward(request, response);
+		}
+		else if(request.getParameter("deleteComment") != null){
+			CommentManager cmanager = new CommentManager();
+			try{
+				cmanager.delCommentByID(Integer.parseInt(request.getParameter("deleteComment")));
+				System.out.println("コメントの削除に失敗しました");
+			}catch(Exception e){
+				e.printStackTrace();
+				System.out.println("コメントの削除に成功しました");
+			}
 
 			this.getServletContext().getRequestDispatcher("/midifile.jsp").forward(request, response);
 		}

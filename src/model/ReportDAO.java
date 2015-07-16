@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class ReportDAO extends Object implements Serializable{
-	final private static String dbname = "MidiCloud";
+	final private static String dbname = "midicloud";
 	final private static String user = "dbpuser";
 	final private static String password = "hogehoge";
 	final private static String driverClassName = "org.postgresql.Driver";

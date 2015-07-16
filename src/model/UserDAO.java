@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class UserDAO {
-	final private static String dbname = "MidiCloud";
+	final private static String dbname = "midicloud";
 	final private static String username = "dbpuser";
 	final private static String password = "hogehoge";
 	final private static String driverClassName = "org.postgresql.Driver";

@@ -20,14 +20,21 @@ public class CommentManager {
 		comDAO.delete(midiID);
 	}
 
+	public void delCommentByID(int commentID){
+		CommentDAO comDAO = new CommentDAO();
+		comDAO.deleteByID(commentID);
+	}
+
+	public void delCommentU(int userID){
+		CommentDAO comDAO = new CommentDAO();
+		comDAO.deleteU(userID);
+	}
+
 	public ArrayList<Comment> returnComments(int midiID){
 		CommentDAO comDAO = new CommentDAO();
 		ArrayList<Comment> comList = new ArrayList<Comment>();
 
 		comList = comDAO.returnComment(midiID);
-
-
-
 
 		return comList;
 	}

@@ -98,7 +98,7 @@
                     </li>
                     		    <li>
 
-<form class="form-inline" action="MidiInformationWindow" method="post">
+<form class="form-inline" action="SearchingResultWindow" method="post">
  <div class="input-group">
       <input type="text" class="form-control" placeholder="Search for..." name="search">
       <span class="input-group-btn">
@@ -116,7 +116,7 @@
 
     <ul class="dropdown-menu">
 	<li>
-		<a href="Profile?UserID=<%= user.getUserID() %>~" name="detail" value="ユーザー詳細">Detail</a>
+		<a href="AccountInfoWindow?userID=<%= user.getUserID() %>" name="detail" value="ユーザー詳細">Detail</a>
 	</li>
 	<li role="separator" class="divider"></li>
 	<li>
@@ -166,7 +166,7 @@
             <div class="col-lg-12-original">
 
 <div class="text-right">
-<img alt="icon" src="OutputMidiImg" width=60px height=60px>  <%= userManager.returnUser( midifile.getUserID() ).getUsername() %>
+<img alt="icon" src="OutputMidiImg" width=60px height=60px>  <a href="AccountInfoWindow?userID=<%= midifile.getUserID() %>"><%= userManager.returnUser( midifile.getUserID() ).getUsername() %></a>
 </div>
 
             <div class="text-left">
@@ -181,7 +181,7 @@
 <form action="MidiInformationWindow" method="post">
 <input type="hidden" name="action">
 
-<button type="submit" class="btn btn-info  btn-sm" name="favo" value="<%= midifile.getFavorite() +1 %>">
+<button type="submit" class="btn btn-info  btn-sm" name="favo" value="<%= midifile.getFavorite() %>">
   <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Favorite <span class="badge">
   <%= midifile.getFavorite() %></span>
 </button>
@@ -200,14 +200,37 @@
 			<% } %>
             <%
             if(user.isManager() || user.getUserID() == midifile.getUserID()) { %>
-				<button type="submit" class="btn btn-default btn-sm" name="delete" value="削除">
+				<button type="button" class="btn btn-default btn-sm" name="deletemidi" value="削除" data-toggle="modal" data-target="#myModal">
  				 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
 				</button>
-			<% } else { %>
-			<button type="submit" class="btn btn-default btn-sm btn-warning" name="report" value="報告">
- 				 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Report
-				</button>
 			<% } %>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> MIDI削除確認</h4>
+      </div>
+      <div class="modal-body">
+      <div class="text-center">
+        本当にMIDIファイルを削除してもよろしいですか？
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-warning" name="delete" value="削除">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 <br><br>
 
 </form>
@@ -259,20 +282,53 @@
 
 <!-- Timeline - START -->
 <div class="container">
-    <ul class="timeline">
+    <ul class="list-group">
+    <form action="MidiInformationWindow" method="post">
+
     	<% for(Comment comment : commentList){ %>
-        <li><!---Time Line Element--->
-          <div class="timeline-badge blue"></div>
-          <div class="timeline-panel">
-            <div class="timeline-heading">
-              <h4 class="timeline-title"> <%= userManager.returnUser(comment.getUserID()).getUsername() %> </h4>
-            </div>
-            <div class="timeline-body"><!---Time Line Body&Content--->
+        <li class="list-group-item"><!---Time Line Element--->
+          <div class="media-body">
+              <h4 class="media-heading"> <a href="AccountInfoWindow?userID=<%= userManager.returnUser(comment.getUserID()).getUserID() %>"><%= userManager.returnUser(comment.getUserID()).getUsername() %></a>
+              <%
+              if(comment.getUserID() == user.getUserID()){
+     		  %>
+              <button type="button" class="btn btn-default btn-xs" name="deletecom" value="削除" data-toggle="modal" data-target="#myMod<%= comment.getCommentID() %>">
+ 				 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete Comment</button>
+ 			  <%
+              }
+ 			  %>
+ 			  </h4>
               <p><%= comment.getComment() %></p>
-            </div>
           </div>
         </li>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myMod<%= comment.getCommentID() %>" tabindex="-1" role="dialog" aria-labelledby="myModalL<%= comment.getCommentID() %>">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalL<%= comment.getCommentID() %>">コメント削除確認</h4>
+      </div>
+      <div class="modal-body">
+      <div class="text-center">
+        コメントを削除します
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-warning" name="deleteComment" value="<%= comment.getCommentID() %>">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
         <% } %>
+
+        </form>
     </ul>
 </div>
 

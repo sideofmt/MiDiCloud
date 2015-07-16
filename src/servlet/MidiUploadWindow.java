@@ -3,6 +3,7 @@ package servlet;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 
 import model.Midifile;
 import model.MidifileManager;
@@ -57,29 +64,59 @@ public class MidiUploadWindow extends HttpServlet {
 		MidifileManager manager = new MidifileManager();
 		Translate translate = new Translate();
 
-		if(request.getParameter("midifile").isEmpty()) {
-			request.setAttribute("error", "<div class=\"alert alert-danger\" role=\"alert\">\n"
-					+ "<span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=\"true\"></span>\n"
-					+ "<span class=\"sr-only\">Error:</span>\n"
-					+ "midiファイルを選択して下さい\n</div>");
-			this.getServletContext().getRequestDispatcher("/midiUpload.jsp").forward(request, response);
-		} else if(request.getParameter("title").isEmpty()) {
-			request.setAttribute("error2", "<div class=\"alert alert-danger\" role=\"alert\">\n"
-					+ "<span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=\"true\"></span>\n"
-					+ "<span class=\"sr-only\">Error:</span>\n"
-					+ "タイトルを入力して下さい\n</div>");
-			this.getServletContext().getRequestDispatcher("/midiUpload.jsp").forward(request, response);
-		} else {
-			midi.setMidiID(0);
-			midi.setTitle(request.getParameter("title"));
-			midi.setExplanation(request.getParameter("exp"));
-			midi.setFavorite(0);
-			midi.setMidifile(translate.fileLoad(request.getParameter("midifile")));
 
-			midi.setUserID(user.getUserID());
+
+			String title = null;
+			String exp = null;
+			byte[] midifile = null;
+			int userID = user.getUserID();
+
+			 DiskFileItemFactory factory = new DiskFileItemFactory();
+			  ServletFileUpload sfu = new ServletFileUpload(factory);
+
+			  try {
+			     List<FileItem> items = sfu.parseRequest(new ServletRequestContext(request));
+
+			    for(FileItem item : items){
+
+			    	//フォームフィールドがファイルかテキストかを判別
+			    	if(item.isFormField()){
+			    		if(item.getFieldName().equals("title")){
+			    			title = item.getString();
+			    		}
+			    		else if(item.getFieldName().equals("exp")){
+			    			exp = item.getString();
+			    		}
+
+			    		System.out.println(new String(item.getString().getBytes("UTF-8"), "UTF-8"));
+			    	}else{
+			    		midifile = item.get();
+			    	}
+			      /* 取り出したFileItemに対する処理 */
+			    }
+
+
+
+
+
+
+
+			midi.setMidiID(0);
+			midi.setTitle(title);
+			midi.setExplanation(exp);
+			midi.setFavorite(0);
+			midi.setMidifile(midifile);
+			midi.setUserID(userID);
 			midi.setDate(new Timestamp(System.currentTimeMillis()));
 
-			int id = manager.add(midi);
+			int id = 0;
+
+//			try{
+				id = manager.add(midi);
+//			}catch(Exception e){
+//				e.printStackTrace();
+//			}
+
 			UserManager um = new UserManager();
 
 			ArrayList<Integer> midiIDs;
@@ -97,7 +134,20 @@ public class MidiUploadWindow extends HttpServlet {
 
 			this.getServletContext().getRequestDispatcher("/midiUploadComplete.jsp")
 				.forward(request, response);
+
+			  }catch (Exception e) {
+				    e.printStackTrace();
+						request.setAttribute("error", "<div class=\"alert alert-danger\" role=\"alert\">\n"
+								+ "<span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=\"true\"></span>\n"
+								+ "<span class=\"sr-only\">Error:</span>\n"
+								+ "MIDIファイルをアップロードできませんでした\n</div>");
+						this.getServletContext().getRequestDispatcher("/midiUpload.jsp").forward(request, response);
+
+
+
+				  }
+
 		}
-	}
+
 
 }

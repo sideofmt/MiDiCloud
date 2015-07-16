@@ -72,7 +72,7 @@
                     </li>
                     		    <li>
 
-<form class="form-inline" action="MemberTopWindow" method="post">
+<form class="form-inline" action="SearchingResultWindow" method="post">
  <div class="input-group">
       <input type="text" class="form-control" placeholder="Search for..." name="search">
       <span class="input-group-btn">
@@ -89,8 +89,8 @@
     </a>
     <ul class="dropdown-menu">
 	<li>
-		<input type="hidden" name="showuser">
-		<a href="AccountInfoWindow?showuser=<%= user.getUserID() %>~">Detail</a>
+		<input type="hidden" name="otherUser">
+		<a href="AccountInfoWindow?userID=<%= user.getUserID() %>">Detail</a>
 	</li>
 	<li role="separator" class="divider"></li>
 	<li>
@@ -143,7 +143,15 @@
 		  <div class="list-group">
 		  <form action="MemberTopWindow" method="post">
 		  	  <%
-		  	  for(int i = 0; i < midiRank.size(); i++) {
+
+		  	  int sizeR;
+    		  if(midiRank.size() < 5){
+    			  sizeR = midiRank.size();
+    		  }else{
+    			  sizeR = 5;
+    		  }
+
+		  	  for(int i = 0; i < sizeR; i++) {
 		      %>
 			  <button type="submit" class="list-group-item" name="midiID" value="<%= midiRank.get(i).getMidiID() %>"><%= i + 1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
 			  </span>&nbsp;<%= midiRank.get(i).getTitle() %></button>
@@ -176,7 +184,14 @@
 		  <div class="list-group">
 		  <form action="MemberTopWindow" method="post">
 		  	  <%
-		  	  for(int i = 0; i < midiNew.size(); i++) {
+		  	  int sizeN;
+		  	  if(midiNew.size()<5){
+		  		  sizeN = midiNew.size();
+		  	  }else{
+		  		  sizeN = 5;
+		  	  }
+
+		  	  for(int i = 0; i < sizeN; i++) {
 		      %>
 			  <button type="submit" class="list-group-item" name="midiID" value="<%= midiNew.get(i).getMidiID() %>" ><%= i + 1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
 			  </span>&nbsp;<%= midiNew.get(i).getTitle() %></button>
