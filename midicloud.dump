@@ -1,0 +1,181 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: comment; Type: TABLE; Schema: public; Owner: dbpuser; Tablespace: 
+--
+
+CREATE TABLE comment (
+    commentid integer NOT NULL,
+    comment text NOT NULL,
+    userid integer NOT NULL,
+    midiid integer NOT NULL
+);
+
+
+ALTER TABLE comment OWNER TO dbpuser;
+
+--
+-- Name: midifile; Type: TABLE; Schema: public; Owner: dbpuser; Tablespace: 
+--
+
+CREATE TABLE midifile (
+    midiid integer NOT NULL,
+    title character varying(20) NOT NULL,
+    explanation character varying(400),
+    favorite integer NOT NULL,
+    midifile bytea NOT NULL,
+    userid integer NOT NULL,
+    date timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE midifile OWNER TO dbpuser;
+
+--
+-- Name: reportt; Type: TABLE; Schema: public; Owner: dbpuser; Tablespace: 
+--
+
+CREATE TABLE reportt (
+    reportid integer NOT NULL,
+    userid integer NOT NULL,
+    reporteduserid integer NOT NULL,
+    reportedmidiid integer NOT NULL
+);
+
+
+ALTER TABLE reportt OWNER TO dbpuser;
+
+--
+-- Name: userdata; Type: TABLE; Schema: public; Owner: dbpuser; Tablespace: 
+--
+
+CREATE TABLE userdata (
+    userid integer NOT NULL,
+    username character varying(30) NOT NULL,
+    password character varying(16) NOT NULL,
+    mailaddress character varying(255) NOT NULL,
+    profile character varying(150),
+    icon bytea,
+    midi_ids integer[],
+    commentids integer[],
+    ismanager boolean DEFAULT false
+);
+
+
+ALTER TABLE userdata OWNER TO dbpuser;
+
+--
+-- Data for Name: comment; Type: TABLE DATA; Schema: public; Owner: dbpuser
+--
+
+COPY comment (commentid, comment, userid, midiid) FROM stdin;
+\.
+
+
+--
+-- Data for Name: midifile; Type: TABLE DATA; Schema: public; Owner: dbpuser
+--
+
+COPY midifile (midiid, title, explanation, favorite, midifile, userid, date) FROM stdin;
+\.
+
+
+--
+-- Data for Name: reportt; Type: TABLE DATA; Schema: public; Owner: dbpuser
+--
+
+COPY reportt (reportid, userid, reporteduserid, reportedmidiid) FROM stdin;
+\.
+
+
+--
+-- Data for Name: userdata; Type: TABLE DATA; Schema: public; Owner: dbpuser
+--
+
+COPY userdata (userid, username, password, mailaddress, profile, icon, midi_ids, commentids, ismanager) FROM stdin;
+\.
+
+
+--
+-- Name: comment_pkey; Type: CONSTRAINT; Schema: public; Owner: dbpuser; Tablespace: 
+--
+
+ALTER TABLE ONLY comment
+    ADD CONSTRAINT comment_pkey PRIMARY KEY (commentid);
+
+
+--
+-- Name: midifile_pkey; Type: CONSTRAINT; Schema: public; Owner: dbpuser; Tablespace: 
+--
+
+ALTER TABLE ONLY midifile
+    ADD CONSTRAINT midifile_pkey PRIMARY KEY (midiid);
+
+
+--
+-- Name: reportt_pkey; Type: CONSTRAINT; Schema: public; Owner: dbpuser; Tablespace: 
+--
+
+ALTER TABLE ONLY reportt
+    ADD CONSTRAINT reportt_pkey PRIMARY KEY (reportid);
+
+
+--
+-- Name: userdata_mailaddress_key; Type: CONSTRAINT; Schema: public; Owner: dbpuser; Tablespace: 
+--
+
+ALTER TABLE ONLY userdata
+    ADD CONSTRAINT userdata_mailaddress_key UNIQUE (mailaddress);
+
+
+--
+-- Name: userdata_pkey; Type: CONSTRAINT; Schema: public; Owner: dbpuser; Tablespace: 
+--
+
+ALTER TABLE ONLY userdata
+    ADD CONSTRAINT userdata_pkey PRIMARY KEY (userid);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
