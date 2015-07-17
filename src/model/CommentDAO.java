@@ -45,7 +45,7 @@ public class CommentDAO extends Object{
 		int commentID;
 		String comment;
 		int userID;
-		String sql = "select * from comment where midiID = ?";
+		String sql = "select * from comment where midiID = ? order by commentID desc";
 
 		try {
 			Class.forName(driverClassName);

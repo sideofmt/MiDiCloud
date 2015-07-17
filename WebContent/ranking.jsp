@@ -150,7 +150,7 @@
 			%>
 
 			  <button type="submit" class="list-group-item" name="midiID" value="<%= midifile.getMidiID() %>"><%= n+1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
-			  </span>&nbsp;<a href="#"><%= midifile.getTitle() %></a></button>
+			  </span>&nbsp;<%= midifile.getTitle() %></button>
 
 			<%
 			n++;

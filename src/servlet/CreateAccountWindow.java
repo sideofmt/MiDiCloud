@@ -110,7 +110,7 @@ public class CreateAccountWindow extends HttpServlet {
 		  }
 
 		  if(icon==null){
-			  icon = translate.fileLoad("/img/img.jpg");
+			  icon = translate.fileLoad("./../../WebContent/img/img.jpg");
 		  }
 
 

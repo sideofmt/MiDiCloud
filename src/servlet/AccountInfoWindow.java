@@ -55,7 +55,28 @@ public class AccountInfoWindow extends HttpServlet {
 
 			MidifileManager m = new MidifileManager();
 			UserManager manager = new UserManager();
-			User showuser = null;
+			User user = (User)session.getAttribute("user");
+			try{
+				request.setAttribute("userID",Integer.parseInt(request.getParameter("userID")));
+			} catch (NumberFormatException e) {
+				// TODO 自動生成された catch ブロック
+				System.out.println("requestからuserIDを読み取れませんでした。");
+				e.printStackTrace();
+				request.setAttribute("userID",user.getUserID());
+			} catch(NullPointerException e){
+				System.out.println("requestからuserIDを読み取れませんでした。");
+				request.setAttribute("userID",user.getUserID());
+			}
+
+			List<Midifile> midifiles;
+
+//			try{
+//			midifiles = m.searchList(showuser.getUserID());
+//			request.setAttribute("midifiles",midifiles);
+//			}catch(NullPointerException e){
+//				System.out.println(e);
+//			}
+			User showuser=null;
 			try {
 				showuser = manager.returnUser(Integer.parseInt(request.getParameter("userID")));
 			} catch (NumberFormatException e) {
@@ -64,21 +85,11 @@ public class AccountInfoWindow extends HttpServlet {
 			} catch (SQLException e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
-			} catch(NullPointerException e){
-				User user = (User)session.getAttribute("user");
-				showuser = user;
 			}
 
-			List<Midifile> midifiles;
-
-			try{
-			midifiles = m.searchList(showuser.getUserID());
-			request.setAttribute("midifiles",midifiles);
-			}catch(NullPointerException e){
-				System.out.println(e);
-			}
-
-			//request.setAttribute("showuser", showuser);
+			request.setAttribute("showuser", showuser);
+			System.out.println("userID="+request.getParameter("userID"));
+			session.setAttribute("userIDsub", request.getParameter("userID"));
 
 
 			this.getServletContext().getRequestDispatcher("/profile.jsp").forward(request, response);

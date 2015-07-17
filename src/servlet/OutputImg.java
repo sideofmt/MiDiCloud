@@ -31,6 +31,7 @@ public class OutputImg extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("OutputImgが呼ばれました");
 		HttpSession session = request.getSession();
 		//Translate t = new Translate();
 

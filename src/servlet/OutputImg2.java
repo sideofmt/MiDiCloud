@@ -33,20 +33,27 @@ public class OutputImg2 extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		System.out.println("OutputImg2が呼ばれました");
 		HttpSession session = request.getSession();
 		//Translate t = new Translate();
 
 		UserManager manager = new UserManager();
 		User user = null;
 		try {
-			user = manager.returnUser(Integer.parseInt(request.getParameter("userID")));
+//			user = manager.returnUser(Integer.parseInt(request.getParameter("userID")));
+			user = manager.returnUser(Integer.parseInt((String)session.getAttribute("userIDsub")));
+
 		} catch (NumberFormatException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
+			System.out.println("エラーです");
 		} catch (SQLException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
+			System.out.println("エラーです");
 		}
+		System.out.println(user);
 		//User user = new User();
 		//user.setIcon(t.fileLoad("C:/Users/shigetoshi.n/Desktop/ソフ研/mudai.png"));
 		if(user != null){

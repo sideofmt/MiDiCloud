@@ -68,6 +68,11 @@
                         <a href=""></a>
                     </li>
                     <li>
+                    <button type="button" class="btn btn-default btn-sm" name="attention" value="注意" data-toggle="modal" data-target="#myModal">
+ 				 Attention
+				</button>
+                    </li>
+                    <li>
 
                     <!-- href="遷移先?hiddenのname=送信したい値&hiddenのname2=送信したい値2~"  -->
                     	<a href="CreateAccountWindow" name="GoMakeAccountPage" value="新規登録">新規登録</a>
@@ -79,6 +84,24 @@
         </div>
         <!-- /.container-fluid -->
     </nav>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> 注意！</h4>
+      </div>
+      <div class="modal-body">
+      <p>This web site is English Only.</p>
+      <p>※このサイトにはクロスサイトスクリプティング(XSS)等の脆弱性があります。</p>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 

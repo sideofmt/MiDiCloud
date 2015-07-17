@@ -89,7 +89,7 @@
     </a>
     <ul class="dropdown-menu">
 	<li>
-		<input type="hidden" name="otherUser">
+		<input type="hidden" name="userID">
 		<a href="AccountInfoWindow?userID=<%= user.getUserID() %>">Detail</a>
 	</li>
 	<li role="separator" class="divider"></li>

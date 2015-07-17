@@ -149,6 +149,7 @@
             <div class="col-lg-12-original">
             <div class="text-left">
 
+
                 <img class="img-responsive img-center" src="OutputImg2" alt="" height=200px width=200px>
                 <h2><%= showuser.getUsername() %>
                     <small><%= showuser.getUsername() %></small>
@@ -252,7 +253,7 @@
 		%>
 
 		<button type="submit" class="list-group-item" name="midiID" value="<%= midifile.getMidiID() %>"><%= n+1 %><span lang="ja">&nbsp;&nbsp;&nbsp;
-		</span>&nbsp;<a href="#"><%= midifile.getTitle() %></a></button>
+		</span>&nbsp; <%= midifile.getTitle() %></button>
 
 		<%
 		n++;
